@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEvaluationDto } from './dto/create-evaluation.dto';
 import { UpdateEvaluationDto } from './dto/update-evaluation.dto';
+import { GetAllEvaluations } from './use-cases/getAll.use-case';
+import { UpdateEvaluation } from './use-cases/update.use-case';
+import { CreateEvaluation } from './use-cases/create.use-case';
+import { DeleteEvaluation } from './use-cases/delete.use-case';
+import { GetEvaluationById } from './use-cases/GetById.use-case';
 
 @Injectable()
 export class EvaluationsService {
-  create(createEvaluationDto: CreateEvaluationDto) {
-    return 'This action adds a new evaluation';
+  constructor(
+    private getAllEvaluationsUC : GetAllEvaluations, 
+    private updateEvaluationUC : UpdateEvaluation, 
+    private createEvaluationUC : CreateEvaluation,
+    private deleteEvaluationUC : DeleteEvaluation, 
+    private getEvaluationByIdUC : GetEvaluationById
+  ){}
+  
+  createEvaluation(evaluation: CreateEvaluationDto) {
+    return this.createEvaluationUC.execute(evaluation);
   }
 
-  findAll() {
-    return `This action returns all evaluations`;
+  getAllEvaluations() {
+    return this.getAllEvaluationsUC.execute()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} evaluation`;
+  getEvaluationById(id: number) {
+    return this.getEvaluationByIdUC.execute(id)
   }
 
-  update(id: number, updateEvaluationDto: UpdateEvaluationDto) {
-    return `This action updates a #${id} evaluation`;
+  updateEvaluation(id: number, evaluation: UpdateEvaluationDto) {
+    return this.updateEvaluationUC.execute(id, evaluation);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} evaluation`;
+  deleteEvauation(id: number) {
+    return this.deleteEvaluationUC.execute(id)
   }
 }

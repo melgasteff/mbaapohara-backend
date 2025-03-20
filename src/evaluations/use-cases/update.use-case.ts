@@ -2,13 +2,14 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Evaluation } from "../entities/evaluation.entity";
 import { Repository } from "typeorm";
 import { HttpException, HttpStatus } from "@nestjs/common";
+import { UpdateEvaluationDto } from "../dto/update-evaluation.dto";
 
 export class UpdateEvaluation {
     constructor(
         @InjectRepository(Evaluation) private evaluationRepository : Repository <Evaluation> 
     ){}
 
-    async execute(id: number, evaluation : UpdateEvaluation){
+    async execute(id: number, evaluation : UpdateEvaluationDto){
         const evaluationFound = await this.evaluationRepository.findOne({where : {id}})
         if(!evaluationFound) throw new HttpException('No se ha encontrado la evaluacion', HttpStatus.NOT_FOUND)
         try {

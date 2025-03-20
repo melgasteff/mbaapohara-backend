@@ -41,7 +41,7 @@ export class User {
     @OneToMany(() => ProfileReview, review => review.user)
     reviews : ProfileReview[]
 
-    @ManyToOne(() => Evaluation, evaluation => evaluation.user)
+    @OneToMany(() => Evaluation, evaluation => evaluation.user)
     evaluations : Evaluation []
 
 }

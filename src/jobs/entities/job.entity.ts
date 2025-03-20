@@ -1,5 +1,5 @@
 import { Evaluation } from "src/evaluations/entities/evaluation.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'cargos'})
 export class Job {
@@ -9,7 +9,7 @@ export class Job {
     @Column()
     descripcion: string
 
-    @ManyToOne(() => Evaluation, evaluation => evaluation.job)
+    @OneToMany(() => Evaluation, evaluation => evaluation.job)
     evaluations : Evaluation[]
     
 }

@@ -8,6 +8,6 @@ export class GetAllEvaluations {
     ){}
 
     execute(){
-        return this.evaluationRepository.find()
+        return this.evaluationRepository.find({relations: ['company', 'job', 'user', 'office']})
     }
 }
