@@ -1,8 +1,9 @@
 import { Company } from "src/companies/entities/company.entity";
 import { Job } from "src/jobs/entities/job.entity";
 import { Office } from "src/offices/entities/office.entity";
+import { SalaryEvl} from "src/salariesEvl/entities/salaryEvl.entity";
 import { User } from "src/users/entities/user.entity";
-import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'evaluaciones'})
 export class Evaluation {
@@ -24,4 +25,7 @@ export class Evaluation {
     @ManyToOne(() => Office, (office) => office.evaluations)
     @JoinColumn({name: 'id_sucursal'})
     office : Office
+
+    @OneToOne(() => SalaryEvl, salary => salary.evaluation)
+    salaryEvl : SalaryEvl
 }

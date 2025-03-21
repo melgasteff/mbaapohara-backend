@@ -11,6 +11,7 @@ import { EvaluationsModule } from './evaluations/evaluations.module';
 import { JobsModule } from './jobs/jobs.module';
 import { CompaniesModule } from './companies/companies.module';
 import { OfficesModule } from './offices/offices.module';
+import { SalariesEvlModule } from './salariesEvl/salariesEvl.module';
 
 
 @Module({
@@ -34,7 +35,8 @@ import { OfficesModule } from './offices/offices.module';
     EvaluationsModule,
     JobsModule,
     CompaniesModule,
-    OfficesModule
+    OfficesModule,
+    SalariesEvlModule,
   ],
   controllers: [AppController],
   providers: [AppService],
