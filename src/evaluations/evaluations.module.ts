@@ -11,7 +11,7 @@ import { Company } from 'src/companies/entities/company.entity';
 import { Office } from 'src/offices/entities/office.entity';
 import { Job } from 'src/jobs/entities/job.entity';
 import { DeleteEvaluation } from './use-cases/delete.use-case';
-import { GetEvaluationById } from './use-cases/GetById.use-case';
+import { GetEvaluationById } from './use-cases/getById.use-case';
 
 @Module({
   controllers: [EvaluationsController],

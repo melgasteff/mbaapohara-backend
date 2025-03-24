@@ -23,6 +23,7 @@ export class CreateSalaryEvl {
             const newSalaryEvl = this.salaryEvlRepository.create(salaryEvl)
             return await this.salaryEvlRepository.save(newSalaryEvl)
         } catch (error) {
+            console.log(error.message)
             throw new HttpException('No se ha podido crear una evaluacion de salario', HttpStatus.INTERNAL_SERVER_ERROR)
         }
 

@@ -5,7 +5,7 @@ import { GetAllEvaluations } from './use-cases/getAll.use-case';
 import { UpdateEvaluation } from './use-cases/update.use-case';
 import { CreateEvaluation } from './use-cases/create.use-case';
 import { DeleteEvaluation } from './use-cases/delete.use-case';
-import { GetEvaluationById } from './use-cases/GetById.use-case';
+import { GetEvaluationById } from './use-cases/getById.use-case';
 
 @Injectable()
 export class EvaluationsService {
