@@ -13,6 +13,8 @@ import { CompaniesModule } from './companies/companies.module';
 import { OfficesModule } from './offices/offices.module';
 import { SalariesEvlModule } from './salariesEvl/salariesEvl.module';
 import { CompanyReviewsModule } from './company-reviews/company-reviews.module';
+import { InterviewsEvlModule } from './interviewsEvl/interviews-evl.module';
+import { InterviewQuestionsModule } from './interview-questions/interview-questions.module';
 
 
 @Module({
@@ -39,6 +41,8 @@ import { CompanyReviewsModule } from './company-reviews/company-reviews.module';
     OfficesModule,
     SalariesEvlModule,
     CompanyReviewsModule,
+    InterviewsEvlModule,
+    InterviewQuestionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

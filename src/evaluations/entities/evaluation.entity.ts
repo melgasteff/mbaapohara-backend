@@ -1,5 +1,6 @@
 import { Company } from "src/companies/entities/company.entity";
 import { CompanyReview } from "src/company-reviews/entities/company-review.entity";
+import { InterviewEvl } from "src/interviewsEvl/entities/interviews-evl.entity";
 import { Job } from "src/jobs/entities/job.entity";
 import { Office } from "src/offices/entities/office.entity";
 import { SalaryEvl} from "src/salariesEvl/entities/salaryEvl.entity";
@@ -32,4 +33,7 @@ export class Evaluation {
 
     @OneToOne(()=> CompanyReview, companyReview => companyReview.evaluation)
     companyReview : CompanyReview
+
+    @OneToOne(() => InterviewEvl, interview => interview.evaluation)
+    interviewEvl: InterviewEvl
 }
