@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { City } from 'src/cities/entities/city.entity';
+import { City } from 'src/cities1/entities/city.entity';
 import { UsersController } from './users.controller';
 import { CreateUser } from './use-cases/create.use-case';
 import { UpdateUser } from './use-cases/update.use-case';

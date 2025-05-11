@@ -1,5 +1,5 @@
 import { generate } from "rxjs";
-import { City } from "src/cities/entities/city.entity";
+import { City } from "src/cities1/entities/city.entity";
 import { Company } from "src/companies/entities/company.entity";
 import { Evaluation } from "src/evaluations/entities/evaluation.entity";
 import { Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";

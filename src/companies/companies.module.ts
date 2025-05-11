@@ -4,7 +4,7 @@ import { CompaniesController } from './companies.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Company } from './entities/company.entity';
 import { Office } from 'src/offices/entities/office.entity';
-import { City } from 'src/cities/entities/city.entity';
+import { City } from 'src/cities1/entities/city.entity';
 import { CreateCompany } from './use-cases/create.use-case';
 import { UpdateCompany } from './use-cases/update.use-case';
 import { DeleteCompany } from './use-cases/delete.use-case';

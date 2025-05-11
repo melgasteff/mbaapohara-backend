@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsNumber, IsString } from "class-validator"
-import { City } from "src/cities/entities/city.entity"
+import { City } from "src/cities1/entities/city.entity"
 import { Company } from "src/companies/entities/company.entity"
 
 

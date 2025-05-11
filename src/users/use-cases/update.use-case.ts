@@ -2,7 +2,7 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { City } from "src/cities/entities/city.entity";
+import { City } from "src/cities1/entities/city.entity";
 import { User } from "../entities/user.entity";
 
 export class UpdateUser {

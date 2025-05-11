@@ -1,5 +1,5 @@
 
-import { City } from "src/cities/entities/city.entity";
+import { City } from "src/cities1/entities/city.entity";
 import { Evaluation } from "src/evaluations/entities/evaluation.entity";
 import { Post } from "src/posts/entities/post.entity";
 import { ProfileReview } from "src/profile-reviews/entities/profile-review.entity";

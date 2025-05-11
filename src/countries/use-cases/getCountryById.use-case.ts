@@ -1,6 +1,6 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { Country } from "../entities/country.entity";
-import { City } from "src/cities/entities/city.entity";
+import { City } from "src/cities1/entities/city.entity";
 import { Repository } from "typeorm";
 import { HttpException, HttpStatus } from "@nestjs/common";
 

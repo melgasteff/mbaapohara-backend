@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { City } from "src/cities/entities/city.entity";
+import { City } from "src/cities1/entities/city.entity";
 import { Country } from "../entities/country.entity";
 import { Repository } from "typeorm";
 

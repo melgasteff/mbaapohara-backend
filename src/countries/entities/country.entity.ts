@@ -1,6 +1,6 @@
 
 import { IsNotEmpty, IsString } from "class-validator";
-import { City } from "src/cities/entities/city.entity";
+import { City } from "src/cities1/entities/city.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'paises'})

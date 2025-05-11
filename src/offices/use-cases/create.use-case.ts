@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import { CreateOfficeDto } from "../dto/create-office.dto";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { Company } from "src/companies/entities/company.entity";
-import { City } from "src/cities/entities/city.entity";
+import { City } from "src/cities1/entities/city.entity";
 
 export class CreateOffice {
     constructor(

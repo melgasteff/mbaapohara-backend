@@ -3,7 +3,7 @@ import { CountriesService } from './countries.service';
 import { CountriesController } from './countries.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Country } from './entities/country.entity';
-import { City } from 'src/cities/entities/city.entity';
+import { City } from 'src/cities1/entities/city.entity';
 import { GetAllCountries } from './use-cases/getAllCountries.use-case';
 import { CreateCountry } from './use-cases/create.use-case';
 import { UpdateCountry } from './use-cases/update.use-case';

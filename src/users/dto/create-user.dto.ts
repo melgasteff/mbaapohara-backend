@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, isString, IsString, Matches, MinLength, Validate } from "class-validator"
-import { City } from "src/cities/entities/city.entity"
-import { PassValidator } from "../validators/prueba-validator"
+import { City } from "src/cities1/entities/city.entity"
+
 
 export class CreateUserDto {
     @IsString()
