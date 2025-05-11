@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import { CitiesModule } from './cities/cities.module';
 import { CountriesModule } from './countries/countries.module';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
@@ -15,6 +14,8 @@ import { SalariesEvlModule } from './salariesEvl/salariesEvl.module';
 import { CompanyReviewsModule } from './company-reviews/company-reviews.module';
 import { InterviewsEvlModule } from './interviewsEvl/interviews-evl.module';
 import { InterviewQuestionsModule } from './interview-questions/interview-questions.module';
+import { CityModule } from './cities/infraesructure/module/city.module';
+
 
 
 @Module({
@@ -27,11 +28,11 @@ import { InterviewQuestionsModule } from './interview-questions/interview-questi
       username: 'postgres',
       password: '12345678',
       database: 'mbaapohara',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'], 
+      autoLoadEntities: true 
       //synchronize: true
       
     }),
-    CitiesModule,
+    CityModule,
     CountriesModule,
     PostsModule,
     ProfileReviewsModule,

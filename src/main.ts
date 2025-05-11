@@ -1,13 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { GlobalExceptionFilter } from './cities/infraesructure/exception-filter/exceptionFilter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-   //UseGlobalPipes implementa las validaciones en todas las clases. Whitelist es para ignorar campos que no correspondan.
+
+  app.useGlobalFilters(new GlobalExceptionFilter());
+
   app.useGlobalPipes(new ValidationPipe({
-    transform: true
+    transform: true,
+    whitelist: true,
+    forbidNonWhitelisted: true
   }));
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
