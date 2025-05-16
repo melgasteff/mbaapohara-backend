@@ -6,10 +6,12 @@ import { NewCityDTO } from "../dto/new-city.dto";
 import { CreateCityUseCase } from "src/cities/application/use-case/create.use-case";
 import { UpdateCityUseCase } from "src/cities/application/use-case/update.use-case";
 import { DeleteCityUseCase } from "src/cities/application/use-case/delete.use-case";
-import { GetCityByIdUseCase } from "src/cities/application/use-case/getCityById.use-case";
+import { GetCityByIdUseCase } from "src/cities/application/use-case/get-city-by-id.use-case";
 import { GetAllCitiesUseCase } from "src/cities/application/use-case/getAll.use-case";
 import { CityDTO } from "../dto/city.dto";
+import { GlobalExceptionFilter } from "src/cities/infrastructure/exception-filter/exceptionFilter";
 
+@UseFilters(GlobalExceptionFilter)
 @Controller('cities')
 export class CityController {
     constructor(
@@ -23,10 +25,6 @@ export class CityController {
 
     @Post()
     async createCity(@Body() cityDto: NewCityDTO): Promise<CityDTO>{
-        console.log("Hola controller",cityDto)
-        console.log("cityDto.descripcion:", cityDto.descripcion);
-console.log("cityDto.idpais:", cityDto.idpais);
-
         return CityDTOMapper.toDTO(await this.createCityUC.execute(cityDto.descripcion, cityDto.idpais));
     }
     @Get()
