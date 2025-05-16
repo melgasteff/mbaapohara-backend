@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
 import { CountCountriesUseCase } from "src/countries/application/use-case/count.use-case";
 import { CreateCountryUseCase } from "src/countries/application/use-case/create.use-case";
 import { DeleteCountryUseCase } from "src/countries/application/use-case/delete.use-case";
@@ -9,7 +9,9 @@ import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dt
 import { CountryDTOMapper } from "../mapper/country-dto.mapper";
 import { NewCountryDTO } from "../dto/new-country.dto";
 import { CountryDTO } from "../dto/country.dto";
+import { GlobalExceptionFilter } from "src/countries/infrastructure/exception-filter/exception-filter";
 
+@UseFilters(GlobalExceptionFilter)
 @Controller('countries')
 export class CountryController {
     constructor(
