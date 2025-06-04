@@ -1,5 +1,4 @@
 
-console.log("entidad de dominio")
 export class City {
   private id: number;
   private descripcion: string;

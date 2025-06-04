@@ -1,4 +1,3 @@
-console.log("entidad de dominio")
 
 export class NewCity {
 
