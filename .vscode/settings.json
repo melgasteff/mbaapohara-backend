@@ -1,3 +1,32 @@
 {
-    "material-icon-theme.activeIconPack": "nest"
+  "material-icon-theme.activeIconPack": "nest",
+  "workbench.iconTheme": "material-icon-theme",
+  "material-icon-theme.folders.color": "#42a5f5", 
+
+  "material-icon-theme.folders.associations": {
+    // Capas principales de arquitectura
+    "domain": "class",
+    "application": "controller",
+    "infrastructure": "interface",
+    "presentation": "components",
+
+    // Subcarpetas comunes por módulo
+    "controller": "controller",
+    "dto": "typescript",
+    "mapper": "tools",
+    "repository": "database",
+    "model": "class",
+    "module": "components",
+    "exception": "error",
+    "exception-filter":"error",
+    "use-case": "utils",
+    "utils": "tools"
+  },
+
+  "material-icon-theme.files.associations": {
+    "*.use-case.ts": "settings",
+    "*usecase.ts": "cog",
+    "*.dto.ts": "typescript",
+    "*.entity.ts": "Cline"
+  }
 }
