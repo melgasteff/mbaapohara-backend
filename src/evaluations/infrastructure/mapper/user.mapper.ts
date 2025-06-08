@@ -18,7 +18,6 @@ export class UserMapper{
     }
 
     static toTypeORMModel(newUser: User): UserTypeORMModel{
-        console.log('to typeorm')
         const userTypeORM = new UserTypeORMModel();
         userTypeORM.id = newUser.getId();
         userTypeORM.nombre = newUser.getNombre();

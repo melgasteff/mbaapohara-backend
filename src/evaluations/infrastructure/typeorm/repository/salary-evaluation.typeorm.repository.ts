@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { NewSalaryEvaluation } from "src/evaluations/domain/model/new-salary-evaluation.entity";
 import { SalaryEvaluation } from "src/evaluations/domain/model/salary-evaluation.entity";
 import { SalaryEvaluationRepository } from "src/evaluations/domain/repository/salary-evaluation.repository";
 import { SalaryEvaluationTypeORMModel } from "../model/salaryevaluation.typeorm.model";
@@ -19,33 +18,32 @@ export class SalaryEvaluationTypeORMRepository implements SalaryEvaluationReposi
         private datasource: DataSource
     ) { }
 
-    async create(newSalaryEvl: SalaryEvaluation): Promise<SalaryEvaluation> {
-        const queryRunner = this.datasource.createQueryRunner()
-        await queryRunner.connect()
-        await queryRunner.startTransaction()
-        try{
-            const salaryTypeOrm = SalaryEvaluationMapper.evaluationtoTypeORMModel(newSalaryEvl);
-        
-            const evaluation = await queryRunner.manager.save(salaryTypeOrm)
-            //console.log("EValuation registrado ", evaluation)
+    async create(idEvaluacion: number, newSalaryEvl: SalaryEvaluation): Promise<SalaryEvaluation> {
+        const queryRunner = this.datasource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
 
-            const salaryEvalTypeOrm = SalaryEvaluationMapper.SalarytoTypeORMModel(newSalaryEvl)
-            salaryEvalTypeOrm.idEvaluacion = evaluation.id; //probar despues si funciona sacandole
+        try {
+            // Buscar la evaluación existente
+            const evaluation = await this.evaluationRepo.findOneByOrFail({ id: idEvaluacion });
+
+            const salaryEvalTypeOrm = SalaryEvaluationMapper.SalarytoTypeORMModel(newSalaryEvl);
+            salaryEvalTypeOrm.idEvaluacion = idEvaluacion;
             salaryEvalTypeOrm.evaluation = evaluation;
-            const salaryEval = await queryRunner.manager.save(salaryEvalTypeOrm)
-            
-            await queryRunner.commitTransaction();
 
-            return SalaryEvaluationMapper.toDomain(salaryEval, evaluation)      
-        }catch(e){
+            const salaryEval = await queryRunner.manager.save(salaryEvalTypeOrm);
+
+            await queryRunner.commitTransaction();
+            return SalaryEvaluationMapper.toDomain(salaryEval, evaluation);
+        } catch (e) {
             await queryRunner.rollbackTransaction();
-            console.error("Error al registrar SalarayEval TypeORM", e)
-            throw new Error("Error al registrar SalarayEval TypeORM") //Se puede cambiar por un error especifico
-        }finally{
-            queryRunner.release()
+            console.error("Error al registrar SalaryEvaluation TypeORM", e);
+            throw new Error("Error al registrar SalaryEvaluation TypeORM");
+        } finally {
+            await queryRunner.release();
         }
-        
     }
+
 
     async getAll(): Promise<SalaryEvaluation[]> {
         const salaryEvaluations = await this.salaryEvalRepo.find({
@@ -65,13 +63,13 @@ export class SalaryEvaluationTypeORMRepository implements SalaryEvaluationReposi
     }
 
     async update(idEvaluacion: number, salaryEvl: Partial<SalaryEvaluation>): Promise<SalaryEvaluation> {
-        const salaryEvalFound = await this.salaryEvalRepo.findOne({ 
+        const salaryEvalFound = await this.salaryEvalRepo.findOne({
             where: { idEvaluacion },
             relations: { evaluation: { user: true, company: true, job: true, office: true, } }
         });
         const updatedSalaryEval = Object.assign(salaryEvalFound, salaryEvl);
-        const savedOffice = await this.salaryEvalRepo.save(updatedSalaryEval);
-        return SalaryEvaluationMapper.toDomain(savedOffice, salaryEvalFound.evaluation);
+        const savedSalary = await this.salaryEvalRepo.save(updatedSalaryEval);
+        return SalaryEvaluationMapper.toDomain(savedSalary, salaryEvalFound.evaluation);
     }
 
     async delete(id: number): Promise<void> {

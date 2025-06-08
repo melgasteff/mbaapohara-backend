@@ -12,7 +12,7 @@ export class Company {
         this.rubro = rubro;
     }
 
-    getId(): number{console.log("companyy", this.id);return this.id}
+    getId(): number{return this.id}
     getNombre():string {return this.nombre}
     getRubro():string {return this.rubro}
 }

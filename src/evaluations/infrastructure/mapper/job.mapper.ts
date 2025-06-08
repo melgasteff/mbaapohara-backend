@@ -7,7 +7,6 @@ export class JobMapper {
         return new Job(jobTypeOrm.id, jobTypeOrm.descripcion);
     }
 
-    //cambie newjob por job porque no tenngo la entidad new job
     static toTypeORMModel(newJob: Job): JobTypeORMModel {
         const jobTypeorm = new JobTypeORMModel();
         jobTypeorm.id = newJob.getId()

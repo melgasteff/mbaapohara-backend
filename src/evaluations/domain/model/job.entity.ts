@@ -8,7 +8,7 @@ export class Job {
         this.id = id
         this.descripcion = descripcion
     }
-    getId(): number { console.log("job", this.id);return this.id }
+    getId(): number {return this.id }
 
     getDescripcion(): string { return this.descripcion }
 }

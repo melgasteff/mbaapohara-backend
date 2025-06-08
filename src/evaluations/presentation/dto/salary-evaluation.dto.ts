@@ -2,45 +2,32 @@ import { IsNotEmpty } from "class-validator";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm"
 
 export class SalaryEvaluationDTO {
-    @IsNotEmpty()
     idEvaluacion: number
-
-     @IsNotEmpty()
-    idjob: number;
-
-     @IsNotEmpty()
-    iduser: number;
-
-     @IsNotEmpty()
-    idcompany: number;
-
-     @IsNotEmpty()
-    idoffice: number;
-
-     @IsNotEmpty()
+    
+    @IsNotEmpty()
     base: string;
 
-     @IsNotEmpty()
+    @IsNotEmpty()
     experienciaArea: string;
-     
+
     @IsNotEmpty()
     experienciaEmpresa: string
 
-     @IsNotEmpty()
+    @IsNotEmpty()
     bono: string
 
-     @IsNotEmpty()
+    @IsNotEmpty()
     comision: string
 
-     @IsNotEmpty()
+    @IsNotEmpty()
     propina: string
 
-     @IsNotEmpty()
+    @IsNotEmpty()
     moneda: string
 
-     @IsNotEmpty()
+    @IsNotEmpty()
     frecuencia: string
 
-     @IsNotEmpty()
+    @IsNotEmpty()
     modalidad: string
 }

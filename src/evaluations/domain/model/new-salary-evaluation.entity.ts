@@ -4,10 +4,6 @@ import { Office } from "./office.entity";
 import { User } from "./user.entity";
 
 export class NewSalaryEvaluation {
-    job: Job;
-    user: User;
-    company: Company;
-    office: Office
     base: string
     experienciaArea: string
     experienciaEmpresa: string
@@ -19,10 +15,6 @@ export class NewSalaryEvaluation {
     modalidad: string
 
     constructor(
-        job: Job,
-        user: User,
-        company: Company,
-        office: Office,
         base: string,
         experienciaArea: string,
         experienciaEmpresa: string,
@@ -33,18 +25,13 @@ export class NewSalaryEvaluation {
         frecuencia: string,
         modalidad: string
     ) {
-        if (job == null) throw new Error('El cargo es requerido');
-        if (user == null) throw new Error('El usuario es requerido');
-        if (company == null) throw new Error('La empresa es requerida');
-        if (office == null) throw new Error('La sucursal es requerida');
+ 
         if (base == null) throw new Error('El salario base es requerido');
         if (experienciaArea == null) throw new Error('La experiencia en el area es requerida');
         if (experienciaEmpresa == null) throw new Error('La experiencia en la empresa requerida');
         if (frecuencia == null) throw new Error('La frecuencia de pago es requerida');
         if (modalidad == null) throw new Error('La modalidad de trabajo es requerida')
-        this.job = job;
-        this.company = company;
-        this.office= office;
+   
         this.base = base
         this.experienciaArea = experienciaArea;
         this.experienciaEmpresa = experienciaEmpresa;
@@ -54,13 +41,9 @@ export class NewSalaryEvaluation {
         this.moneda = moneda;
         this.frecuencia = frecuencia;
         this.modalidad = modalidad;
-        this.user = user
     }
 
-    getJob():Job {return this.job}
-    getUser():User{return this.user}
-    getCompany():Company{return this.company}
-    getOffice(): Office{return this.office}
+
     getBase(): string { return this.base }
     getExperienciaArea(): string { return this.experienciaArea }
     getExperienciaEmpresa(): string { return this.experienciaEmpresa }

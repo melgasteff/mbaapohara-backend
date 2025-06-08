@@ -4,11 +4,7 @@ import { SalaryEvaluationDTO } from "../dto/salary-evaluation.dto";
 export class SalaryEvaluationDTOMapper {
   static toDTO(salaryEvl: SalaryEvaluation): SalaryEvaluationDTO {
     return {
-      idEvaluacion: salaryEvl.getId(),
-      idjob: salaryEvl.getJob().getId(),
-      iduser: salaryEvl.getUser().getId(),
-      idcompany: salaryEvl.getCompany().getId(),
-      idoffice: salaryEvl.getOffice().getId(),
+      idEvaluacion: salaryEvl.getIdEvaluacion(),
       base: salaryEvl.getBase(),
       experienciaArea: salaryEvl.getExperienciaArea(),
       experienciaEmpresa: salaryEvl.getExperienciaEmpresa(),

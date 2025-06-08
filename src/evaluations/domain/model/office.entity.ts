@@ -6,26 +6,26 @@ export class Office {
     private email: string
     private telefono: string
     private cantEmpleados: number
-    private idciudad: number
+    private idCiudad: number
     private empresa: Company
 
-    constructor(id: number, nombre: string, email: string, telefono: string, cantEmpleados: number, idciudad: number, empresa: Company) {
+    constructor(id: number, nombre: string, email: string, telefono: string, cantEmpleados: number, idCiudad: number, empresa: Company) {
         if (id == null) throw new Error('El ID es requerido');
         if (nombre == null) throw new Error('El nombre es requerido');
         if (email == null) throw new Error("El email es requerido");
         if (telefono == null) throw new Error("El telefono es requerido");
-        if (idciudad == null) throw new Error("El email es requerido");
-        if (email == null) throw new Error("El email es requerido");
+        if (idCiudad == null) throw new Error("El idCiudad es requerido");
+        if (empresa == null) throw new Error("La empresa es requerida");
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
         this.cantEmpleados = cantEmpleados;
         this.empresa = empresa;
-        this.idciudad = idciudad
+        this.idCiudad = idCiudad
 
     }
-    getId(): number { console.log("office", this.id);return this.id }
+    getId(): number {return this.id }
 
     getNombre(): string { return this.nombre }
 
@@ -35,7 +35,7 @@ export class Office {
 
     getEmpresa(): Company { return this.empresa }
 
-    getIdCiudad(): number { return this.idciudad }
+    getIdCiudad(): number { return this.idCiudad }
 
     getCantEmpleados(): number { return this.cantEmpleados }
 

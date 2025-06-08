@@ -3,18 +3,6 @@ import { IsNotEmpty } from "class-validator";
 export class NewSalaryEvaluationDTO {
 
     @IsNotEmpty()
-    idjob: number;
-
-    @IsNotEmpty()
-    iduser: number;
-
-    @IsNotEmpty()
-    idcompany: number;
-
-    @IsNotEmpty()
-    idoffice: number;
-
-    @IsNotEmpty()
     base: string;
 
     @IsNotEmpty()
