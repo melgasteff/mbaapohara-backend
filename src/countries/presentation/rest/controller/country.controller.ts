@@ -5,7 +5,7 @@ import { DeleteCountryUseCase } from "src/countries/application/use-case/delete.
 import { GetAllCountriesUseCase } from "src/countries/application/use-case/get-all.use-case";
 import { GetCountryByIdUseCase } from "src/countries/application/use-case/get-by-id.use-case";
 import { UpdateCountryUseCase } from "src/countries/application/use-case/update.use-case";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 import { CountryDTOMapper } from "../mapper/country-dto.mapper";
 import { NewCountryDTO } from "../dto/new-country.dto";
 import { CountryDTO } from "../dto/country.dto";

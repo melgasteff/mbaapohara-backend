@@ -17,7 +17,7 @@ import { OfficeRepository } from "src/evaluations/domain/repository/office.repos
 import { ContractRepository } from "src/evaluations/domain/repository/contract.repository";
 import { SalaryEvaluationDTOMapper } from "../mapper/salary-evaluation-dto.mapper";
 import { EvaluationDTOMapper } from "../mapper/evaluation-dto.mapper";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 import { BenefitEvaluationDTO } from "../dto/benefit-evaluation.dto";
 import { GetAllBenefitEvaluationsUseCase } from "src/evaluations/application/use-case/benefit-evaluation/get-all.use-case";
 import { BenefitEvaluationDTOMapper } from "../mapper/benefit-evaluation-dto.mapper";

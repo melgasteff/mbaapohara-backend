@@ -8,7 +8,7 @@ import { UpdateUserUseCase } from "src/users/application/use-case/update.use-cas
 import { UserDTOMapper } from "../mapper/user-dto.mapper";
 import { NewUserDTO } from "../dto/new-user.dto";
 import { UserDTO } from "../dto/user.dto";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 import { GlobalExceptionFilter } from "src/users/infrastructure/exception-filter/exception-filter";
 
 @UseFilters(GlobalExceptionFilter)

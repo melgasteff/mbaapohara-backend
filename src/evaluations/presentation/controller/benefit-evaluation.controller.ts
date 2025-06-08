@@ -9,7 +9,7 @@ import { GlobalExceptionFilter } from "src/evaluations/infrastructure/exception-
 import { NewBenefitEvaluationDTO } from "../dto/new-benefit-evaluation.dto";
 import { BenefitEvaluationDTO } from "../dto/benefit-evaluation.dto";
 import { BenefitEvaluationDTOMapper } from "../mapper/benefit-evaluation-dto.mapper";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 import { Benefit } from "src/evaluations/domain/model/benefit.entity";
 import { Contract } from "src/evaluations/domain/model/contract.entity";
 import { ContractMapper } from "src/evaluations/infrastructure/mapper/contract.mapper";

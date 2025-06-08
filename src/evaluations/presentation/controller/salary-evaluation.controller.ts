@@ -4,7 +4,7 @@ import { GlobalExceptionFilter } from "src/evaluations/infrastructure/exception-
 import { NewSalaryEvaluationDTO } from "../dto/new-salary-evaluation.dto";
 import { SalaryEvaluationDTOMapper } from "../mapper/salary-evaluation-dto.mapper";
 import { SalaryEvaluationDTO } from "../dto/salary-evaluation.dto";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 import { SalaryEvaluationMapper } from "src/evaluations/infrastructure/mapper/salary-evaluation.mapper";
 import { CreateSalaryEvaluationUseCase } from "src/evaluations/application/use-case/salary-evaluation/create.use-case";
 import { UpdateSalaryEvaluationUseCase } from "src/evaluations/application/use-case/salary-evaluation/update.use-case";

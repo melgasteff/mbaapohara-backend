@@ -9,7 +9,7 @@ import { GlobalExceptionFilter } from "src/offices/infrastructure/exception-filt
 import { NewOfficeDTO } from "../dto/new-office.dto";
 import { OfficeDTO } from "../dto/office.dto";
 import { OfficeDTOMapper } from "../mapper/office-dto.mapper";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 import { OfficeMapper } from "src/offices/infrastructure/mapper/office.mapper";
 
 @UseFilters(GlobalExceptionFilter)

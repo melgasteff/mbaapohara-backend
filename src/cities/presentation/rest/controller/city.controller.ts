@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch, Delete, Put, UseFilters } from "@nestjs/common";
 import { CityDTOMapper } from "../mapper/city-dto.mapper";
 import { CountCitiesUseCase } from "src/cities/application/use-case/count.use-case";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 import { NewCityDTO } from "../dto/new-city.dto";
 import { CreateCityUseCase } from "src/cities/application/use-case/create.use-case";
 import { UpdateCityUseCase } from "src/cities/application/use-case/update.use-case";

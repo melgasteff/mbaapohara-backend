@@ -9,7 +9,7 @@ import { GlobalExceptionFilter } from "src/jobs/infrastructure/exception-filter/
 import { NewJobDTO } from "../dto/new-job.dto";
 import { JobDTO } from "../dto/job.dto";
 import { JobDTOMapper } from "../mapper/job-dto.mapper";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 
 @UseFilters(GlobalExceptionFilter)
 @Controller('jobs')

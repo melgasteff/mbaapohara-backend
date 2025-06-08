@@ -6,7 +6,7 @@ import { GetAllCompaniesUseCase } from "src/companies/application/use-case/get-a
 import { GetCompanyByIdUseCase } from "src/companies/application/use-case/get-by-id.use-case";
 import { UpdateCompanyUseCase } from "src/companies/application/use-case/update.use-case";
 import { GlobalExceptionFilter } from "src/companies/infrastructure/exception-filter/exception-filter";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 import { CompanyDTOMapper } from "../mapper/company-dto.mapper";
 import { CompanyDTO } from "../dto/company.dto";
 import { NewCommpanyDTO } from "../dto/new-company.dto";
