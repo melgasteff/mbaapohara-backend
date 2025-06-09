@@ -10,7 +10,6 @@ import { EvaluationController } from "src/evaluations/presentation/controller/ev
 import RepositoryConfig from "./repository-config"
 import UseCaseConfig from "./usecase-config";
 import { SalaryEvaluationTypeORMModel } from "../../typeorm/model/salaryevaluation.typeorm.model";
-import { BenefitEvaluationTypeORMModel } from "../../typeorm/model/benefit-evaluation.model";
 import { BenefitTypeORMModel } from "../../typeorm/model/benefit.model";
 
 @Module({
@@ -23,7 +22,6 @@ import { BenefitTypeORMModel } from "../../typeorm/model/benefit.model";
             OfficeTypeORMModel, 
             ContractTypeORMModel,
             SalaryEvaluationTypeORMModel,
-            BenefitEvaluationTypeORMModel,
             BenefitTypeORMModel
         ])
     ],

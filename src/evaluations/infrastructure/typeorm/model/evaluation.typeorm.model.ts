@@ -1,11 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { JobTypeORMModel } from "./job.typeorm.model";
 import { UserTypeORMModel } from "./user.typeorm.model";
 import { CompanyTypeORMModel } from "./company.typeorm.model";
 import { OfficeTypeORMModel } from "./office.typeorm.model";
 import { SalaryEvaluationTypeORMModel } from "./salaryevaluation.typeorm.model";
 import { ContractTypeORMModel } from "./contract.typeorm.model";
-import { BenefitEvaluationTypeORMModel } from "./benefit-evaluation.model";
+import { BenefitTypeORMModel } from "./benefit.model";
 
 @Entity('evaluaciones')
 export class EvaluationTypeORMModel {
@@ -56,6 +56,17 @@ export class EvaluationTypeORMModel {
   @OneToOne(() => SalaryEvaluationTypeORMModel, salary => salary.evaluation)
   salaryEvaluation: SalaryEvaluationTypeORMModel;
 
-  @OneToOne(() => BenefitEvaluationTypeORMModel, benefit => benefit.evaluacion)
-  benefitEvaluation: BenefitEvaluationTypeORMModel;
+  @ManyToMany(() => BenefitTypeORMModel)
+  @JoinTable({
+    name: 'evaluacion_beneficios',
+    joinColumn: {
+      name: 'id_evaluacion',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'id_beneficio',
+      referencedColumnName: 'id'
+    }
+  })
+  benefits: BenefitTypeORMModel[]
 }

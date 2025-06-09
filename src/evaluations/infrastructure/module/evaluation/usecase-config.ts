@@ -1,10 +1,6 @@
 import { Provider } from "@nestjs/common";
-import { CountBenefitEvaluationsUseCase } from "src/evaluations/application/use-case/benefit-evaluation/count.use-case";
-import { CreateBenefitEvaluationUseCase } from "src/evaluations/application/use-case/benefit-evaluation/create.use-case";
-import { DeleteBenefitsEvaluationUseCase } from "src/evaluations/application/use-case/benefit-evaluation/delete.use-case";
+import { SetBenefitEvaluationUseCase } from "src/evaluations/application/use-case/benefit-evaluation/set-benefit-evaluation.use-case";
 import { GetAllBenefitEvaluationsUseCase } from "src/evaluations/application/use-case/benefit-evaluation/get-all.use-case";
-import { GetBenefitEvaluationByIdUseCase } from "src/evaluations/application/use-case/benefit-evaluation/get-by-id.use-case";
-import { UpdateBenefitEvaluatonUseCase } from "src/evaluations/application/use-case/benefit-evaluation/update.use-case";
 import { CountEvaluationsUseCase } from "src/evaluations/application/use-case/evaluation/count.use-case";
 import { CreateEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/create.use-case";
 import { DeleteEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/delete.use-case";
@@ -17,7 +13,6 @@ import { DeleteSalaryEvaluationUseCase } from "src/evaluations/application/use-c
 import { GetAllSalaryEvaluationsUseCase } from "src/evaluations/application/use-case/salary-evaluation/get-all.use-case";
 import { GetSalaryEvaluationByIdUseCase } from "src/evaluations/application/use-case/salary-evaluation/get-by-id.use-case";
 import { UpdateSalaryEvaluationUseCase } from "src/evaluations/application/use-case/salary-evaluation/update.use-case";
-import { BenefitEvaluationRepository } from "src/evaluations/domain/repository/benefit-evaluation.repository";
 import { CompanyRepository } from "src/evaluations/domain/repository/company.repository";
 import { ContractRepository } from "src/evaluations/domain/repository/contract.repository";
 import { EvaluationRepository } from "src/evaluations/domain/repository/evaluation.repository";
@@ -25,6 +20,7 @@ import { JobRepository } from "src/evaluations/domain/repository/job.repository"
 import { OfficeRepository } from "src/evaluations/domain/repository/office.repository";
 import { SalaryEvaluationRepository } from "src/evaluations/domain/repository/salary-evaluation.repository";
 import { UserRepository } from "src/evaluations/domain/repository/user.repository";
+import { BenefitRepository } from "src/evaluations/domain/repository/benefit.repository";
 
 export default <Provider[]>[
     {
@@ -131,43 +127,19 @@ export default <Provider[]>[
 
     //Beneficios
     {
-        provide: CountBenefitEvaluationsUseCase,
-        useFactory: (benefitEvaluationRepo: BenefitEvaluationRepository) => new CountBenefitEvaluationsUseCase(benefitEvaluationRepo),
-        inject: [BenefitEvaluationRepository]
-    },
-    {
-        provide: CreateBenefitEvaluationUseCase,
+        provide: SetBenefitEvaluationUseCase,
         useFactory: (
-            benefitEvaluationRepo: BenefitEvaluationRepository,
+            benefitRepo: BenefitRepository,
             evaluationRepo: EvaluationRepository,
-        ) => new CreateBenefitEvaluationUseCase(benefitEvaluationRepo, evaluationRepo),
+        ) => new SetBenefitEvaluationUseCase(benefitRepo, evaluationRepo),
         inject: [
-            BenefitEvaluationRepository,
+            BenefitRepository,
             EvaluationRepository
         ]
     },
     {
-        provide: GetBenefitEvaluationByIdUseCase,
-        useFactory: (benefitEvaluationRepo: BenefitEvaluationRepository) => new GetBenefitEvaluationByIdUseCase(benefitEvaluationRepo),
-        inject: [BenefitEvaluationRepository]
-    },
-    {
-        provide: DeleteBenefitsEvaluationUseCase,
-        useFactory: (BenefitEvaluationRepo: BenefitEvaluationRepository) => new DeleteBenefitsEvaluationUseCase(BenefitEvaluationRepo),
-        inject: [BenefitEvaluationRepository]
-    },
-    {
-        provide: UpdateBenefitEvaluatonUseCase,
-        useFactory: (
-            benefitEvaluationRepo: BenefitEvaluationRepository
-        ) => new UpdateBenefitEvaluatonUseCase(benefitEvaluationRepo),
-        inject: [
-            BenefitEvaluationRepository
-        ]
-    },
-    {
         provide: GetAllBenefitEvaluationsUseCase,
-        useFactory: (benefitEvaluationRepo: BenefitEvaluationRepository) => new GetAllBenefitEvaluationsUseCase(benefitEvaluationRepo),
-        inject: [BenefitEvaluationRepository]
+        useFactory: (evaluationRepo: EvaluationRepository) => new GetAllBenefitEvaluationsUseCase(evaluationRepo),
+        inject: [EvaluationRepository]
     },
 ]

@@ -1,4 +1,4 @@
-import { BenefitEvaluation } from "./benefit-evaluation.entity";
+import { Benefit } from "./benefit.entity";
 import { Company } from "./company.entity";
 import { Contract } from "./contract.entity";
 import { Job } from "./job.entity";
@@ -16,7 +16,7 @@ export class Evaluation {
     hasta: Date
     contrato!: Contract
     salaryEvaluation!: SalaryEvaluation
-    benefitEvaluation!: BenefitEvaluation
+    benefits: Benefit[] = []
 
     constructor(
         id: number,
@@ -25,11 +25,7 @@ export class Evaluation {
         company: Company,
         office: Office,
         desde: Date,
-        hasta: Date,
-        contrato?: Contract,
-        salaryEvaluation?: SalaryEvaluation,
-        benefitEvaluation?: BenefitEvaluation,
-        
+        hasta: Date
     ) {
         if (id == null) throw new Error('El id es requerido');
         if (job == null) throw new Error('El cargo es requerido');
@@ -46,11 +42,12 @@ export class Evaluation {
         this.user = user;
         this.desde = desde;
         this.hasta = hasta;
-        this.contrato = contrato ?? null;
-        this.salaryEvaluation = salaryEvaluation ?? null;
-        this.benefitEvaluation = benefitEvaluation ?? null;
-        
     }
+
+    setContrato(contrato: Contract){ this.contrato = contrato}
+    setSalaryEvaluation(salaryEval: SalaryEvaluation){ this.salaryEvaluation = salaryEval }
+    addBenefit(benefit: Benefit){ this.benefits.push(benefit) }
+    addBenefits(benefits: Benefit[]){ this.benefits = this.benefits.concat(benefits) }
 
     getId(): number { return this.id }
     getJob(): Job { return this.job }
@@ -61,5 +58,5 @@ export class Evaluation {
     getHasta(): Date { return this.hasta }
     getContrato(): Contract | null { return this.contrato ?? null}
     getSalaryEvaluation(): SalaryEvaluation | null { return this.salaryEvaluation ?? null}
-    getBenefitEvaluation():BenefitEvaluation | null { return this.benefitEvaluation ?? null}
+    getBenefits(): Benefit[] { return this.benefits }
 }

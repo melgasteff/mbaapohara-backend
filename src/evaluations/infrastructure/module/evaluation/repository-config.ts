@@ -10,12 +10,11 @@ import { JobTypeORMRepository } from "../../typeorm/repository/job.typeorm.repos
 import { EvaluationRepository } from "src/evaluations/domain/repository/evaluation.repository";
 import { EvaluationTypeORMRepository } from "../../typeorm/repository/evaluation.typeorm.repository";
 import { ContractRepository } from "src/evaluations/domain/repository/contract.repository";
-import { ContractTypeORMModel } from "../../typeorm/model/contract.typeorm.model";
 import { ContractTypeORMRepository } from "../../typeorm/repository/contract.typeorm.repository";
-import { BenefitEvaluationRepository } from "src/evaluations/domain/repository/benefit-evaluation.repository";
-import { BenefitEvaluationTypeORMRepository } from "../../typeorm/repository/benefit.typeorm.repository";
 import { SalaryEvaluationRepository } from "src/evaluations/domain/repository/salary-evaluation.repository";
 import { SalaryEvaluationTypeORMRepository } from "../../typeorm/repository/salary-evaluation.typeorm.repository";
+import { BenefitRepository } from "src/evaluations/domain/repository/benefit.repository";
+import { BenefitTypeORMRepository } from "../../typeorm/repository/benefit.typeorm.repository";
 
 
 export default <Provider[]>[
@@ -44,8 +43,8 @@ export default <Provider[]>[
         useClass: ContractTypeORMRepository
     },
     {
-        provide: BenefitEvaluationRepository,
-        useClass: BenefitEvaluationTypeORMRepository
+        provide: BenefitRepository,
+        useClass: BenefitTypeORMRepository
     },
     {
         provide: SalaryEvaluationRepository,

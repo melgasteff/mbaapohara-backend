@@ -1,3 +1,4 @@
+import { Benefit } from "../model/benefit.entity";
 import { Evaluation } from "../model/evaluation.entity";
 import { NewEvaluation } from "../model/new-evaluation.entity";
 import { SalaryEvaluation } from "../model/salary-evaluation.entity";
@@ -10,4 +11,6 @@ export abstract class EvaluationRepository {
   abstract delete(id: number): Promise<void>;
   abstract count(): Promise<number>;
   abstract updateSalaryEvaluation(evaluationId: number, salaryEvaluation: SalaryEvaluation): Promise<void>
+  abstract updateBenefitEvaluation(evaluationId: number, benefits: Benefit[]): Promise<Evaluation>
+  abstract getBenefitEvaluations(evaluationId: number): Promise<Benefit[]>;
 }

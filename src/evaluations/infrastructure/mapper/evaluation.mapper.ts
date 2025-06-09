@@ -6,20 +6,22 @@ import { CompanyMapper } from "./company.mapper";
 import { OfficeMapper } from "./office.mapper";
 import { ContractMapper } from "./contract.mapper";
 import { NewEvaluation } from "src/evaluations/domain/model/new-evaluation.entity";
+import { BenefitsMapper } from "./benefit.mapper";
 
 export class EvaluationMapper {
     static toDomain(evaluationTypeOrm: EvaluationTypeORMModel): Evaluation {
-        return new Evaluation(
+        const evaluation = new Evaluation(
             evaluationTypeOrm.id,
             JobMapper.toDomain(evaluationTypeOrm.job),
             UserMapper.toDomain(evaluationTypeOrm.user),
             CompanyMapper.toDomain(evaluationTypeOrm.company),
             OfficeMapper.toDomain(evaluationTypeOrm.office),
             evaluationTypeOrm.desde,
-            evaluationTypeOrm.hasta,
-            evaluationTypeOrm.contrato ? ContractMapper.toDomain(evaluationTypeOrm.contrato) : null,
-            //SalaryEvaluationMapper.toDomain(evaluationTypeOrm.salaryEvaluation)
+            evaluationTypeOrm.hasta
         );
+        if(evaluationTypeOrm.contrato) evaluation.contrato = ContractMapper.toDomain(evaluationTypeOrm.contrato);
+        if(evaluationTypeOrm.benefits) evaluation.benefits = BenefitsMapper.toDomainList(evaluationTypeOrm.benefits);
+        return evaluation;
     }
 
     static toTypeORMModel(newEvaluation: NewEvaluation): EvaluationTypeORMModel {

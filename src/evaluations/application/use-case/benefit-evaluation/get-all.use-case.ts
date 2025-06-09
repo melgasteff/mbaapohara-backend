@@ -1,12 +1,13 @@
-import { BenefitEvaluation } from "src/evaluations/domain/model/benefit-evaluation.entity";
-import { BenefitEvaluationRepository } from "src/evaluations/domain/repository/benefit-evaluation.repository";
+import { Benefit } from "src/evaluations/domain/model/benefit.entity";
+import { EvaluationRepository } from "src/evaluations/domain/repository/evaluation.repository";
+
 
 export class GetAllBenefitEvaluationsUseCase {
     constructor(
-        private benefitEvalRepo: BenefitEvaluationRepository
+        private evaluationRepo: EvaluationRepository
     ){}
 
-    public async execute(): Promise<BenefitEvaluation[]>{
-        return this.benefitEvalRepo.getAll();
+    public async execute(idEvaluacion: number): Promise<Benefit[]>{
+        return await this.evaluationRepo.getBenefitEvaluations(idEvaluacion);
     }
 }

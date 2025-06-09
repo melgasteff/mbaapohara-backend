@@ -1,9 +1,9 @@
 import { Contract } from "./contract.entity";
 
 export class Benefit {
-    id: number;
-    descripcion: string
-    contrato: Contract[]
+    private id: number;
+    private descripcion: string
+    private contratos: Contract[]
 
     constructor(
         id: number,
@@ -15,9 +15,9 @@ export class Benefit {
         if(contrato == null) throw new Error('El tipo de contrato es requerido')
         this.id = id;
         this.descripcion = descripcion
-        this.contrato =contrato
+        this.contratos = contrato
     }
     getId(): number {return this.id }
     getDescripcion(): string { return this.descripcion }
-    getContrato(): Contract[] {return this.contrato}
+    getContratos(): Contract[] {return this.contratos}
 }

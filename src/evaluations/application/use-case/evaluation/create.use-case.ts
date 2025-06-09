@@ -1,11 +1,4 @@
-import { BenefitEvaluation } from "src/evaluations/domain/model/benefit-evaluation.entity";
-import { Company } from "src/evaluations/domain/model/company.entity";
 import { Evaluation } from "src/evaluations/domain/model/evaluation.entity";
-import { Job } from "src/evaluations/domain/model/job.entity";
-import { Office } from "src/evaluations/domain/model/office.entity";
-import { SalaryEvaluation } from "src/evaluations/domain/model/salary-evaluation.entity";
-import { Contract } from "src/evaluations/domain/model/contract.entity";
-import { User } from "src/evaluations/domain/model/user.entity";
 import { EvaluationRepository } from "src/evaluations/domain/repository/evaluation.repository";
 import { EvaluationAlreadyExistsException } from "../../exception/evaluation/evaluation-already-exists.exception";
 import { NewEvaluation } from "src/evaluations/domain/model/new-evaluation.entity";

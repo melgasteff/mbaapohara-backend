@@ -7,6 +7,8 @@ import { EvaluationTypeORMModel } from "../model/evaluation.typeorm.model";
 import { Repository } from "typeorm";
 import { EvaluationMapper } from "../../mapper/evaluation.mapper";
 import { SalaryEvaluation } from "src/evaluations/domain/model/salary-evaluation.entity";
+import { Benefit } from "src/evaluations/domain/model/benefit.entity";
+import { BenefitsMapper } from "../../mapper/benefit.mapper";
 
 @Injectable()
 export class EvaluationTypeORMRepository implements EvaluationRepository {
@@ -14,6 +16,26 @@ export class EvaluationTypeORMRepository implements EvaluationRepository {
         @InjectRepository(EvaluationTypeORMModel)
         private readonly evaluationRepo: Repository<EvaluationTypeORMModel>,
     ) { }
+
+    async getBenefitEvaluations(evaluationId: number): Promise<Benefit[]> {
+        const evaluationTypeOrm = await this.evaluationRepo.findOneOrFail({
+            where: { id: evaluationId },
+            relations: { benefits: true }
+        });
+        
+        return BenefitsMapper.toDomainList(evaluationTypeOrm.benefits);
+    }
+
+    async updateBenefitEvaluation(evaluationId: number, benefits: Benefit[]): Promise<Evaluation> {
+        const evaluacionTypeOrm = await this.evaluationRepo.findOneOrFail({
+            where: { id: evaluationId },
+            relations: { benefits: true, company: true, salaryEvaluation: true, user: true,  office: true, contrato: true, job: true }
+        });
+
+        evaluacionTypeOrm.benefits = BenefitsMapper.toTypeORMModelList(benefits)
+        await this.evaluationRepo.save(evaluacionTypeOrm);
+        return EvaluationMapper.toDomain(evaluacionTypeOrm);
+    }
 
     updateSalaryEvaluation(evaluationId: number, salaryEvaluation: SalaryEvaluation): Promise<void> {
         throw new Error("Method not implemented.");

@@ -9,10 +9,18 @@ export class ContractMapper {
     );
   }
 
+  static toDomainList(contractTypeOrmList: ContractTypeORMModel[]): Contract[]{
+    return contractTypeOrmList.map(contractTypeOrm => ContractMapper.toDomain(contractTypeOrm));
+  }
+
   static toTypeORMModel(contract: Contract): ContractTypeORMModel {
     const contractOrm = new ContractTypeORMModel();
     contractOrm.id = contract.getId();
     contractOrm.descripcion = contract.descripcion;
     return contractOrm;
+  }
+
+  static toTypeORMModelList(contractList: Contract[]): ContractTypeORMModel[]{
+    return contractList.map(contract => ContractMapper.toTypeORMModel(contract));
   }
 }

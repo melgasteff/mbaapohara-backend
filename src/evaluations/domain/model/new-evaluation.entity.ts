@@ -1,4 +1,3 @@
-import { BenefitEvaluation } from "./benefit-evaluation.entity";
 import { Company } from "./company.entity";
 import { Contract } from "./contract.entity";
 import { Job } from "./job.entity";
@@ -15,7 +14,6 @@ export class NewEvaluation {
     hasta: Date
     contrato!: Contract
     salaryEvaluation!: SalaryEvaluation
-    benefitEvaluation!: BenefitEvaluation
 
     constructor( 
         job: Job, 
@@ -25,8 +23,7 @@ export class NewEvaluation {
         desde: Date, 
         hasta: Date, 
         contrato?: Contract,
-        salaryEvaluation?: SalaryEvaluation,
-        benefitEvaluation?: BenefitEvaluation,
+        salaryEvaluation?: SalaryEvaluation
     ) {
         if (job == null) throw new Error('El cargo es requerido');
         if (user == null) throw new Error('El usuario es requerido');
@@ -43,7 +40,6 @@ export class NewEvaluation {
         this.hasta = hasta;
         this.contrato = contrato ?? null;
         this.salaryEvaluation = salaryEvaluation ?? null;
-        this.benefitEvaluation = benefitEvaluation ?? null;
     }
 
     getJob(): Job { return this.job }
@@ -54,5 +50,4 @@ export class NewEvaluation {
     getHasta(): Date { return this.hasta }
     getContrato(): Contract | null { return this.contrato ?? null}
     getSalaryEvaluation(): SalaryEvaluation | null { return this.salaryEvaluation ?? null}
-    getBenefitEvaluation():BenefitEvaluation | null { return this.benefitEvaluation ?? null}
 }

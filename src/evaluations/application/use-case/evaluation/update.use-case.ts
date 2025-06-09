@@ -28,10 +28,7 @@ export class UpdateEvaluationUseCase {
             const user = await this.userRepo.getById(request.iduser);
             const company = await this.companyRepo.getById(request.idcompany);
             const office = await this.officeRepo.getById(request.idoffice);
-            let contrato = null;
-            if (request.idcontrato) {
-                contrato = await this.contratoRepo.getById(request.idcontrato);
-            }
+            
             console.log("job", job.getId())
             console.log("user", user.getId())
             console.log("company", company.getId())
@@ -57,8 +54,11 @@ export class UpdateEvaluationUseCase {
                 office,
                 new Date(request.desde),
                 new Date(request.hasta),
-                contrato,
             )
+
+            if (request.idcontrato) 
+                updatedEvaluation.contrato =  await this.contratoRepo.getById(request.idcontrato);
+            
 
             return this.evaluationRepo.update(request.id, updatedEvaluation)
         } catch (error) {
