@@ -29,7 +29,8 @@ export class JobController {
 
     @Get()
     async getAllJobs(): Promise<ResponseModel<JobDTO>> {
-        const jobDto = (await this.getAllJobsUC.execute()).map(job => JobDTOMapper.toDTO(job));        return {
+        const jobDto = (await this.getAllJobsUC.execute()).map(job => JobDTOMapper.toDTO(job));        
+        return {
             count: await this.countJobsUC.execute(),
             data: jobDto
         }

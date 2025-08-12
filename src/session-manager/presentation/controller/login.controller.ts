@@ -12,7 +12,7 @@ export class LoginController {
     ) { }
 
     @Post()
-    async login(@Body() userLogin: UserDTO) {
+    async login(@Body() userLogin: UserDTO): Promise<LoginStatus> {
         const user = await this.loginUC.execute(userLogin.email, userLogin.contrasenha);
         return {
             message: 'Login exitoso',
@@ -23,4 +23,10 @@ export class LoginController {
         };
 
     }
+
+}
+
+interface LoginStatus{
+    message:string, 
+    user : UserDTO
 }

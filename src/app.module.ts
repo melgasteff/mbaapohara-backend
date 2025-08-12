@@ -7,7 +7,8 @@ import { CompanyModule } from './companies/infrastructure/module/company.module'
 import { OfficeModule } from './offices/infrastructure/module/office.module';
 import { JobModule } from './jobs/infrastructure/module/job.module';
 import { LoginModule } from './session-manager/infrastructure/module/login.module';
-import { EvaluationModule } from './evaluations/infrastructure/module/evaluation/evaluation.module';
+import { CategoryModule } from './categories/infrastructure/module/category.module';
+import { ReasonModule } from './reasons/infrastructure/module/reason.module';
 
 @Module({
   imports: [
@@ -28,8 +29,8 @@ import { EvaluationModule } from './evaluations/infrastructure/module/evaluation
     OfficeModule,
     JobModule,
     LoginModule,
-    EvaluationModule,
-
+    CategoryModule, 
+    ReasonModule
   ],
 })
 export class AppModule { }
