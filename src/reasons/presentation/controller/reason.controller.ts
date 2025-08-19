@@ -9,7 +9,7 @@ import { GlobalExceptionFilter } from "src/reasons/infrastructure/exception-filt
 import { NewReasonDTO } from "../dto/new-reason.dto";
 import { ReasonDTO } from "../dto/reason.dto";
 import { ReasonDTOMapper } from "../mapper/reason-dto.mapper";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 
 @UseFilters(GlobalExceptionFilter)
 @Controller('reasons')

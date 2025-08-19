@@ -7,14 +7,10 @@ import { CompanyModule } from './companies/infrastructure/module/company.module'
 import { OfficeModule } from './offices/infrastructure/module/office.module';
 import { JobModule } from './jobs/infrastructure/module/job.module';
 import { LoginModule } from './session-manager/infrastructure/module/login.module';
-<<<<<<< HEAD
-import { EvaluationModule } from './evaluations/infrastructure/module/evaluation/evaluation.module';
 import datasource from './shared/infrastructure/database/data-source';
-=======
 import { CategoryModule } from './categories/infrastructure/module/category.module';
 import { ReasonModule } from './reasons/infrastructure/module/reason.module';
 import { EvaluationModule } from './evaluations/infrastructure/module/evaluation.module';
->>>>>>> develop/steff
 
 @Module({
   imports: [

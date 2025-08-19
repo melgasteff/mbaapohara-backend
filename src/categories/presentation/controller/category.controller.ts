@@ -6,10 +6,10 @@ import { GetCategoryByIdUseCase } from "src/categories/application/use-case/get-
 import { GetAllCategoriesUseCase } from "src/categories/application/use-case/getAll.use-case";
 import { UpdateCategoryUseCase } from "src/categories/application/use-case/update.use-case";
 import { GlobalExceptionFilter } from "src/categories/infrastructure/exception-filter/exception-filter";
-import { ResponseModel } from "src/shared/infrasctructure/rest/response-model.dto";
 import { NewCategoryDTO } from "../dto/new-category.dto";
 import { CategoryDTO } from "../dto/category.dto";
 import { CategoryDTOMapper } from "../mapper/category-dto.mapper";
+import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 
 @UseFilters(GlobalExceptionFilter)
 @Controller('categories')
