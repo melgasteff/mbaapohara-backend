@@ -9,6 +9,7 @@ import { JobModule } from './jobs/infrastructure/module/job.module';
 import { LoginModule } from './session-manager/infrastructure/module/login.module';
 import { CategoryModule } from './categories/infrastructure/module/category.module';
 import { ReasonModule } from './reasons/infrastructure/module/reason.module';
+import { EvaluationModule } from './evaluations/infrastructure/module/evaluation.module';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { ReasonModule } from './reasons/infrastructure/module/reason.module';
     JobModule,
     LoginModule,
     CategoryModule, 
-    ReasonModule
+    ReasonModule, 
+    EvaluationModule
   ],
 })
 export class AppModule { }
