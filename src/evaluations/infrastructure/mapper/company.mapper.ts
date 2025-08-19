@@ -1,4 +1,4 @@
-import { Company } from "src/evaluations/domain/model/company.entity";
+import { Company } from "src/evaluations/domain/model/ company.entity";
 import { CompanyTypeORMModel } from "../typeorm/model/company.typeorm.model";
 
 export class CompanyMapper{

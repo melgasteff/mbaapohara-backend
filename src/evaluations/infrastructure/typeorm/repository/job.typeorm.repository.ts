@@ -14,6 +14,12 @@ export class JobTypeORMRepository implements JobRepository {
         private readonly jobRepo: Repository<JobTypeORMModel>
     ) { }
 
+    async getByName(jobName: string): Promise<number> {
+        const job = await this.jobRepo.findOneBy({ descripcion: jobName })
+        const jobId = job.id
+        return jobId
+    }
+
 
     async getAll(): Promise<Job[]> {
         return (await this.jobRepo.find()).map(jobOrm => JobMapper.toDomain(jobOrm));

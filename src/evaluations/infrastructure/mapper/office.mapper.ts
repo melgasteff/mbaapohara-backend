@@ -6,7 +6,7 @@ import { CompanyMapper } from "./company.mapper";
 export class OfficeMapper {
     static toDomain(officeTypeOrm: OfficeTypeORMModel): Office {
         const company = CompanyMapper.toDomain(officeTypeOrm.empresa);
-
+        console.log(officeTypeOrm.idCiudad, "id ciudad")
         return new Office(officeTypeOrm.id, officeTypeOrm.nombre, officeTypeOrm.email, officeTypeOrm.telefono, officeTypeOrm.cantEmpleados, officeTypeOrm.idCiudad, company);
     }
 

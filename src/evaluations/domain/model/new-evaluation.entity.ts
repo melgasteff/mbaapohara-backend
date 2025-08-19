@@ -1,53 +1,43 @@
-import { Company } from "./company.entity";
-import { Contract } from "./contract.entity";
-import { Job } from "./job.entity";
-import { Office } from "./office.entity";
-import { SalaryEvaluation } from "./salary-evaluation.entity";
-import { User } from "./user.entity";
+import { Company } from "./ company.entity"
+import { Job } from "./job.entity"
+import { Office } from "./office.entity"
+import { User } from "./user.entity"
 
 export class NewEvaluation {
-    job: Job
-    user: User;
-    company: Company
-    office: Office
-    desde: Date
-    hasta: Date
-    contrato!: Contract
-    salaryEvaluation!: SalaryEvaluation
+    private user: User
+    private job: Job
+    private office: Office
+    private company: Company
+    private desde: Date
+    private hasta: Date
 
-    constructor( 
-        job: Job, 
-        user: User, 
-        company: Company, 
-        office: Office, 
-        desde: Date, 
-        hasta: Date, 
-        contrato?: Contract,
-        salaryEvaluation?: SalaryEvaluation
+    constructor(
+        user: User,
+        job: Job,
+        office: Office,
+        company: Company,
+        desde: Date,
+        hasta: Date
     ) {
-        if (job == null) throw new Error('El cargo es requerido');
-        if (user == null) throw new Error('El usuario es requerido');
-        if (company == null) throw new Error('La empresa es requerida');
-        if (office == null) throw new Error('La sucursal es requerida');
-        if (desde == null) throw new Error('La fecha desde es requerida');
-        if (hasta == null) throw new Error('La fecha hasta es requerida');
+        if (user == null) throw new Error("El usuario es requerido")
+        if (job == null) throw new Error("El cargo es requerido")
+        if (office == null) throw new Error("La sucursal es requerida")
+        if (company == null) throw new Error("La empresa es requerida")
+        if (desde == null) throw new Error("La fecha inicial es requerida")
+        if (hasta == null) throw new Error("La fecha final es requerida")
 
-        this.job = job;
-        this.company = company;
-        this.office = office;
-        this.user= user;
-        this.desde = desde;
-        this.hasta = hasta;
-        this.contrato = contrato ?? null;
-        this.salaryEvaluation = salaryEvaluation ?? null;
+        this.user = user
+        this.job = job
+        this.office = office
+        this.company = company
+        this.desde = desde
+        this.hasta = hasta
     }
 
-    getJob(): Job { return this.job }
     getUser(): User { return this.user }
-    getCompany(): Company { return this.company }
+    getJob(): Job { return this.job }
     getOffice(): Office { return this.office }
+    getCompany(): Company { return this.company }
     getDesde(): Date { return this.desde }
     getHasta(): Date { return this.hasta }
-    getContrato(): Contract | null { return this.contrato ?? null}
-    getSalaryEvaluation(): SalaryEvaluation | null { return this.salaryEvaluation ?? null}
 }

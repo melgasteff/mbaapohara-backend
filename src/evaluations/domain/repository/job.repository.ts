@@ -4,4 +4,5 @@ export abstract class JobRepository {
   abstract getAll(): Promise<Job[]>;
   abstract getById(id: number): Promise<Job | null>;
   abstract count(): Promise<number>;
+  abstract getByName(jobName: string): Promise<number>
 }

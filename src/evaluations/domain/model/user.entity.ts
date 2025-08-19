@@ -30,7 +30,7 @@ export class User {
         if (contrasenha == null) throw new Error('La contraseña es requerida');
         if (idciudad == null) throw new Error('La ciudad es requerida');
         if (tipoUsuario == null) throw new Error('El tipo de usuario es requerido');
-        
+        // if (descripcion == null) throw new Error('La descripción es requerida');
         this.id = id;
         this.nombre=nombre;
         this.apellido=apellido;
@@ -40,9 +40,10 @@ export class User {
         this.idciudad=idciudad;
         this.tipoUsuario=tipoUsuario;
         this.descripcion=descripcion;
+        console.log("descripcion de user",descripcion)
     }
 
-    getId(): number { return this.id;}
+    getId(): number {return this.id;}
 
     getNombre(): string {return this.nombre; }
 

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional } from "class-validator";
+import { IsNotEmpty } from "class-validator";
 
 export class EvaluationDTO {
   @IsNotEmpty()
@@ -15,9 +15,6 @@ export class EvaluationDTO {
 
   @IsNotEmpty()
   idoffice: number;
-
-  @IsOptional()
-  idcontrato?: number | null;
 
   @IsNotEmpty()
   desde: string
