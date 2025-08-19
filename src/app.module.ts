@@ -11,6 +11,7 @@ import datasource from './shared/infrastructure/database/data-source';
 import { CategoryModule } from './categories/infrastructure/module/category.module';
 import { ReasonModule } from './reasons/infrastructure/module/reason.module';
 import { EvaluationModule } from './evaluations/infrastructure/module/evaluation.module';
+import { ItemModule } from './items/infrastructure/module/item.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { EvaluationModule } from './evaluations/infrastructure/module/evaluation
     LoginModule,
     CategoryModule, 
     ReasonModule, 
-    EvaluationModule
+    EvaluationModule, 
+    ItemModule
   ],
 })
 export class AppModule { }
