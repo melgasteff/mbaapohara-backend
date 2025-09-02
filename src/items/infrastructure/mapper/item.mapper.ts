@@ -8,9 +8,9 @@ export class ItemMapper{
     }
 
     static toTypeORMModel(newItem: NewItem): ItemTypeORMModel{
-        const cityTypeORM = new ItemTypeORMModel();
-        cityTypeORM.descripcion = newItem.getDescripcion();
-        cityTypeORM.idcategory = newItem.getPais();
-        return cityTypeORM;
+        const itemTypeORM = new ItemTypeORMModel();
+        itemTypeORM.descripcion = newItem.getDescripcion();
+        itemTypeORM.idcategory = newItem.getCategory();
+        return itemTypeORM;
     }
 }
