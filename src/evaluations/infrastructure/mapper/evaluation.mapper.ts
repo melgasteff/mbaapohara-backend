@@ -30,4 +30,16 @@ export class EvaluationMapper {
         evaluationTypeORM.hasta = newEvaluation.getHasta();
         return evaluationTypeORM;
     }
+
+    static toTypeORMComplete(Evaluation: Evaluation): EvaluationTypeORMModel {
+        const evaluationTypeORM = new EvaluationTypeORMModel();
+        evaluationTypeORM.id = Evaluation.getId()
+        evaluationTypeORM.job = JobMapper.toTypeORMModel(Evaluation.getJob());
+        evaluationTypeORM.user = UserMapper.toTypeORMModel(Evaluation.getUser());
+        evaluationTypeORM.company = CompanyMapper.toTypeORMModel(Evaluation.getCompany());
+        evaluationTypeORM.office = OfficeMapper.toTypeORMModel(Evaluation.getOffice());
+        evaluationTypeORM.desde = Evaluation.getDesde();
+        evaluationTypeORM.hasta = Evaluation.getHasta();
+        return evaluationTypeORM;
+    }
 }

@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
-import { CountEvaluationsUseCase } from "src/evaluations/application/use-case/count.use-case";
-import { CreateEvaluationUseCase } from "src/evaluations/application/use-case/create.use-case";
-import { DeleteEvaluationUseCase } from "src/evaluations/application/use-case/delete.use-case";
-import { GetAllEvaluationsUseCase } from "src/evaluations/application/use-case/get-all.use-case";
-import { GetEvaluationByIdUseCase } from "src/evaluations/application/use-case/get-by-id.use-case";
-import { UpdateEvaluationUseCase } from "src/evaluations/application/use-case/update.use-case";
+import { CountEvaluationsUseCase } from "src/evaluations/application/use-case/evaluation/count.use-case";
+import { CreateEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/create.use-case";
+import { DeleteEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/delete.use-case";
+import { GetAllEvaluationsUseCase } from "src/evaluations/application/use-case/evaluation/get-all.use-case";
+import { GetEvaluationByIdUseCase } from "src/evaluations/application/use-case/evaluation/get-by-id.use-case";
+import { UpdateEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/update.use-case";
 import { GlobalExceptionFilter } from "src/evaluations/infrastructure/exception-filter/evaluation.exception-filter";
 import { EvaluationDTOMapper } from "../mapper/evaluation-dto.mapper";
 import { NewEvaluationDTO } from "../dto/new-evaluation.dto";

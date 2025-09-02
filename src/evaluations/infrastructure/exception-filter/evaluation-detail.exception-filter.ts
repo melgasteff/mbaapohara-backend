@@ -1,9 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
-import { EvaluationAlreadyExistsException } from "src/evaluations/application/exception/evaluation/evaluation-already-exists.exception";
-import { EvaluationInUseException } from "src/evaluations/application/exception/evaluation/evaluation-in-use.exception";
-import { EvaluationNotFoundException } from "src/evaluations/application/exception/evaluation/evaluation-not-found.exception";
-import { Response } from 'express';
-
+import { EvaluationDetailAlreadyExistsException } from "src/evaluations/application/exception/evaluation-detail/evaluation-detail-already-exists.exception";
+import { EvaluationDetailNotFoundException } from "src/evaluations/application/exception/evaluation-detail/evaluation-detail-not-found.exception";
+import { Response } from "express";
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
@@ -14,17 +12,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: any = 'Internal server error';
 
-    if (exception instanceof EvaluationNotFoundException) {
+    if (exception instanceof EvaluationDetailNotFoundException) {
       status = HttpStatus.NOT_FOUND;
       message = exception.message;
     }
 
-    if (exception instanceof EvaluationAlreadyExistsException) {
-      status = HttpStatus.CONFLICT;
-      message = exception.message;
-    }
-
-    if (exception instanceof EvaluationInUseException) {
+    if (exception instanceof EvaluationDetailAlreadyExistsException) {
       status = HttpStatus.CONFLICT;
       message = exception.message;
     }

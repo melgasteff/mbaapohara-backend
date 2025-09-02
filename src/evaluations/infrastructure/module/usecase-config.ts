@@ -1,10 +1,10 @@
 import { Provider } from "@nestjs/common";
-import { CountEvaluationsUseCase } from "src/evaluations/application/use-case/count.use-case";
-import { CreateEvaluationUseCase } from "src/evaluations/application/use-case/create.use-case";
-import { DeleteEvaluationUseCase } from "src/evaluations/application/use-case/delete.use-case";
-import { GetAllEvaluationsUseCase } from "src/evaluations/application/use-case/get-all.use-case";
-import { GetEvaluationByIdUseCase } from "src/evaluations/application/use-case/get-by-id.use-case";
-import { UpdateEvaluationUseCase } from "src/evaluations/application/use-case/update.use-case";
+import { CountEvaluationsUseCase } from "src/evaluations/application/use-case/evaluation/count.use-case";
+import { CreateEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/create.use-case";
+import { DeleteEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/delete.use-case";
+import { GetAllEvaluationsUseCase } from "src/evaluations/application/use-case/evaluation/get-all.use-case";
+import { GetEvaluationByIdUseCase } from "src/evaluations/application/use-case/evaluation/get-by-id.use-case";
+import { UpdateEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/update.use-case";
 import { CompanyRepository } from "src/evaluations/domain/repository/company.repository";
 import { EvaluationRepository } from "src/evaluations/domain/repository/evaluation.repository";
 import { JobRepository } from "src/evaluations/domain/repository/job.repository";
