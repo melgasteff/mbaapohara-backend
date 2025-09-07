@@ -1,7 +1,6 @@
 import { User } from "src/evaluations/domain/model/user.entity";
 import { UserTypeORMModel } from "../typeorm/model/user.typeorm.model";
 
-
 export class UserMapper{
     static toDomain(userTypeOrm: UserTypeORMModel): User{
         return new User(
