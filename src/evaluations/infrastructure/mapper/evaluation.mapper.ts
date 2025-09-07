@@ -8,7 +8,7 @@ import { Evaluation } from "src/evaluations/domain/model/evauation.entity";
 
 export class EvaluationMapper {
     static toDomain(evaluationTypeOrm: EvaluationTypeORMModel): Evaluation {
-        console.log('En evaluationmapper',  OfficeMapper.toDomain(evaluationTypeOrm.office),)
+        console.log('evaluation mapper', evaluationTypeOrm.user.id)
         return new Evaluation(
             evaluationTypeOrm.id,
             UserMapper.toDomain(evaluationTypeOrm.user),
@@ -41,5 +41,11 @@ export class EvaluationMapper {
         evaluationTypeORM.desde = Evaluation.getDesde();
         evaluationTypeORM.hasta = Evaluation.getHasta();
         return evaluationTypeORM;
+    }
+
+    static toTypeORMReference(evaluation: Evaluation): EvaluationTypeORMModel {
+        const model = new EvaluationTypeORMModel();
+        model.id = evaluation.getId();
+        return model;
     }
 }

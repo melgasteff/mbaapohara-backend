@@ -5,22 +5,32 @@ import { ItemMapper } from "./item.mapper";
 import { NewEvaluationDetail } from "src/evaluations/domain/model/new-evaluation-detail.entity";
 
 export class EvaluationDetailMapper {
-    static toDomain(evaluationDetailTypeOrm: EvaluationDetailTypeORMModel): EvaluationDetail {
+    static toDomain(
+        evaluationDetailTypeOrm: EvaluationDetailTypeORMModel
+    ): EvaluationDetail {
         return new EvaluationDetail(
             evaluationDetailTypeOrm.id,
             EvaluationMapper.toDomain(evaluationDetailTypeOrm.evaluation),
             ItemMapper.toDomain(evaluationDetailTypeOrm.item),
             evaluationDetailTypeOrm.rating,
-            evaluationDetailTypeOrm.extra_reason,
+            evaluationDetailTypeOrm.extra_reason ?? null, 
         );
     }
 
-    static toTypeORMModel(newEvaluationDetail: NewEvaluationDetail): EvaluationDetailTypeORMModel {
+    static toTypeORMModel(
+        newEvaluationDetail: NewEvaluationDetail
+    ): EvaluationDetailTypeORMModel {
         const evaluationDetailTypeORM = new EvaluationDetailTypeORMModel();
-        evaluationDetailTypeORM.evaluation = EvaluationMapper.toTypeORMComplete(newEvaluationDetail.getEvaluation());
-        evaluationDetailTypeORM.item = ItemMapper.toTypeORMModel(newEvaluationDetail.getItem());
-        evaluationDetailTypeORM.rating =  newEvaluationDetail.getRating()
-        evaluationDetailTypeORM.extra_reason = newEvaluationDetail.getExtraReason()
+        evaluationDetailTypeORM.evaluation = EvaluationMapper.toTypeORMReference(
+            newEvaluationDetail.getEvaluation()
+        );
+        evaluationDetailTypeORM.item = ItemMapper.toTypeORMReference(
+            newEvaluationDetail.getItem()
+        );
+
+        evaluationDetailTypeORM.rating = newEvaluationDetail.getRating();
+        evaluationDetailTypeORM.extra_reason = newEvaluationDetail.getExtraReason();
+
         return evaluationDetailTypeORM;
     }
 }
