@@ -15,12 +15,24 @@ export class EvaluationDetailTypeORMRepository implements EvaluationDetailReposi
     ) { }
 
     async create(newEvaluationDetail: NewEvaluationDetail): Promise<EvaluationDetail> {
-        const evaluationDetailTypeOrm = await this.evaluationDetailRepo.save(EvaluationDetailMapper.toTypeORMModel(newEvaluationDetail))
-        return EvaluationDetailMapper.toDomain(evaluationDetailTypeOrm)
-    }
+    const saved = await this.evaluationDetailRepo.save(
+        EvaluationDetailMapper.toTypeORMModel(newEvaluationDetail)
+    );
+    const full = await this.evaluationDetailRepo.findOne({
+        where: { id: saved.id },
+        relations: ['item', 'evaluation']
+    });
+    return EvaluationDetailMapper.toDomain(full);
+}
 
-    async getAll(): Promise<EvaluationDetail[]> {
-        return (await this.evaluationDetailRepo.find()).map(evaluationDetailTypeOrm => EvaluationDetailMapper.toDomain(evaluationDetailTypeOrm));
+    async getAll(evaluationid: number): Promise<EvaluationDetail[]> {
+        const result = await this.evaluationDetailRepo.find({
+            where: { evaluation: { id: evaluationid } },
+            relations: ['item', 'evaluation']
+        });
+        return result.map(evaluationDetailTypeOrm =>
+            EvaluationDetailMapper.toDomain(evaluationDetailTypeOrm)
+        );
     }
 
     async getById(id: number): Promise<EvaluationDetail | null> {
@@ -36,7 +48,7 @@ export class EvaluationDetailTypeORMRepository implements EvaluationDetailReposi
             where: { id },
             relations: ['evaluation', 'item'],
         });
-        if (!evaluationDetailFound) {throw new Error(`Evaluation Detail with id ${id} not found`)}
+        if (!evaluationDetailFound) { throw new Error(`Evaluation Detail with id ${id} not found`) }
         const updated = Object.assign(evaluationDetailFound, evaluationDetail);
         await this.evaluationDetailRepo.save(updated);
         return (await this.getById(id))!;
