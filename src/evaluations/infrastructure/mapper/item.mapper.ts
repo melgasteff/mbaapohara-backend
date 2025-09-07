@@ -1,4 +1,3 @@
-import { NewItem } from "src/items/domain/model/new-item.entity";
 import { ItemTypeORMModel } from "../typeorm/model/item.typeorm.model";
 import { Item } from "src/evaluations/domain/model/item.entity";
 
@@ -12,5 +11,11 @@ export class ItemMapper{
         itemTypeORM.descripcion = item.getDescripcion();
         itemTypeORM.idcategory = item.getCategory();
         return itemTypeORM;
+    }
+
+      static toTypeORMReference(item: Item): ItemTypeORMModel {
+        const model = new ItemTypeORMModel();
+        model.id = item.getId();
+        return model;
     }
 }
