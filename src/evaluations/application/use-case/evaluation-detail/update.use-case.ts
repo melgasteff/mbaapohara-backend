@@ -14,34 +14,31 @@ export class UpdateEvaluationDetailUseCase {
     ) { }
 
     async execute(request: UpdateEvaluationDetailRequest): Promise<EvaluationDetail> {
-        try {
-            const allEvaluationDetails = await this.evaluationDetailRepo.getAll(request.idevaluation);
-            const item = await this.itemRepo.getById(request.iditem);
-            const evaluation = await this.evaluationRepo.getById(request.idevaluation)
-            const evaluationDetail = await this.evaluationDetailRepo.getById(request.id)
+        const allEvaluationDetails = await this.evaluationDetailRepo.getAll(request.idevaluation);
+        const item = await this.itemRepo.getById(request.iditem);
+        const evaluation = await this.evaluationRepo.getById(request.idevaluation)
 
-            const repeatedEvaluationDetail = allEvaluationDetails.
-                find((evaluationDetail) =>
-                    evaluationDetail.getId() !== request.id
-                && evaluationDetail.getEvaluation().getId() === evaluation.getId()
-                && evaluationDetail.getItem().getId() === item.getId()
-                && evaluationDetail.getRating() === request.rating
-                );
-            if (!evaluationDetail) { throw new EvaluationDetailNotFoundException(request.id); }
-            if (repeatedEvaluationDetail) { throw new EvaluationDetailAlreadyExistsException() }
+        const evaluationDetail = await this.evaluationDetailRepo.getById(request.id)
+        if (!evaluationDetail) { throw new EvaluationDetailNotFoundException(request.id); }
 
-            const updatedEvaluationDetail = new EvaluationDetail(
-                request.id,
-                evaluation, 
-                item, 
-                request.rating, 
-                request.extraReason
-            )
+        const repeatedEvaluationDetail = allEvaluationDetails.
+            find((detail) =>
+                detail.getId() !== request.id
+                && detail.getEvaluation().getId() === evaluation.getId()
+                && detail.getItem().getId() === item.getId()
+                && detail.getRating() === request.rating
+            );
 
-            return this.evaluationDetailRepo.update(request.id, updatedEvaluationDetail)
-        } catch (error) {
-            console.error("Error al actualizar el detalle de evaluacion:", error);
-            throw error
-        }
+        if (repeatedEvaluationDetail) { throw new EvaluationDetailAlreadyExistsException() }
+
+        const updatedEvaluationDetail = new EvaluationDetail(
+            request.id,
+            evaluation,
+            item,
+            request.rating,
+            request.extraReason
+        )
+
+        return this.evaluationDetailRepo.update(request.id, updatedEvaluationDetail)
     }
 }

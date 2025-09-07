@@ -7,12 +7,8 @@ export class DeleteEvaluationDetailUseCase {
     ) { }
 
     async execute(id: number) {
-        try {
-            const evaluationDetail = await this.evaluationDetailRepo.getById(id)
-            if (!evaluationDetail) { throw new EvaluationDetailNotFoundException(id) }
-            await this.evaluationDetailRepo.delete(id)
-        } catch (error) {
-            throw new error
-        }
+        const evaluationDetail = await this.evaluationDetailRepo.getById(id)
+        if (!evaluationDetail) { throw new EvaluationDetailNotFoundException(id) }
+        await this.evaluationDetailRepo.delete(id)
     }
 }

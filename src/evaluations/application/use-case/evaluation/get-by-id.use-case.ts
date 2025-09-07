@@ -8,14 +8,8 @@ export class GetEvaluationByIdUseCase {
     ) { }
 
     async execute(id: number): Promise<Evaluation> {
-        try {
-            const evaluationFound = await this.evaluationRepo.getById(id)
-            if (!evaluationFound) throw new EvaluationNotFoundException(id)
-            return evaluationFound
-        } catch (error) {
-            console.error("Error al obtener la evaluacion", error);
-            throw error;
-        }
-
+        const evaluationFound = await this.evaluationRepo.getById(id)
+        if (!evaluationFound) throw new EvaluationNotFoundException(id)
+        return evaluationFound
     }
 }
