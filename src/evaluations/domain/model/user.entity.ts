@@ -40,7 +40,6 @@ export class User {
         this.idciudad=idciudad;
         this.tipoUsuario=tipoUsuario;
         this.descripcion=descripcion;
-        console.log("descripcion de user",descripcion)
     }
 
     getId(): number {return this.id;}
