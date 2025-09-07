@@ -10,6 +10,15 @@ import { EvaluationDTOMapper } from "../mapper/evaluation-dto.mapper";
 import { NewEvaluationDTO } from "../dto/new-evaluation.dto";
 import { EvaluationDTO } from "../dto/evaluation.dto";
 import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
+import { EvaluationDetailDTO } from "../dto/evaluation-detail.dto";
+import { NewEvaluationDetailDTO } from "../dto/new-evaluation-detail.dto";
+import { CreateEvaluationDetailUseCase } from "src/evaluations/application/use-case/evaluation-detail/create.use-case";
+import { UpdateEvaluationDetailUseCase } from "src/evaluations/application/use-case/evaluation-detail/update.use-case";
+import { DeleteEvaluationDetailUseCase } from "src/evaluations/application/use-case/evaluation-detail/delete.use-case";
+import { GetEvaluationDetailByIdUseCase } from "src/evaluations/application/use-case/evaluation-detail/get-by-id.use-case";
+import { GetAllEvaluationDetailsUseCase } from "src/evaluations/application/use-case/evaluation-detail/get-all.use-case";
+import { CountEvaluationDetailsUseCase } from "src/evaluations/application/use-case/evaluation-detail/count.use-case";
+import { EvaluationDetailDTOMapper } from "../mapper/evaluation-detail-dto.mapper";
 
 
 @UseFilters(GlobalExceptionFilter)
@@ -22,7 +31,13 @@ export class EvaluationController {
         private readonly getEvaluationByIdUC: GetEvaluationByIdUseCase,
         private readonly getAllEvaluationUC: GetAllEvaluationsUseCase,
         private readonly countEvaluationUC: CountEvaluationsUseCase,
-        
+        //Evaluation Detail
+        private readonly createEvaluationDetailUC: CreateEvaluationDetailUseCase,
+        private readonly updateEvaluationDetailUC: UpdateEvaluationDetailUseCase,
+        private readonly deleteEvaluationDetailUC: DeleteEvaluationDetailUseCase,
+        private readonly getEvaluationDetailByIdUC: GetEvaluationDetailByIdUseCase,
+        private readonly getAllEvaluationDetailUC: GetAllEvaluationDetailsUseCase,
+        private readonly countEvaluationDetailUC: CountEvaluationDetailsUseCase
     ) { }
 
     @Post()
@@ -54,5 +69,51 @@ export class EvaluationController {
     @Delete(':id')
     deleteEvaluation(@Param('id', ParseIntPipe) id: number): Promise<void> {
         return this.deleteEvaluationUC.execute(id);
+    }
+
+    //Evaluation Detail
+    @Post(':evaluationId/details')
+    async createEvaluationDetail(
+        @Param('evaluationId', ParseIntPipe) evaluationId: number,
+        @Body() evaluationDetailDto: NewEvaluationDetailDTO
+    ): Promise<EvaluationDetailDTO> {
+        const newEvaluationDetail = await this.createEvaluationDetailUC.execute({
+            ...evaluationDetailDto,
+            idevaluation: evaluationId,
+        });
+        return EvaluationDetailDTOMapper.toDTO(newEvaluationDetail);
+    }
+
+    @Get(':evaluationId/details')
+    async getAllEvaluationDetails(
+        @Param('evaluationId', ParseIntPipe) evaluationId: number
+    ): Promise<ResponseModel<EvaluationDetailDTO>> {
+        const evaluationDetailDto = (await this.getAllEvaluationDetailUC.execute(evaluationId))
+            .map(evaluationDetail => EvaluationDetailDTOMapper.toDTO(evaluationDetail));
+        return {
+            count: await this.countEvaluationDetailUC.execute(),
+            data: evaluationDetailDto
+        };
+    }
+
+    @Put(':evaluationId/details/:id')
+    async updateEvaluationDetail(
+        @Param('evaluationId', ParseIntPipe) evaluationId: number,
+        @Param('id', ParseIntPipe) id: number,
+        @Body() evaluationDetail: EvaluationDetailDTO
+    ): Promise<EvaluationDetailDTO> {
+        const updatedEvaluationDetail = await this.updateEvaluationDetailUC.execute({
+            ...evaluationDetail,
+            idevaluation: evaluationId
+        });
+        return EvaluationDetailDTOMapper.toDTO(updatedEvaluationDetail);
+    }
+
+    @Delete(':evaluationId/details/:id')
+    deleteEvaluationDetail(
+        @Param('evaluationId', ParseIntPipe) evaluationId: number,
+        @Param('id', ParseIntPipe) id: number
+    ): Promise<void> {
+        return this.deleteEvaluationDetailUC.execute(id);
     }
 }
