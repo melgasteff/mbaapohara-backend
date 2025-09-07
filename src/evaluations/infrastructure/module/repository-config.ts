@@ -9,6 +9,10 @@ import { CompanyRepository } from "src/evaluations/domain/repository/company.rep
 import { CompanyTypeORMRepository } from "../typeorm/repository/company.typeorm.repository";
 import { JobRepository } from "src/evaluations/domain/repository/job.repository";
 import { JobTypeORMRepository } from "../typeorm/repository/job.typeorm.repository";
+import { EvaluationDetailRepository } from "src/evaluations/domain/repository/evaluation-detail.repository";
+import { EvaluationDetailTypeORMRepository } from "../typeorm/repository/evaluation-detail.typeorm.repository";
+import { ItemRepository } from "src/evaluations/domain/repository/item.repository";
+import { ItemTypeORMRepository } from "../typeorm/repository/item.typeorm.repository";
 
 
 export default <Provider[]>[
@@ -32,5 +36,13 @@ export default <Provider[]>[
         provide: JobRepository,
         useClass: JobTypeORMRepository
     },
-
+    //Evaluation Detail
+    {
+        provide: EvaluationDetailRepository,
+        useClass: EvaluationDetailTypeORMRepository
+    }, 
+    {
+        provide: ItemRepository, 
+        useClass: ItemTypeORMRepository
+    }
 ]
