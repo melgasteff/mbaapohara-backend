@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-
 import RepositoryConfig from "./repository-config"
 import UseCaseConfig from "./usecase-config";
 import { EvaluationController } from "src/evaluations/presentation/controller/evaluation.controller";
@@ -9,7 +8,8 @@ import { EvaluationTypeORMModel } from "../typeorm/model/evaluation.typeorm.mode
 import { JobTypeORMModel } from "../typeorm/model/job.typeorm.model";
 import { UserTypeORMModel } from "../typeorm/model/user.typeorm.model";
 import { OfficeTypeORMModel } from "../typeorm/model/office.typeorm.model";
-
+import { EvaluationDetailTypeORMModel } from "../typeorm/model/evaluation-detail.typeorm.model";
+import { ItemTypeORMModel } from "../typeorm/model/item.typeorm.model";
 
 @Module({
     imports: [
@@ -19,6 +19,8 @@ import { OfficeTypeORMModel } from "../typeorm/model/office.typeorm.model";
             JobTypeORMModel,
             UserTypeORMModel,
             OfficeTypeORMModel, 
+            ItemTypeORMModel,
+            EvaluationDetailTypeORMModel
         ])
     ],
     providers: [
