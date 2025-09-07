@@ -36,7 +36,7 @@ export class EvaluationTypeORMRepository implements EvaluationRepository {
             where: { id },
             relations: ['office', 'office.empresa', 'user', 'job', 'company'],
         });
-        if (!evaluationFound) {throw new Error(`Evaluation with id ${id} not found`)}
+        if (!evaluationFound) { throw new Error(`Evaluation with id ${id} not found`) }
         const updated = Object.assign(evaluationFound, evaluation);
         await this.evaluationRepo.save(updated);
         return (await this.getById(id))!;
