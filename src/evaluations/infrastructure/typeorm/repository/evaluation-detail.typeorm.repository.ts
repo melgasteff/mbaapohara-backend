@@ -15,15 +15,15 @@ export class EvaluationDetailTypeORMRepository implements EvaluationDetailReposi
     ) { }
 
     async create(newEvaluationDetail: NewEvaluationDetail): Promise<EvaluationDetail> {
-    const saved = await this.evaluationDetailRepo.save(
-        EvaluationDetailMapper.toTypeORMModel(newEvaluationDetail)
-    );
-    const full = await this.evaluationDetailRepo.findOne({
-        where: { id: saved.id },
-        relations: ['item', 'evaluation']
-    });
-    return EvaluationDetailMapper.toDomain(full);
-}
+        const saved = await this.evaluationDetailRepo.save(
+            EvaluationDetailMapper.toTypeORMModel(newEvaluationDetail)
+        );
+        const full = await this.evaluationDetailRepo.findOne({
+            where: { id: saved.id },
+            relations: ['item', 'evaluation']
+        });
+        return EvaluationDetailMapper.toDomain(full);
+    }
 
     async getAll(evaluationid: number): Promise<EvaluationDetail[]> {
         const result = await this.evaluationDetailRepo.find({

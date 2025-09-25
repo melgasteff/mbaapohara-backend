@@ -13,8 +13,7 @@ export class UserTypeORMRepository implements UserRepository{
         @InjectRepository(UserTypeORMModel)
         private readonly userRepo : Repository<UserTypeORMModel>
     ){}
-
-
+    
     async getAll(): Promise<User[]> {
         return (await this.userRepo.find()).map(userTypeOrm => UserMapper.toDomain(userTypeOrm))
     }

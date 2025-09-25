@@ -11,12 +11,19 @@ import { DeleteEvaluationUseCase } from "src/evaluations/application/use-case/ev
 import { GetAllEvaluationsUseCase } from "src/evaluations/application/use-case/evaluation/get-all.use-case";
 import { GetEvaluationByIdUseCase } from "src/evaluations/application/use-case/evaluation/get-by-id.use-case";
 import { UpdateEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/update.use-case";
+import { CountReasonDetailsUseCase } from "src/evaluations/application/use-case/reason-detail/count.use-case";
+import { CreateReasonDetailUseCase } from "src/evaluations/application/use-case/reason-detail/create.use-case";
+import { DeleteReasonDetailUseCase } from "src/evaluations/application/use-case/reason-detail/delete.use-case";
+import { GetAllReasonDetailsUseCase } from "src/evaluations/application/use-case/reason-detail/get-all.use-case";
+import { GetReasonDetailByIdUseCase } from "src/evaluations/application/use-case/reason-detail/get-by-id.use-case";
 import { CompanyRepository } from "src/evaluations/domain/repository/company.repository";
 import { EvaluationDetailRepository } from "src/evaluations/domain/repository/evaluation-detail.repository";
 import { EvaluationRepository } from "src/evaluations/domain/repository/evaluation.repository";
 import { ItemRepository } from "src/evaluations/domain/repository/item.repository";
 import { JobRepository } from "src/evaluations/domain/repository/job.repository";
 import { OfficeRepository } from "src/evaluations/domain/repository/office.repository";
+import { ReasonDetailRepository } from "src/evaluations/domain/repository/reason-detail.repository";
+import { ReasonRepository } from "src/evaluations/domain/repository/reason.repository";
 import { UserRepository } from "src/evaluations/domain/repository/user.repository";
 
 export default <Provider[]>[
@@ -148,4 +155,69 @@ export default <Provider[]>[
             EvaluationDetailRepository,
         ]
     },
+
+    //Reason Detail
+    {
+        provide: CreateReasonDetailUseCase,
+        useFactory:(
+            reasonDetailRepo: ReasonDetailRepository, 
+            reasonRepo: ReasonRepository,
+            evaluationDetailRepo: EvaluationDetailRepository
+        ) => new CreateReasonDetailUseCase(
+            reasonDetailRepo, 
+            reasonRepo, 
+            evaluationDetailRepo
+        ),
+        inject:[
+            ReasonDetailRepository, 
+            ReasonRepository, 
+            EvaluationDetailRepository
+        ]
+    },
+    {
+        provide: DeleteReasonDetailUseCase,
+        useFactory: (
+            reasonDetailRepo: ReasonDetailRepository,
+        ) => new DeleteReasonDetailUseCase(
+            reasonDetailRepo,
+        ),
+        inject: [
+            ReasonDetailRepository, 
+        ]
+    },
+    {
+        provide: GetReasonDetailByIdUseCase,
+        useFactory: (
+            reasonDetailRepo: ReasonDetailRepository,
+        ) => new GetReasonDetailByIdUseCase(
+            reasonDetailRepo,
+        ),
+        inject: [
+            ReasonDetailRepository, 
+        ]
+    },
+    {
+        provide: GetAllReasonDetailsUseCase,
+        useFactory: (
+            reasonDetailRepo: ReasonDetailRepository
+        ) => new GetAllReasonDetailsUseCase(
+            reasonDetailRepo,
+        ),
+        inject: [
+            ReasonDetailRepository, 
+        ]
+    },
+    {
+        provide: CountReasonDetailsUseCase,
+        useFactory: (
+            reasonDetailRepo: ReasonDetailRepository
+        ) => new CountReasonDetailsUseCase(
+            reasonDetailRepo,
+        ),
+        inject: [
+            ReasonDetailRepository, 
+        ]
+    },
+    
+    
 ]
