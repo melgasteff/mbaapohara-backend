@@ -5,6 +5,8 @@ import { EvaluationNotFoundException } from "src/evaluations/application/excepti
 import { Response } from 'express';
 import { EvaluationDetailNotFoundException } from "src/evaluations/application/exception/evaluation-detail/evaluation-detail-not-found.exception";
 import { EvaluationDetailAlreadyExistsException } from "src/evaluations/application/exception/evaluation-detail/evaluation-detail-already-exists.exception";
+import { ReasonDetailAlreadyExistsException } from "src/evaluations/application/exception/reason-detail/already-exist.exception";
+import { AttributeNotFoundException } from "src/evaluations/application/exception/reason-detail/attribute-not.found.exception";
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -21,12 +23,22 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       message = exception.message;
     }
 
+    if (exception instanceof AttributeNotFoundException) {
+      status = HttpStatus.NOT_FOUND;
+      message = exception.message;
+    }
+
     if (exception instanceof EvaluationAlreadyExistsException) {
       status = HttpStatus.CONFLICT;
       message = exception.message;
     }
 
     if (exception instanceof EvaluationInUseException) {
+      status = HttpStatus.CONFLICT;
+      message = exception.message;
+    }
+
+    if (exception instanceof ReasonDetailAlreadyExistsException) {
       status = HttpStatus.CONFLICT;
       message = exception.message;
     }
