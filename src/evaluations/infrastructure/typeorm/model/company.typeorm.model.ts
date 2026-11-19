@@ -8,7 +8,5 @@ export class CompanyTypeORMModel{
     @Column()
     nombre: string
 
-    @Column({name: 'rubro'})
-    rubro: string
 
 }

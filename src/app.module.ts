@@ -4,8 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatalogsModule } from './catalogs/catalogs.module';
 import { UserModule } from './users/infrastructure/module/user.module';
-import { CompanyModule } from './companies/infrastructure/module/company.module';
-import { OfficeModule } from './offices/infrastructure/module/office.module';
+import { CompaniesModule } from './companies/companies.module';
 import { LoginModule } from './session-manager/infrastructure/module/login.module';
 import { CategoryModule } from './categories/infrastructure/module/category.module';
 import { EvaluationModule } from './evaluations/infrastructure/module/evaluation.module';
@@ -31,8 +30,7 @@ import { AllExceptionsFilter } from './shared/infrastructure/rest/all-exceptions
     }),
     CatalogsModule,
     UserModule,
-    CompanyModule,
-    OfficeModule,
+    CompaniesModule,
     LoginModule,
     CategoryModule,
     EvaluationModule,

@@ -9,17 +9,11 @@ export class OfficeTypeORMModel{
     @Column()
     nombre: string
 
-    @Column({})
-    email:string;
 
-    @Column()
-    telefono: string;
 
     @Column({name: 'id_ciudad'})
     idCiudad: number
 
-    @Column({name: 'cantidad_empleados'})
-    cantEmpleados: number
 
    @ManyToOne(() => CompanyTypeORMModel, {eager:true})
     @JoinColumn({name: 'id_empresa'})
