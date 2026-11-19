@@ -16,9 +16,8 @@ export class DeleteCompanyUseCase {
       await this.comapanyRepo.delete(id);
 
     } catch (error) {
-      console.error("Error al eliminar la empresa:", error);
       if (error instanceof Error && error.message.includes('foreign key'))  throw new CompanyInUseException(id);
-      throw new error
+      throw error
     }
   }
 }

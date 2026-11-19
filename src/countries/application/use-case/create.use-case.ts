@@ -9,16 +9,12 @@ export class CreateCountryUseCase {
     ){}
 
     async execute(descripcion : string): Promise<Country>{
-        try {
-            const allCountries = await this.countryRepo.getAll();
-            const countryFound = allCountries.find((country) => country.getDescripcion().toLowerCase() === descripcion.toLowerCase())
-            if(countryFound) throw new CountryAlreadyExistsException(descripcion)
+        const allCountries = await this.countryRepo.getAll();
+        const countryFound = allCountries.find((country) => country.getDescripcion().toLowerCase() === descripcion.toLowerCase())
+        if(countryFound) throw new CountryAlreadyExistsException(descripcion)
 
-            const newCountry = new  NewCountry(descripcion)
-            return await this.countryRepo.create(newCountry)
-        } catch (error) {
-            console.error('Error al crear el Pais', error)
-            throw error;
-        }
+        const newCountry = new  NewCountry(descripcion)
+        return await this.countryRepo.create(newCountry)
+    
     }
 }

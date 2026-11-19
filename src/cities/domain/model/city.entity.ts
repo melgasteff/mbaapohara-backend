@@ -12,11 +12,9 @@ export class City {
     this.id = id;
     this.descripcion = descripcion;
     this.idpais = idpais
-    console.log('city creado con idpais:', this.idpais);
   }
 
   getDescripcion(): string {
-    console.log("get description")
     return this.descripcion;
   }
 
@@ -24,7 +22,6 @@ export class City {
     return this.id;
   }
   getPais(): number{
-    console.log('get pais')
     return this.idpais
   }
 

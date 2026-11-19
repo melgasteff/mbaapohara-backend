@@ -10,13 +10,9 @@ export class GetCountryByIdUseCase {
     ) { }
 
     async execute(id: number): Promise<Country> {
-        try {
-            const countryFound = await this.countryRepo.getById(id)
-            if (!countryFound) throw new CountryNotFoundException(id)
-            return countryFound
-        } catch (error) {
-            console.log('Error al obtener el pais ', error)
-            throw error
-        }
+        const countryFound = await this.countryRepo.getById(id)
+        if (!countryFound) throw new CountryNotFoundException(id)
+        return countryFound
+    
     }
 }

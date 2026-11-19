@@ -19,20 +19,16 @@ export class UpdateOfficeUseCase {
     idciudad: number,
     empresa: number
   ): Promise<Office> {
-    try {
-      const allOffices = await this.officeRepo.getAll();
+    const allOffices = await this.officeRepo.getAll();
 
-      const officeFound = allOffices.find((office) => office.getId() === id);
+    const officeFound = allOffices.find((office) => office.getId() === id);
 
-      if (!officeFound) { throw new OfficeNotFoundException(id); }
-      const empresaFound = await this.companyRepo.findById(empresa)
-      const partialOffice = new Office(id, nombre, email, telefono, cantEmpleados, idciudad, empresaFound)
+    if (!officeFound) { throw new OfficeNotFoundException(id); }
+    const empresaFound = await this.companyRepo.findById(empresa)
+    const partialOffice = new Office(id, nombre, email, telefono, cantEmpleados, idciudad, empresaFound)
 
-      return this.officeRepo.update(id, partialOffice)
-    } catch (error) {
-      console.error("Error al actualizar la sucursal:", error);
-      throw new error
-    }
+    return this.officeRepo.update(id, partialOffice)
+  
 
   }
 }

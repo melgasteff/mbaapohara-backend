@@ -21,7 +21,6 @@ export class CityTypeORMRepository implements CityRepository {
   }
 
   async getAll(): Promise<City[]> {
-    console.log('implementacion repositorio ')
     return (await this.cityRepo.find()).map(cityTypeOrm => CityMapper.toDomain(cityTypeOrm));
   }
 

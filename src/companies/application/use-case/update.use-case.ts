@@ -8,18 +8,14 @@ export class UpdateCompanyUseCase {
     private readonly companyRepo: CompanyRepository) { }
 
   async execute(id: number, company: Company): Promise<Company> {
-    try {
-      const allCompanies = await this.companyRepo.getAll();
+    const allCompanies = await this.companyRepo.getAll();
 
-      const companyFound = allCompanies.find((company) => company.getId() === id);
+    const companyFound = allCompanies.find((company) => company.getId() === id);
 
-      if (!companyFound) { throw new CompanyNotFoundException(id); }
+    if (!companyFound) { throw new CompanyNotFoundException(id); }
 
-      return this.companyRepo.update(id, company)
-    } catch (error) {
-      console.error("Error al obtener la empresa:", error);
-      throw new error
-    }
+    return this.companyRepo.update(id, company)
+  
 
   }
 }

@@ -16,9 +16,8 @@ export class DeleteUserUseCase {
       await this.userRepo.delete(id);
 
     } catch (error) {
-      console.error("Error al eliminar el usuario:", error);
       if (error instanceof Error && error.message.includes('foreign key'))  throw new UserInUseException(id);
-      throw new error
+      throw error
     }
   }
 }

@@ -4,7 +4,6 @@ import { CategoryTypeORMModel } from "../typeorm/model/category.typeorm.model";
 
 export class CategoryMapper {
     static toDomain(categoryTypeOrm : CategoryTypeORMModel): Category{
-        console.log("CategoryMApper to domain")
         return new Category(categoryTypeOrm.id, categoryTypeOrm.description)
     }
 

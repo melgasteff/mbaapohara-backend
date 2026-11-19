@@ -8,7 +8,6 @@ export class GetAllCitiesUseCase {
     ){}
 
     public async execute(): Promise<City[]>{
-        console.log('caso de uso')
         return this.cityRepo.getAll();
     }
 }

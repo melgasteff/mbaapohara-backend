@@ -11,7 +11,6 @@ export class ItemDTOMapper{
     }
 
     static toDomain(itemDto: ItemDTO): Item{
-        console.log(itemDto.id, itemDto.descripcion, itemDto.idcategory, "mapper")
         return new Item(itemDto.id, itemDto.descripcion, itemDto.idcategory)
     }
 }

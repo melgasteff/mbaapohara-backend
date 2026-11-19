@@ -8,7 +8,6 @@ import { Evaluation } from "src/evaluations/domain/model/evaluation.entity";
 
 export class EvaluationMapper {
     static toDomain(evaluationTypeOrm: EvaluationTypeORMModel): Evaluation {
-        console.log('evaluation mapper', evaluationTypeOrm.user.id)
         return new Evaluation(
             evaluationTypeOrm.id,
             UserMapper.toDomain(evaluationTypeOrm.user),

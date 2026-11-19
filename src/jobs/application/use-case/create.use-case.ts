@@ -8,17 +8,13 @@ export class CreateJobUseCase {
     ) { }
 
     async execute( descripcion: string) {
-        try {
-            const allJobs = await this.jobRepo.getAll()
-    
-            const jobFound = allJobs.find((job) => job.getDescripcion().toLocaleLowerCase() == descripcion.toLocaleLowerCase());
-            if (jobFound) throw new JobAlreadyExistsException(descripcion)
+        const allJobs = await this.jobRepo.getAll()
 
-            const newJob = await new NewJob(descripcion)
-            return await this.jobRepo.create(newJob)
-        } catch (error) {
-            console.error("Error al crear el cargo:", error);
-            throw error;
-        }
+        const jobFound = allJobs.find((job) => job.getDescripcion().toLocaleLowerCase() == descripcion.toLocaleLowerCase());
+        if (jobFound) throw new JobAlreadyExistsException(descripcion)
+
+        const newJob = await new NewJob(descripcion)
+        return await this.jobRepo.create(newJob)
+    
     }
 }

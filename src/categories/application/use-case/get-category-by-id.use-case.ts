@@ -8,13 +8,9 @@ export class GetCategoryByIdUseCase {
     ) { }
 
     async execute(id: number): Promise<Category> {
-        try {
-            const categoryFound = await this.categoryRepo.getById(id)
-            if (!categoryFound) throw new CategoryNotFoundException(id)
-            return categoryFound
-        } catch (error) {
-            console.error("No se ha podido encontrar la categoria")
-            throw error;
-        }
+        const categoryFound = await this.categoryRepo.getById(id)
+        if (!categoryFound) throw new CategoryNotFoundException(id)
+        return categoryFound
+    
     }
 }

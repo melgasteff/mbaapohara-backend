@@ -18,38 +18,34 @@ export class UpdateEvaluationUseCase {
     ) { }
 
     async execute(request: UpdateEvaluationRequest): Promise<Evaluation> {
-        try {
-            const allEvaluations = await this.evaluationRepo.getAll();
-            const job = await this.jobRepo.getById(request.idjob);
-            const user = await this.userRepo.getById(request.iduser);
-            const company = await this.companyRepo.getById(request.idcompany);
-            const office = await this.officeRepo.getById(request.idoffice);
-            const evaluationFound = allEvaluations.find((evaluation) => evaluation.getId() == request.id)
-            // const repeatedEvaluation = allEvaluations.
-            //     find((evaluation) =>
-            //         evaluation.getId() !== request.id
-            //     && evaluation.getJob().getId() === job.getId()
-            //     && evaluation.getOffice().getId() === office.getId()
-            //     && evaluation.getUser().getId() === user.getId()
-            //     && evaluation.getCompany().getId() === company.getId()
-            //     );
-            if (!evaluationFound) { throw new EvaluationNotFoundException(request.id); }
-            //if (repeatedEvaluation) { throw new EvaluationAlreadyExistsException() }
+        const allEvaluations = await this.evaluationRepo.getAll();
+        const job = await this.jobRepo.getById(request.idjob);
+        const user = await this.userRepo.getById(request.iduser);
+        const company = await this.companyRepo.getById(request.idcompany);
+        const office = await this.officeRepo.getById(request.idoffice);
+        const evaluationFound = allEvaluations.find((evaluation) => evaluation.getId() == request.id)
+        // const repeatedEvaluation = allEvaluations.
+        //     find((evaluation) =>
+        //         evaluation.getId() !== request.id
+        //     && evaluation.getJob().getId() === job.getId()
+        //     && evaluation.getOffice().getId() === office.getId()
+        //     && evaluation.getUser().getId() === user.getId()
+        //     && evaluation.getCompany().getId() === company.getId()
+        //     );
+        if (!evaluationFound) { throw new EvaluationNotFoundException(request.id); }
+        //if (repeatedEvaluation) { throw new EvaluationAlreadyExistsException() }
 
-            const updatedEvaluation = new Evaluation(
-                request.id,
-                user,
-                job,
-                office,
-                company,
-                new Date(request.desde),
-                new Date(request.hasta),
-            )
+        const updatedEvaluation = new Evaluation(
+            request.id,
+            user,
+            job,
+            office,
+            company,
+            new Date(request.desde),
+            new Date(request.hasta),
+        )
 
-            return this.evaluationRepo.update(request.id, updatedEvaluation)
-        } catch (error) {
-            console.error("Error al actualizar la evaluacion:", error);
-            throw error
-        }
+        return this.evaluationRepo.update(request.id, updatedEvaluation)
+    
     }
 }

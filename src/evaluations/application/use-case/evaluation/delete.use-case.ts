@@ -15,7 +15,7 @@ export class DeleteEvaluationUseCase {
         //     await this.evaluationRepo.delete(id)
         // } catch (error) {
         //     if (error instanceof Error && error.message.includes('foreign key')) throw new EvaluationInUseException();
-        //     throw new error
+        //     throw error
         // }
     }
 }

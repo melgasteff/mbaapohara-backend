@@ -3,7 +3,6 @@ import { CityDTO } from "../dto/city.dto";
 
 export class CityDTOMapper{
     static toDTO(city: City): CityDTO{
-        console.log('dto')
         return { 
             id: city.getId(),
             descripcion: city.getDescripcion(),

@@ -9,19 +9,14 @@ export class CreateCityUseCase {
   ) { }
 
   async execute(descripcion: string, idpais: number): Promise<City> {
-    try {
-      const allCities = await this.cityRepo.getAll();
-      console.log("hasta aca llegue")
-      const cityFound = allCities.find((city) => city.getDescripcion().toLowerCase() === descripcion.toLowerCase());
-      if (cityFound) throw new CityAlreadyExistsException(descripcion);
-      
-      const newCiudad = new NewCity(descripcion, idpais);
-      return await this.cityRepo.create(newCiudad);
+    const allCities = await this.cityRepo.getAll();
+    const cityFound = allCities.find((city) => city.getDescripcion().toLowerCase() === descripcion.toLowerCase());
+    if (cityFound) throw new CityAlreadyExistsException(descripcion);
+    
+    const newCiudad = new NewCity(descripcion, idpais);
+    return await this.cityRepo.create(newCiudad);
 
-    } catch (error) {
-      console.error("Error al crear la ciudad:", error);
-      throw error;
-    }
+  
   }
 }
 

@@ -16,9 +16,8 @@ export class DeleteItemUseCase {
       await this.itemRepo.delete(id);
 
     } catch (error) {
-      console.error("Error al eliminar el item:", error);
       if (error instanceof Error && error.message.includes('foreign key'))  throw new ItemInUseException(id);
-      throw new error
+      throw error
     }
   }
 }

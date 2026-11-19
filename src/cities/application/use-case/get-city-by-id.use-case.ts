@@ -10,14 +10,10 @@ export class GetCityByIdUseCase {
     ) { }
 
     async execute(id: number): Promise<City> {
-        try {
-            const cityFound = await this.cityRepository.getById(id)
-            if (!cityFound) throw new CityNotFoundException(id)
-            return cityFound
-        } catch (error) {
-            console.error("Error al obtener la ciudad", error);
-            throw error;
-        }
+        const cityFound = await this.cityRepository.getById(id)
+        if (!cityFound) throw new CityNotFoundException(id)
+        return cityFound
+    
 
     }
 }

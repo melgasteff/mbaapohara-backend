@@ -3,12 +3,8 @@ import { CompanyTypeORMModel } from "../typeorm/model/company.typeorm.model";
 
 export class CompanyMapper{
     static toDomain(companyTypeOrm: CompanyTypeORMModel): Company{
-        try {
-            return new Company(companyTypeOrm.id, companyTypeOrm.nombre, companyTypeOrm.rubro);
-        } catch (error) {
-            console.log("Error al convertir a dominio: ", error)
-            throw new error
-        }
+        return new Company(companyTypeOrm.id, companyTypeOrm.nombre, companyTypeOrm.rubro);
+    
         
     }
 

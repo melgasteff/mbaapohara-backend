@@ -26,7 +26,6 @@ export class OfficeTypeORMRepository implements OfficeRepository {
 
     async getById(id: number): Promise<Office | null> {
         const OfficeTypeOrm = await this.officeRepo.findOne({ where: { id } });
-        console.log("En el office repository",OfficeMapper.toDomain(OfficeTypeOrm) )
         return OfficeTypeOrm ? OfficeMapper.toDomain(OfficeTypeOrm) : null;
     }
     

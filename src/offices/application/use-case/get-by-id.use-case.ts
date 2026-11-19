@@ -9,14 +9,10 @@ export class GetOfficeByIdUseCase {
     ) { }
 
     async execute(id: number): Promise<Office> {
-        try {
-            const officeFound = await this.officeRepo.getById(id)
-            if (!officeFound) throw new OfficeNotFoundException(id)
-            return officeFound
-        } catch (error) {
-            console.error("Error al obtener la sucursal", error);
-            throw error;
-        }
+        const officeFound = await this.officeRepo.getById(id)
+        if (!officeFound) throw new OfficeNotFoundException(id)
+        return officeFound
+    
 
     }
 }

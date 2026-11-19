@@ -8,14 +8,10 @@ export class UpdateCountryUseCase {
     ){}
 
     async execute(id: number, country:Country): Promise<Country>{
-        try {
-            const allCountries = await this.countryRepo.getAll()
-            const countryFound = allCountries.find((country)=> country.getId()== id)
-            if(!countryFound) throw new CountryNotFoundException(id)
-            return this.countryRepo.update(id, country)
-        } catch (error) {
-            console.log('Error al actualizar la ciudad' , error)
-            throw new error
-        }
+        const allCountries = await this.countryRepo.getAll()
+        const countryFound = allCountries.find((country)=> country.getId()== id)
+        if(!countryFound) throw new CountryNotFoundException(id)
+        return this.countryRepo.update(id, country)
+    
     }
 }

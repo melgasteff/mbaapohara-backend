@@ -10,18 +10,14 @@ export class UpdateCityUseCase {
     private readonly cityRepository: CityRepository) { }
 
   async execute(id: number, city: City): Promise<City> {
-    try {
-      const allCities = await this.cityRepository.getAll();
+    const allCities = await this.cityRepository.getAll();
 
-      const cityFound = allCities.find((city) => city.getId() === id);
+    const cityFound = allCities.find((city) => city.getId() === id);
 
-      if (!cityFound) { throw new CityNotFoundException(id); }
+    if (!cityFound) { throw new CityNotFoundException(id); }
 
-      return this.cityRepository.update(id, city)
-    } catch (error) {
-      console.error("Error al obtener la ciudad:", error);
-      throw new error
-    }
+    return this.cityRepository.update(id, city)
+  
 
   }
 }

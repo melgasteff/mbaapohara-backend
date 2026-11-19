@@ -8,14 +8,10 @@ export class GetJobByIdUseCase {
     ) { }
 
     async execute(id: number): Promise<Job> {
-        try {
-            const jobFound = await this.jobRepo.getById(id)
-            if (!jobFound) throw new JobNotFoundException(id)
-            return jobFound
-        } catch (error) {
-            console.error("Error al obtener el cargo", error);
-            throw error;
-        }
+        const jobFound = await this.jobRepo.getById(id)
+        if (!jobFound) throw new JobNotFoundException(id)
+        return jobFound
+    
 
     }
 }

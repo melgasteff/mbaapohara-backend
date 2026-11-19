@@ -8,14 +8,10 @@ export class GetCompanyByIdUseCase {
     ) { }
 
     async execute(id: number): Promise<Company> {
-        try {
-            const companyfound = await this.companyRepo.getById(id)
-            if (!companyfound) throw new CompanyNotFoundException(id)
-            return companyfound
-        } catch (error) {
-            console.error("Error al obtener la empresa", error);
-            throw error;
-        }
+        const companyfound = await this.companyRepo.getById(id)
+        if (!companyfound) throw new CompanyNotFoundException(id)
+        return companyfound
+    
 
     }
 }

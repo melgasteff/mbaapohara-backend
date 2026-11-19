@@ -20,29 +20,25 @@ export class CreateUserUseCase {
         tipoUsuario : string,
         descripcion: string
     ): Promise<User> {
-        try {
-            const allUsers = await this.userRepo.getAll();
-            const userFound = allUsers.find((repeatedUser) => repeatedUser.getUsuario().toLowerCase() === usuario.toLowerCase(),);
-            const emailFound = allUsers.find((repeatedEmail) => repeatedEmail.getEmail()=== email)
-            if (userFound) throw new UserAlreadyExistsException(usuario);
-            if(emailFound) throw new EmailAlreadyUsedException(email)
-            const hashedPassword = await bcrypt.hash(contrasenha, 10);
+        const allUsers = await this.userRepo.getAll();
+        const userFound = allUsers.find((repeatedUser) => repeatedUser.getUsuario().toLowerCase() === usuario.toLowerCase(),);
+        const emailFound = allUsers.find((repeatedEmail) => repeatedEmail.getEmail()=== email)
+        if (userFound) throw new UserAlreadyExistsException(usuario);
+        if(emailFound) throw new EmailAlreadyUsedException(email)
+        const hashedPassword = await bcrypt.hash(contrasenha, 10);
 
-            const newUser = new NewUser(
-                nombre,
-                apellido,
-                usuario,
-                email,
-                hashedPassword,
-                idciudad,
-                tipoUsuario,
-                descripcion
-            );
-            return await this.userRepo.create(newUser);
+        const newUser = new NewUser(
+            nombre,
+            apellido,
+            usuario,
+            email,
+            hashedPassword,
+            idciudad,
+            tipoUsuario,
+            descripcion
+        );
+        return await this.userRepo.create(newUser);
 
-        } catch (error) {
-            console.error("Error al crear el usuario:", error);
-            throw error;
-        }
+    
     }
 }

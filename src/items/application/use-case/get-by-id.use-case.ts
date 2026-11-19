@@ -8,14 +8,10 @@ export class GetItemByIdUseCase {
     ) { }
 
     async execute(id: number): Promise<Item> {
-        try {
-            const itemFound = await this.itemRepo.getById(id)
-            if (!itemFound) throw new ItemNotFoundException(id)
-            return itemFound
-        } catch (error) {
-            console.error("Error al obtener el item", error);
-            throw error;
-        }
+        const itemFound = await this.itemRepo.getById(id)
+        if (!itemFound) throw new ItemNotFoundException(id)
+        return itemFound
+    
 
     }
 }

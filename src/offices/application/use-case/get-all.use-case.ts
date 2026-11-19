@@ -7,12 +7,8 @@ export class GetAllOfficesUseCase {
     ) { }
 
     execute(): Promise<Office[]> {
-        try {
-            return this.officeRepo.getAll()
-        } catch (error) {
-            console.error("Error al obtener las sucursales:", error);
-            throw error;
-        }
+        return this.officeRepo.getAll()
+    
 
     }
 }

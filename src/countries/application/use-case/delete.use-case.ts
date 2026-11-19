@@ -13,9 +13,8 @@ export class DeleteCountryUseCase {
             if(!country) throw new CountryNotFoundException
             await this.countryRepo.delete(id)
         } catch (error) {
-            console.log('Error al eliminar el pais' , error)
             if(error instanceof Error && error.message.includes('foreign key'))  throw new CountryInUseException(id)
-            throw new error
+            throw error
         }
     }
 }

@@ -16,9 +16,8 @@ export class DeleteOfficeUseCase {
       await this.officeRepo.delete(id);
 
     } catch (error) {
-      console.error("Error al eliminar la sucursal:", error);
       if (error instanceof Error && error.message.includes('foreign key'))  throw new OfficeInUseException(id);
-      throw new error
+      throw error
     }
   }
 }

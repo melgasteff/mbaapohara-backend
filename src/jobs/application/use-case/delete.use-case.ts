@@ -16,9 +16,8 @@ export class DeleteJobUseCase {
       await this.jobRepo.delete(id);
 
     } catch (error) {
-      console.error("Error al eliminar el cargo:", error);
       if (error instanceof Error && error.message.includes('foreign key'))  throw new JobInUseException(id);
-      throw new error
+      throw error
     }
   }
 }

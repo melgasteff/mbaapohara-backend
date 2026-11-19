@@ -13,9 +13,8 @@ export class DeleteCategoryUseCase {
             if (!category) throw new CategoryNotFoundException(id)
             await this.categoryRepo.delete(id)
         } catch (error) {
-            console.error("Error al eliminar la Categoria", error)
             if (error instanceof Error && error.message.includes('foreign key')) throw new CategoryInUseException(id);
-            throw new error
+            throw error
         }
 
     }

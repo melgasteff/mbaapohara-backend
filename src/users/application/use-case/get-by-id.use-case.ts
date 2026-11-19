@@ -8,14 +8,10 @@ export class GetUserByIdUseCase {
     ) { }
 
     async execute(id: number): Promise<User> {
-        try {
-            const userFound = await this.userRepo.getById(id)
-            if (!userFound) throw new UserNotFoundException(id)
-            return userFound
-        } catch (error) {
-            console.error("Error al obtener el usuario", error);
-            throw error;
-        }
+        const userFound = await this.userRepo.getById(id)
+        if (!userFound) throw new UserNotFoundException(id)
+        return userFound
+    
 
     }
 }

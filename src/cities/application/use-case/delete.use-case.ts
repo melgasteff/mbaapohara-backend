@@ -17,9 +17,8 @@ export class DeleteCityUseCase {
       await this.cityRepository.delete(id);
 
     } catch (error) {
-      console.error("Error al eliminar la ciudad:", error);
       if (error instanceof Error && error.message.includes('foreign key'))  throw new CityInUseException(id);
-      throw new error
+      throw error
     }
   }
 }
