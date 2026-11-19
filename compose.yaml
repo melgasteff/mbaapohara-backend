@@ -1,0 +1,50 @@
+# Entorno de desarrollo con un comando:  docker compose up
+# - db: PostgreSQL 16, con los datos en un volumen (persisten entre reinicios).
+# - api: Nest con recarga; al arrancar corre db:setup (migraciones + semilla de demostración).
+# Lee las variables de .env (copiar de .env.example). La base del contenedor se publica en el puerto 5433
+# de la máquina para no chocar con un PostgreSQL local en el 5432.
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-mbaapohara}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASS:?Falta DB_PASS en .env}
+    ports:
+      - "${COMPOSE_DB_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      target: dev
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-mbaapohara}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASS: ${DB_PASS:?Falta DB_PASS en .env}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4200}
+      JWT_SECRET: ${JWT_SECRET:?Falta JWT_SECRET en .env (generar con openssl rand -base64 48)}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-2h}
+    ports:
+      - "${COMPOSE_API_PORT:-3000}:3000"
+    volumes:
+      # El código se monta para que Nest recargue al guardar; node_modules queda el de la imagen.
+      - ./src:/app/src
+      - ./test:/app/test
+
+volumes:
+  pgdata:

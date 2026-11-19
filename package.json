@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -20,6 +23,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:run": "npm run typeorm -- migration:run -d ./src/shared/infrastructure/database/data-source.ts",
+    "migration:run:prod": "typeorm migration:run -d dist/shared/infrastructure/database/data-source.js",
     "migration:revert": "npm run typeorm -- migration:revert -d ./src/shared/infrastructure/database/data-source.ts",
     "migration:show": "npm run typeorm -- migration:show -d ./src/shared/infrastructure/database/data-source.ts",
     "seed": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/scripts/seed-demo.ts",
