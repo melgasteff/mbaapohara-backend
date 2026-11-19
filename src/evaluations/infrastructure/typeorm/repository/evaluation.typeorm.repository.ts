@@ -20,7 +20,7 @@ export class EvaluationTypeORMRepository implements EvaluationRepository {
     }
 
     async getAll(): Promise<Evaluation[]> {
-        return (await this.evaluationRepo.find()).map(evaluationTypeOrm => EvaluationMapper.toDomain(evaluationTypeOrm));
+        return (await this.evaluationRepo.find({where: {eliminado:false}})).map(evaluationTypeOrm => EvaluationMapper.toDomain(evaluationTypeOrm));
     }
 
     async getById(id: number): Promise<Evaluation | null> {
@@ -43,7 +43,9 @@ export class EvaluationTypeORMRepository implements EvaluationRepository {
     }
 
     async delete(id: number): Promise<void> {
-        await this.evaluationRepo.delete(id)
+        const evaluationORM= await this.evaluationRepo.findOneByOrFail({id})
+        evaluationORM.eliminado =true
+        await this.evaluationRepo.save(evaluationORM)
     }
 
     count(): Promise<number> {

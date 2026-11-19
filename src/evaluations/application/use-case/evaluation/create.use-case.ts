@@ -19,6 +19,7 @@ export class CreateEvaluationUseCase {
   ) {}
 
   async execute(request: CreateEvaluationRequest): Promise<Evaluation> {
+    console.log('REQUEST RECIBIDO:', JSON.stringify(request)); 
     const allEvaluations = await this.evaluationRepo.getAll();
 
     const job = await this.jobRepo.getById(request.idjob);

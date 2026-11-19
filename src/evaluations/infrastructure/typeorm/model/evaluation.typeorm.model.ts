@@ -24,6 +24,9 @@ export class EvaluationTypeORMModel {
   @Column({name: 'desde'})
   desde :Date
 
+  @Column({name: 'eliminado'})
+  eliminado:boolean
+  
   @Column({name: 'hasta'})
   hasta :Date
 

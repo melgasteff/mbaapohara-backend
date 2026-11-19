@@ -27,6 +27,9 @@ import { GetAllReasonDetailsUseCase } from "src/evaluations/application/use-case
 import { CountReasonDetailsUseCase } from "src/evaluations/application/use-case/reason-detail/count.use-case";
 import { ReasonDetailDTOMapper } from "../mapper/reason-detail-dto.mapper";
 import { ReasonDetailDTO } from "../dto/reason-detail.dto";
+import { EvaluationResponseDTO } from "../dto/evaluation-response.dto";
+import { EvaluationDetailRepository } from "src/evaluations/domain/repository/evaluation-detail.repository";
+import { EvaluationDetailResponseDTO } from "../dto/evaluation-detail-response.dto";
 
 
 @UseFilters(GlobalExceptionFilter)
@@ -62,8 +65,8 @@ export class EvaluationController {
     }
 
     @Get()
-    async getAllEvaluations(): Promise<ResponseModel<EvaluationDTO>> {
-        const evaluationDto = (await this.getAllEvaluationUC.execute()).map(evaluation => EvaluationDTOMapper.toDTO(evaluation));
+    async getAllEvaluations(): Promise<ResponseModel<EvaluationResponseDTO>> {
+        const evaluationDto = (await this.getAllEvaluationUC.execute()).map(evaluation => EvaluationDTOMapper.toDTOResponse(evaluation));
         return {
             count: await this.countEvaluationUC.execute(),
             data: evaluationDto
@@ -77,7 +80,9 @@ export class EvaluationController {
 
     @Put(':id')
     async updateEvaluation(@Param('id', ParseIntPipe) id: number, @Body() evaluation: EvaluationDTO): Promise<EvaluationDTO> {
-        const updatedEvaluation = await this.updateEvaluationUC.execute({ ...evaluation });
+        const updatedEvaluation = await this.updateEvaluationUC.execute({ ...evaluation, 
+            id: id
+         });
         return EvaluationDTOMapper.toDTO(updatedEvaluation)
     }
 
@@ -86,25 +91,30 @@ export class EvaluationController {
         return this.deleteEvaluationUC.execute(id);
     }
 
-    //Evaluation Detail
     @Post(':evaluationId/details')
-    async createEvaluationDetail(
+    async createEvaluationDetails(
         @Param('evaluationId', ParseIntPipe) evaluationId: number,
-        @Body() evaluationDetailDto: NewEvaluationDetailDTO
-    ): Promise<EvaluationDetailDTO> {
-        const newEvaluationDetail = await this.createEvaluationDetailUC.execute({
-            ...evaluationDetailDto,
-            idevaluation: evaluationId,
-        });
-        return EvaluationDetailDTOMapper.toDTO(newEvaluationDetail);
+        @Body() evaluationDetailDtos: NewEvaluationDetailDTO[]
+    ): Promise<EvaluationDetailDTO[]> {
+        const savedDetails = [];
+
+        for (const detailDto of evaluationDetailDtos) {
+            const newDetail = await this.createEvaluationDetailUC.execute({
+                ...detailDto,
+                idevaluation: evaluationId,
+            });
+            savedDetails.push(EvaluationDetailDTOMapper.toDTO(newDetail));
+        }
+
+        return savedDetails;
     }
 
     @Get(':evaluationId/details')
     async getAllEvaluationDetails(
         @Param('evaluationId', ParseIntPipe) evaluationId: number
-    ): Promise<ResponseModel<EvaluationDetailDTO>> {
+    ): Promise<ResponseModel<EvaluationDetailResponseDTO>> {
         const evaluationDetailDto = (await this.getAllEvaluationDetailUC.execute(evaluationId))
-            .map(evaluationDetail => EvaluationDetailDTOMapper.toDTO(evaluationDetail));
+            .map(evaluationDetail => EvaluationDetailDTOMapper.toDTOResponse(evaluationDetail));
         return {
             count: await this.countEvaluationDetailUC.execute(),
             data: evaluationDetailDto
