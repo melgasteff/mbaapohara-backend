@@ -1,3 +1,5 @@
+import { Roles } from 'src/auth/presentation/decorator/auth.decorators';
+import { UserRole } from 'src/shared/domain/user-role';
 import { ApiTags } from "@nestjs/swagger";
 import { Body, Query, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
 import { mapPage, Page } from "src/shared/domain/page";
@@ -25,6 +27,7 @@ import { EvaluationDetailResponseDTO } from "../dto/evaluation-detail-response.d
 
 @UseFilters(GlobalExceptionFilter)
 @ApiTags('Evaluaciones')
+@Roles(UserRole.Admin)
 @Controller('evaluation')
 export class EvaluationController {
     constructor(

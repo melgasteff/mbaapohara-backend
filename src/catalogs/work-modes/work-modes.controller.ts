@@ -1,3 +1,4 @@
+import { Public } from 'src/auth/presentation/decorator/auth.decorators';
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { mapPage } from 'src/shared/domain/page';
@@ -6,6 +7,7 @@ import { WorkModesService } from './work-modes.service';
 import { WorkModeDTO, WorkModePageDTO } from './dto/work-mode.dto';
 
 @ApiTags('Catálogos')
+@Public()
 @Controller('work-modes')
 export class WorkModesController {
     constructor(private readonly service: WorkModesService) { }

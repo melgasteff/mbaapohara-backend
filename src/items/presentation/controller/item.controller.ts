@@ -1,3 +1,5 @@
+import { Public, Roles } from 'src/auth/presentation/decorator/auth.decorators';
+import { UserRole } from 'src/shared/domain/user-role';
 import { ApiTags } from "@nestjs/swagger";
 import { Body, Query, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
 import { mapPage, Page } from "src/shared/domain/page";
@@ -24,19 +26,27 @@ export class ItemController {
         private readonly getAllItemsUC: GetAllItemsUseCase
     ) { }
 
+    @Roles(UserRole.Admin)
+
     @Post()
     async createItem(@Body() itemDto: NewItemDTO): Promise<ItemDTO>{
         return ItemDTOMapper.toDTO(await this.createItemUC.execute(itemDto.descripcion, itemDto.idcategory));
     }
+    @Public()
+
     @Get()
     async getAllItems(@Query() query: PaginationQueryDTO): Promise<Page<ItemDTO>> {
         return mapPage(await this.getAllItemsUC.execute(query), item => ItemDTOMapper.toDTO(item));
     }
 
+    @Public()
+
     @Get(':id')
     async getItemById(@Param('id', ParseIntPipe) id: number): Promise<ItemDTO> {
         return ItemDTOMapper.toDTO(await this.getItemByIdUC.execute(id));
     }
+
+    @Roles(UserRole.Admin)
 
     @Put(':id')
     async updateItem(@Param('id', ParseIntPipe) id: number, @Body() item: ItemDTO) : Promise<ItemDTO> {
@@ -44,6 +54,8 @@ export class ItemController {
         const updatedItem = await this.updateItemUC.execute(id, itemToUpdate);
         return ItemDTOMapper.toDTO(updatedItem);
     }
+
+    @Roles(UserRole.Admin)
 
     @Delete(':id')
     deleteItem(@Param('id', ParseIntPipe) id: number): Promise<void>{

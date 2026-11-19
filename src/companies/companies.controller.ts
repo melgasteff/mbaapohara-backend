@@ -1,3 +1,5 @@
+import { Public, Roles } from 'src/auth/presentation/decorator/auth.decorators';
+import { UserRole } from 'src/shared/domain/user-role';
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Post, Put, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { mapPage } from 'src/shared/domain/page';
@@ -12,11 +14,15 @@ import { ProposeCompanyDTO, SaveCompanyDTO } from './dto/save-company.dto';
 export class CompaniesController {
     constructor(private readonly service: CompaniesService) { }
 
+    @Public()
+
     @Get()
     async findAll(@Query() query: CompaniesQueryDTO): Promise<CompanyPageDTO> {
         const { q, rubro, ciudad, estado } = query;
         return mapPage(await this.service.findPage(query, { q, rubro, ciudad, estado }), CompanyDTO.from);
     }
+
+    @Public()
 
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<CompanyDetailDTO> {
@@ -30,22 +36,30 @@ export class CompaniesController {
         return CompanyDTO.from(await this.service.propose(body));
     }
 
+    @Roles(UserRole.Admin)
+
     @Put(':id')
     async update(@Param('id', ParseIntPipe) id: number, @Body() body: SaveCompanyDTO): Promise<CompanyDTO> {
         return CompanyDTO.from(await this.service.update(id, body));
     }
 
     /** Aprueba una empresa pendiente y sus locales pendientes. */
+    @Roles(UserRole.Admin)
+
     @Patch(':id/approve')
     async approve(@Param('id', ParseIntPipe) id: number): Promise<CompanyDTO> {
         return CompanyDTO.from(await this.service.approve(id));
     }
 
     /** Rechaza una empresa pendiente y sus locales pendientes. */
+    @Roles(UserRole.Admin)
+
     @Patch(':id/reject')
     async reject(@Param('id', ParseIntPipe) id: number): Promise<CompanyDTO> {
         return CompanyDTO.from(await this.service.reject(id));
     }
+
+    @Roles(UserRole.Admin)
 
     @Delete(':id')
     @HttpCode(204)

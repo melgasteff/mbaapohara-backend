@@ -22,15 +22,18 @@
     "migration:run": "npm run typeorm -- migration:run -d ./src/shared/infrastructure/database/data-source.ts",
     "migration:revert": "npm run typeorm -- migration:revert -d ./src/shared/infrastructure/database/data-source.ts",
     "migration:show": "npm run typeorm -- migration:show -d ./src/shared/infrastructure/database/data-source.ts",
+    "admin:create": "ts-node -r tsconfig-paths/register src/auth/infrastructure/cli/create-admin.ts",
     "migration:create": "npm run typeorm -- migration:create ./src/shared/infrastructure/database/migrations/$npm_config_name"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.4.2",
+    "@nestjs/throttler": "^6.8.0",
     "@nestjs/typeorm": "^10.0.2",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",

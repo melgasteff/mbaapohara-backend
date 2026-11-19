@@ -3,9 +3,9 @@ import { APP_FILTER } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatalogsModule } from './catalogs/catalogs.module';
-import { UserModule } from './users/infrastructure/module/user.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/infrastructure/module/auth.module';
 import { CompaniesModule } from './companies/companies.module';
-import { LoginModule } from './session-manager/infrastructure/module/login.module';
 import { CategoryModule } from './categories/infrastructure/module/category.module';
 import { EvaluationModule } from './evaluations/infrastructure/module/evaluation.module';
 import { ItemModule } from './items/infrastructure/module/item.module';
@@ -29,9 +29,9 @@ import { AllExceptionsFilter } from './shared/infrastructure/rest/all-exceptions
       }),
     }),
     CatalogsModule,
-    UserModule,
+    AuthModule,
+    UsersModule,
     CompaniesModule,
-    LoginModule,
     CategoryModule,
     EvaluationModule,
     ItemModule

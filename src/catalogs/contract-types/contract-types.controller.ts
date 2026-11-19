@@ -1,3 +1,4 @@
+import { Public } from 'src/auth/presentation/decorator/auth.decorators';
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { mapPage } from 'src/shared/domain/page';
@@ -6,6 +7,7 @@ import { ContractTypesService } from './contract-types.service';
 import { ContractTypeDTO, ContractTypePageDTO } from './dto/contract-type.dto';
 
 @ApiTags('Catálogos')
+@Public()
 @Controller('contract-types')
 export class ContractTypesController {
     constructor(private readonly service: ContractTypesService) { }

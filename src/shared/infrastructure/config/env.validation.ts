@@ -1,5 +1,5 @@
 import { plainToInstance, Transform } from 'class-transformer';
-import { ArrayNotEmpty, IsIn, IsInt, IsNotEmpty, IsString, IsUrl, Max, Min, validateSync } from 'class-validator';
+import { ArrayNotEmpty, IsIn, IsInt, IsNotEmpty, IsString, IsUrl, Matches, Max, Min, MinLength, validateSync } from 'class-validator';
 
 // Variables de entorno de la API. Si alguna falta o es inválida, la aplicación no arranca.
 export class EnvironmentVariables {
@@ -42,6 +42,15 @@ export class EnvironmentVariables {
     @ArrayNotEmpty({ message: 'CORS_ORIGINS debe tener al menos un origen' })
     @IsUrl({ require_tld: false, require_protocol: true }, { each: true, message: 'CORS_ORIGINS tiene un origen inválido' })
     CORS_ORIGINS: string[];
+
+    // Secreto para firmar los tokens. Al menos 32 caracteres; generar con: openssl rand -base64 48
+    @IsString()
+    @MinLength(32, { message: 'JWT_SECRET debe tener al menos 32 caracteres' })
+    JWT_SECRET: string;
+
+    // Vigencia del token de acceso, en el formato de jsonwebtoken: 2h, 30m, 1d...
+    @Matches(/^\d+[smhd]$/, { message: 'JWT_EXPIRES_IN debe ser un número seguido de s, m, h o d (por ejemplo, 2h)' })
+    JWT_EXPIRES_IN: string = '2h';
 }
 
 export function validateEnv(config: Record<string, unknown>): EnvironmentVariables {

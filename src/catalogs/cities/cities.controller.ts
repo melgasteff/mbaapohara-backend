@@ -1,3 +1,4 @@
+import { Public } from 'src/auth/presentation/decorator/auth.decorators';
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { mapPage } from 'src/shared/domain/page';
@@ -6,6 +7,7 @@ import { CitiesQueryDTO } from './dto/cities-query.dto';
 import { CityDTO, CityPageDTO } from './dto/city.dto';
 
 @ApiTags('Catálogos')
+@Public()
 @Controller('cities')
 export class CitiesController {
     constructor(private readonly service: CitiesService) { }

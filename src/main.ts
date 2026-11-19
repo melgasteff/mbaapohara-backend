@@ -32,6 +32,8 @@ async function bootstrap() {
     .setTitle('Mbaapohara API')
     .setDescription('Reseñas laborales anónimas y moderadas sobre empresas de Paraguay')
     .setVersion('0.1')
+    .addBearerAuth()
+    .addSecurityRequirements('bearer')
     .build();
   SwaggerModule.setup('docs', app, SwaggerModule.createDocument(app, swaggerConfig));
 

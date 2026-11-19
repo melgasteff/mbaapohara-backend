@@ -1,3 +1,5 @@
+import { Public, Roles } from 'src/auth/presentation/decorator/auth.decorators';
+import { UserRole } from 'src/shared/domain/user-role';
 import { ApiTags } from "@nestjs/swagger";
 import { Body, Query, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
 import { mapPage, Page } from "src/shared/domain/page";
@@ -24,19 +26,27 @@ export class CategoryController {
         private readonly getAllCategoriesUC: GetAllCategoriesUseCase
     ) { }
 
+    @Roles(UserRole.Admin)
+
     @Post()
     async createCategory(@Body() categoryDto: NewCategoryDTO): Promise<CategoryDTO> {
         return CategoryDTOMapper.toDTO(await this.createCategoryUC.execute(categoryDto.description));
     }
+    @Public()
+
     @Get()
     async getAllCategories(@Query() query: PaginationQueryDTO): Promise<Page<CategoryDTO>> {
         return mapPage(await this.getAllCategoriesUC.execute(query), category => CategoryDTOMapper.toDTO(category));
     }
 
+    @Public()
+
     @Get(':id')
     async getCategoryById(@Param('id', ParseIntPipe) id: number): Promise<CategoryDTO> {
         return CategoryDTOMapper.toDTO(await this.getCategoryByIdUC.execute(id));
     }
+
+    @Roles(UserRole.Admin)
 
     @Put(':id')
     async updateCategory(@Param('id', ParseIntPipe) id: number, @Body() category: CategoryDTO): Promise<CategoryDTO> {
@@ -44,6 +54,8 @@ export class CategoryController {
         const updatedCategory = await this.updateCategoryUC.execute(id, categoryToUpdate);
         return CategoryDTOMapper.toDTO(updatedCategory);
     }
+
+    @Roles(UserRole.Admin)
 
     @Delete(':id')
     deleteCategory(@Param('id', ParseIntPipe) id: number): Promise<void> {
