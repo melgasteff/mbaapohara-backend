@@ -53,7 +53,7 @@ src/companies/
 | Módulo final | Estilo | Viene de | Tarea |
 | --- | --- | --- | --- |
 | `catalogs` | Liviano | `cities`, `jobs`, tabla `tipo_contrato`; `countries` se elimina | 1.3 (hecha) |
-| `companies` | Liviano | `companies` + `offices` | 1.4 |
+| `companies` | Liviano | `companies` + `offices` | 1.4 (hecha) |
 | `auth` | Completo | `session-manager` + registro de `users` | 1.5 |
 | `users` | Liviano | `users` | 1.5 |
 | `criteria` | Liviano | `categories` + `items` (los motivos se eliminaron en la 1.1, R4) | Fase 3 |
@@ -69,7 +69,9 @@ una tarea los modifique.
 1. **Una entidad TypeORM por tabla**, en el módulo dueño de la tabla. Hoy `empresas` y `usuarios` tienen
    tres copias; al reescribir un módulo, sus copias en otros módulos se eliminan.
 2. **Otro módulo que necesite esos datos importa el módulo dueño** y usa el servicio que exporta. Nunca
-   registra la entidad ajena con `forFeature` ni redefine el modelo.
+   registra la entidad ajena con `forFeature` ni redefine el modelo. Excepción: un módulo liviano puede
+   declarar un `@ManyToOne` de solo lectura hacia una entidad de `catalogs` para mostrarla en un listado
+   (por ejemplo, el rubro de una empresa); validar que el id existe se hace siempre con el servicio dueño.
 3. **Los módulos completos no dependen de los livianos directamente.** Por ejemplo, `reviews` define un
    puerto (`OfficeLookupPort`) y el adaptador llama al servicio de `companies`. Así el dominio de la reseña
    no conoce TypeORM.
