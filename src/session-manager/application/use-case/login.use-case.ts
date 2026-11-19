@@ -10,22 +10,13 @@ export class LoginUseCase {
     constructor(private readonly userRepo: UserRepository) {}
 
     async execute(email: string, plainPassword: string): Promise<User> {
-       try {
-        console.log(email, plainPassword)
         const user = await this.userRepo.findByEmail(email);
         if (!user) throw new UserNotFoundException(email);
         if (!plainPassword) throw new PasswordNotFoundException(email)
-            console.log(user.getContrasenha())
 
         const passwordMatches = await bcrypt.compare(plainPassword, user.getContrasenha());
-        console.log(passwordMatches)
         if (!passwordMatches) throw new UnauthorizedException();
 
         return user;
-       } catch (error) {
-        console.log("Error al intentar loggearse",error)
-        throw error
-       }
-        
     }
 }

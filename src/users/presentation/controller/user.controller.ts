@@ -8,6 +8,7 @@ import { UpdateUserUseCase } from "src/users/application/use-case/update.use-cas
 import { UserDTOMapper } from "../mapper/user-dto.mapper";
 import { NewUserDTO } from "../dto/new-user.dto";
 import { UserDTO } from "../dto/user.dto";
+import { UserResponseDTO } from "../dto/user-response.dto";
 import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 import { GlobalExceptionFilter } from "src/users/infrastructure/exception-filter/exception-filter";
 
@@ -24,7 +25,7 @@ export class UserController {
     ) { }
 
     @Post()
-    async createUser(@Body() userDto: NewUserDTO): Promise<UserDTO> {
+    async createUser(@Body() userDto: NewUserDTO): Promise<UserResponseDTO> {
         const newUserDto = await this.createUserUC.execute(
             userDto.nombre,
             userDto.apellido,
@@ -39,7 +40,7 @@ export class UserController {
     }
 
     @Get()
-    async getAllUsers(): Promise<ResponseModel<UserDTO>> {
+    async getAllUsers(): Promise<ResponseModel<UserResponseDTO>> {
         const userDto = (await this.getAllUsersUC.execute()).map(user => UserDTOMapper.toDTO(user));
         
         return {
@@ -49,12 +50,12 @@ export class UserController {
     }
 
     @Get(':id')
-    async getUserById(@Param('id', ParseIntPipe) id: number): Promise<UserDTO> {
+    async getUserById(@Param('id', ParseIntPipe) id: number): Promise<UserResponseDTO> {
         return UserDTOMapper.toDTO(await this.getUserByIdUC.execute(id));
     }
 
     @Put(':id')
-    async updateUser(@Param('id', ParseIntPipe) id: number, @Body() user: UserDTO): Promise<UserDTO> {
+    async updateUser(@Param('id', ParseIntPipe) id: number, @Body() user: UserDTO): Promise<UserResponseDTO> {
         const userToUpdate = UserDTOMapper.toDomain(user);
         const updatedUser = await this.updateUserUC.execute(id, userToUpdate);
         return UserDTOMapper.toDTO(updatedUser);

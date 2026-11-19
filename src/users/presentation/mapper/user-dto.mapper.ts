@@ -1,16 +1,15 @@
 import { User } from "src/users/domain/model/user.entity"
 import { UserDTO } from "../dto/user.dto"
+import { UserResponseDTO } from "../dto/user-response.dto"
 
 export class UserDTOMapper {
-    static toDTO(user: User): UserDTO {
-        console.log("user to dto", user.getNombre(), "descripcion",user.getDescripcion())
+    static toDTO(user: User): UserResponseDTO {
         return {
             id: user.getId(),
             nombre: user.getNombre(),
             apellido: user.getApellido(),
             usuario: user.getUsuario(),
             email: user.getEmail(),
-            contrasenha: user.getContrasenha(),
             idciudad: user.getCiudad(),
             tipoUsuario: user.getTipoUsuario(),
             descripcion: user.getDescripcion()
