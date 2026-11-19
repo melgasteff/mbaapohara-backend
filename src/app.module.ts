@@ -9,7 +9,6 @@ import { JobModule } from './jobs/infrastructure/module/job.module';
 import { LoginModule } from './session-manager/infrastructure/module/login.module';
 import datasource from './shared/infrastructure/database/data-source';
 import { CategoryModule } from './categories/infrastructure/module/category.module';
-import { ReasonModule } from './reasons/infrastructure/module/reason.module';
 import { EvaluationModule } from './evaluations/infrastructure/module/evaluation.module';
 import { ItemModule } from './items/infrastructure/module/item.module';
 
@@ -27,7 +26,6 @@ import { ItemModule } from './items/infrastructure/module/item.module';
     JobModule,
     LoginModule,
     CategoryModule, 
-    ReasonModule, 
     EvaluationModule, 
     ItemModule
   ],

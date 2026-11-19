@@ -13,10 +13,6 @@ import { EvaluationDetailRepository } from "src/evaluations/domain/repository/ev
 import { EvaluationDetailTypeORMRepository } from "../typeorm/repository/evaluation-detail.typeorm.repository";
 import { ItemRepository } from "src/evaluations/domain/repository/item.repository";
 import { ItemTypeORMRepository } from "../typeorm/repository/item.typeorm.repository";
-import { ReasonDetailRepository } from "src/evaluations/domain/repository/reason-detail.repository";
-import { ReasonDetailTypeORMRepository } from "../typeorm/repository/reason-detail.typeorm.repository";
-import { ReasonTypeORMRepository } from "src/reasons/infrastructure/typeorm/repository/reason.typeorm.repository";
-import { ReasonRepository } from "src/evaluations/domain/repository/reason.repository";
 
 
 export default <Provider[]>[
@@ -49,14 +45,4 @@ export default <Provider[]>[
         provide: ItemRepository, 
         useClass: ItemTypeORMRepository
     },
-
-    //Reason Detail 
-    {
-        provide: ReasonDetailRepository,
-        useClass: ReasonDetailTypeORMRepository
-    },
-    {
-        provide: ReasonRepository,
-        useClass: ReasonTypeORMRepository
-    }
 ]

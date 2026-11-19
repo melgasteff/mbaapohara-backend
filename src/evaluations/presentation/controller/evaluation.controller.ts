@@ -20,13 +20,6 @@ import { GetAllEvaluationDetailsUseCase } from "src/evaluations/application/use-
 import { CountEvaluationDetailsUseCase } from "src/evaluations/application/use-case/evaluation-detail/count.use-case";
 import { EvaluationDetailDTOMapper } from "../mapper/evaluation-detail-dto.mapper";
 import { privateDecrypt } from "crypto";
-import { CreateReasonDetailUseCase } from "src/evaluations/application/use-case/reason-detail/create.use-case";
-import { DeleteReasonDetailUseCase } from "src/evaluations/application/use-case/reason-detail/delete.use-case";
-import { GetReasonDetailByIdUseCase } from "src/evaluations/application/use-case/reason-detail/get-by-id.use-case";
-import { GetAllReasonDetailsUseCase } from "src/evaluations/application/use-case/reason-detail/get-all.use-case";
-import { CountReasonDetailsUseCase } from "src/evaluations/application/use-case/reason-detail/count.use-case";
-import { ReasonDetailDTOMapper } from "../mapper/reason-detail-dto.mapper";
-import { ReasonDetailDTO } from "../dto/reason-detail.dto";
 import { EvaluationResponseDTO } from "../dto/evaluation-response.dto";
 import { EvaluationDetailRepository } from "src/evaluations/domain/repository/evaluation-detail.repository";
 import { EvaluationDetailResponseDTO } from "../dto/evaluation-detail-response.dto";
@@ -48,14 +41,7 @@ export class EvaluationController {
         private readonly deleteEvaluationDetailUC: DeleteEvaluationDetailUseCase,
         private readonly getEvaluationDetailByIdUC: GetEvaluationDetailByIdUseCase,
         private readonly getAllEvaluationDetailUC: GetAllEvaluationDetailsUseCase,
-        private readonly countEvaluationDetailUC: CountEvaluationDetailsUseCase,
-
-        //ReasonDetail
-        private readonly createReasonDetailUC: CreateReasonDetailUseCase,
-        private readonly deleteReasonDetailUC: DeleteReasonDetailUseCase,
-        private readonly getReasonDetailByIdUC: GetReasonDetailByIdUseCase,
-        private readonly getAllReasonDetailsUC: GetAllReasonDetailsUseCase,
-        private readonly countReasonDetailsUC: CountReasonDetailsUseCase
+        private readonly countEvaluationDetailUC: CountEvaluationDetailsUseCase
     ) { }
 
     @Post()
@@ -140,42 +126,6 @@ export class EvaluationController {
         @Param('id', ParseIntPipe) id: number
     ): Promise<void> {
         return this.deleteEvaluationDetailUC.execute(id);
-    }
-
-    //Reason Detail
-
-    @Post(':evaluationId/reason-details')
-    async createReasonDetail(
-        @Param('evaluationDetailId', ParseIntPipe) evaluationDetailId: number,
-        @Body() reasonDetailDto: ReasonDetailDTO
-    ): Promise<ReasonDetailDTO> {
-        const reasonDetail = await this.createReasonDetailUC.execute({
-            idEvaluationDetail: evaluationDetailId,
-            idReason: reasonDetailDto.idReason,
-        });
-        return ReasonDetailDTOMapper.toDTO(reasonDetail);
-    }
-
-    @Get(':evaluationId/reason-details/:reasonId')
-    async getReasonDetail(
-        @Param('evaluationId', ParseIntPipe) evaluationId: number,
-        @Param('reasonId', ParseIntPipe) reasonId: number
-    ): Promise<ResponseModel<ReasonDetailDTO>> {
-        const reasonDetails = (await this.getAllReasonDetailsUC.execute(evaluationId, reasonId))
-            .map(reasonDetail => ReasonDetailDTOMapper.toDTO(reasonDetail));
-
-        return {
-            count: await this.countReasonDetailsUC.execute(),
-            data: reasonDetails
-        };
-    }
-
-    @Delete(':evaluationId/reason-details/:reasonId')
-    async deleteReasonDetail(
-        @Param('evaluationId', ParseIntPipe) evaluationId: number,
-        @Param('reasonId', ParseIntPipe) reasonId: number
-    ): Promise<void> {
-        return this.deleteReasonDetailUC.execute(evaluationId, reasonId);
     }
 
 }

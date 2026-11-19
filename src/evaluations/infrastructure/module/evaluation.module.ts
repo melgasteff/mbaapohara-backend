@@ -10,8 +10,6 @@ import { UserTypeORMModel } from "../typeorm/model/user.typeorm.model";
 import { OfficeTypeORMModel } from "../typeorm/model/office.typeorm.model";
 import { EvaluationDetailTypeORMModel } from "../typeorm/model/evaluation-detail.typeorm.model";
 import { ItemTypeORMModel } from "../typeorm/model/item.typeorm.model";
-import { ReasonDetailTypeORMModel } from "../typeorm/model/reason-detail.typeorm.model";
-import { ReasonTypeORMModel } from "../typeorm/model/reason.typeorm.model";
 
 @Module({
     imports: [
@@ -22,9 +20,7 @@ import { ReasonTypeORMModel } from "../typeorm/model/reason.typeorm.model";
             UserTypeORMModel,
             OfficeTypeORMModel, 
             ItemTypeORMModel,
-            EvaluationDetailTypeORMModel, 
-            ReasonDetailTypeORMModel,
-            ReasonTypeORMModel
+            EvaluationDetailTypeORMModel
         ])
     ],
     providers: [
