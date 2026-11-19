@@ -52,7 +52,7 @@ src/companies/
 
 | Módulo final | Estilo | Viene de | Tarea |
 | --- | --- | --- | --- |
-| `catalogs` | Liviano | `cities`, `jobs`, tabla `tipo_contrato`; `countries` se elimina | 1.3 |
+| `catalogs` | Liviano | `cities`, `jobs`, tabla `tipo_contrato`; `countries` se elimina | 1.3 (hecha) |
 | `companies` | Liviano | `companies` + `offices` | 1.4 |
 | `auth` | Completo | `session-manager` + registro de `users` | 1.5 |
 | `users` | Liviano | `users` | 1.5 |
@@ -61,7 +61,7 @@ src/companies/
 | `moderation` | Completo | Nuevo | 2.3 |
 | `insights` | Liviano | Nuevo | Fase 3 |
 
-`jobs`, `categories` e `items` funcionan y no cambian por ahora: se mueven a su módulo final solo cuando
+`categories` e `items` funcionan y no cambian por ahora: se mueven a su módulo final solo cuando
 una tarea los modifique.
 
 ## Reglas entre módulos

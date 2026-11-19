@@ -1,0 +1,264 @@
+codigo_ine,departamento,distrito,nombre_original_ine
+0000,Asunción,Asunción,ASUNCIÓN
+0101,Concepción,Concepción,CONCEPCIÓN
+0102,Concepción,Belén,BELÉN
+0103,Concepción,Horqueta,HORQUETA
+0104,Concepción,Loreto,LORETO
+0105,Concepción,San Carlos del Apa,SAN CARLOS DEL APA
+0106,Concepción,San Lázaro,SAN LÁZARO
+0107,Concepción,Yby Yaú,YBY YAÚ
+0108,Concepción,Azote'y,AZOTE'Y
+0109,Concepción,Sargento José Félix López,SARGENTO JOSÉ FÉLIX LÓPEZ
+0110,Concepción,San Alfredo,SAN ALFREDO
+0111,Concepción,Paso Barreto,PASO BARRETO
+0112,Concepción,Arroyito,ARROYITO
+0113,Concepción,Paso Horqueta,PASO HORQUETA
+0114,Concepción,Itacuá,ITACUÁ
+0201,San Pedro,San Pedro del Ycuamandyyú,SAN PEDRO DEL YCUAMANDYYÚ
+0202,San Pedro,Antequera,ANTEQUERA
+0203,San Pedro,Choré,CHORÉ
+0204,San Pedro,General Elizardo Aquino,GENERAL ELIZARDO AQUINO
+0205,San Pedro,Itacurubí del Rosario,ITACURUBÍ DEL ROSARIO
+0206,San Pedro,Lima,LIMA
+0207,San Pedro,Nueva Germania,NUEVA GERMANIA
+0208,San Pedro,San Estanislao,SAN ESTANISLAO
+0209,San Pedro,San Pablo,SAN PABLO
+0210,San Pedro,Tacuatí,TACUATÍ
+0211,San Pedro,Unión,UNIÓN
+0212,San Pedro,25 de Diciembre,25 DE DICIEMBRE
+0213,San Pedro,Villa del Rosario,VILLA DEL ROSARIO
+0214,San Pedro,General Francisco Isidoro Resquín,GENERAL FRANCISCO ISIDORO RESQUÍN
+0215,San Pedro,Yataity del Norte,YATAITY DEL NORTE
+0216,San Pedro,Guajayvi,GUAJAYVI
+0217,San Pedro,Capiibary,CAPIIBARY
+0218,San Pedro,Santa Rosa del Aguaray,SANTA ROSA DEL AGUARAY
+0219,San Pedro,Yrybucua,YRYBUCUA
+0220,San Pedro,Liberación,LIBERACIÓN
+0221,San Pedro,San Vicente Pancholo,SAN VICENTE PANCHOLO
+0222,San Pedro,San José del Rosario,SAN JOSÉ DEL ROSARIO
+0301,Cordillera,Caacupé,CAACUPÉ
+0302,Cordillera,Altos,ALTOS
+0303,Cordillera,Arroyos y Esteros,ARROYOS Y ESTEROS
+0304,Cordillera,Atyrá,ATYRÁ
+0305,Cordillera,Caraguatay,CARAGUATAY
+0306,Cordillera,Emboscada,EMBOSCADA
+0307,Cordillera,Eusebio Ayala,EUSEBIO AYALA
+0308,Cordillera,Isla Pucú,ISLA PUCÚ
+0309,Cordillera,Itacurubí de la Cordillera,ITACURUBÍ DE LA CORDILLERA
+0310,Cordillera,Juan de Mena,JUAN DE MENA
+0311,Cordillera,Loma Grande,LOMA GRANDE
+0312,Cordillera,Mbocayaty del Yhaguy,MBOCAYATY DEL YHAGUY
+0313,Cordillera,Nueva Colombia,NUEVA COLOMBIA
+0314,Cordillera,Piribebuy,PIRIBEBUY
+0315,Cordillera,Primero de Marzo,PRIMERO DE MARZO
+0316,Cordillera,San Bernardino,SAN BERNARDINO
+0317,Cordillera,Santa Elena,SANTA ELENA
+0318,Cordillera,Tobatí,TOBATÍ
+0319,Cordillera,Valenzuela,VALENZUELA
+0320,Cordillera,San José Obrero,SAN JOSÉ OBRERO
+0401,Guairá,Villarrica,VILLARRICA
+0402,Guairá,Borja,BORJA
+0403,Guairá,Capitán Mauricio José Troche,CAPITÁN MAURICIO JOSÉ TROCHE
+0404,Guairá,Coronel Martínez,CORONEL MARTÍNEZ
+0405,Guairá,Félix Pérez Cardozo,FÉLIX PÉREZ CARDOZO
+0406,Guairá,Gral. Eugenio A. Garay,GRAL. EUGENIO A. GARAY
+0407,Guairá,Independencia,INDEPENDENCIA
+0408,Guairá,Itapé,ITAPÉ
+0409,Guairá,Iturbe,ITURBE
+0410,Guairá,José Fassardi,JOSÉ FASSARDI
+0411,Guairá,Mbocayaty,MBOCAYATY
+0412,Guairá,Natalicio Talavera,NATALICIO TALAVERA
+0413,Guairá,Ñumí,ÑUMÍ
+0414,Guairá,San Salvador,SAN SALVADOR
+0415,Guairá,Yataity,YATAITY
+0416,Guairá,Doctor Bottrell,DOCTOR BOTTRELL
+0417,Guairá,Paso Yobai,PASO YOBAI
+0418,Guairá,Tebicuary,TEBICUARY
+0501,Caaguazú,Coronel Oviedo,CORONEL OVIEDO
+0502,Caaguazú,Caaguazú,CAAGUAZÚ
+0503,Caaguazú,Carayaó,CARAYAÓ
+0504,Caaguazú,Dr. Cecilio Báez,DR. CECILIO BÁEZ
+0505,Caaguazú,Santa Rosa del Mbutuy,SANTA ROSA DEL MBUTUY
+0506,Caaguazú,Dr. Juan Manuel Frutos,DR. JUAN MANUEL FRUTOS
+0507,Caaguazú,Repatriación,REPATRIACIÓN
+0508,Caaguazú,Nueva Londres,NUEVA LONDRES
+0509,Caaguazú,San Joaquín,SAN JOAQUÍN
+0510,Caaguazú,San José de los Arroyos,SAN JOSÉ DE LOS ARROYOS
+0511,Caaguazú,Yhú,YHÚ
+0512,Caaguazú,Dr. J. Eulogio Estigarribia,DR. J. EULOGIO ESTIGARRIBIA
+0513,Caaguazú,R.I. 3 Corrales,R.I. 3 CORRALES
+0514,Caaguazú,Raúl Arsenio Oviedo,RAÚL ARSENIO OVIEDO
+0515,Caaguazú,José Domingo Ocampos,JOSÉ DOMINGO OCAMPOS
+0516,Caaguazú,Mariscal Francisco Solano López,MARISCAL FRANCISCO SOLANO LÓPEZ
+0517,Caaguazú,La Pastora,LA PASTORA
+0518,Caaguazú,3 de Febrero,3 DE FEBRERO
+0519,Caaguazú,Simón Bolivar,SIMÓN BOLIVAR
+0520,Caaguazú,Vaquería,VAQUERÍA
+0521,Caaguazú,Tembiaporá,TEMBIAPORÁ
+0522,Caaguazú,Nueva Toledo,NUEVA TOLEDO
+0601,Caazapá,Caazapá,CAAZAPÁ
+0602,Caazapá,Abaí,ABAÍ
+0603,Caazapá,Buena Vista,BUENA VISTA
+0604,Caazapá,Dr. Moisés S. Bertoni,DR. MOISÉS S. BERTONI
+0605,Caazapá,Gral. Higinio Morinigo,GRAL. HIGINIO MORINIGO
+0606,Caazapá,Maciel,MACIEL
+0607,Caazapá,San Juan Nepomuceno,SAN JUAN NEPOMUCENO
+0608,Caazapá,Tavaí,TAVAÍ
+0609,Caazapá,Yegros,YEGROS
+0610,Caazapá,Yuty,YUTY
+0611,Caazapá,3 de Mayo,3 DE MAYO
+0701,Itapúa,Encarnación,ENCARNACIÓN
+0702,Itapúa,Bella Vista,BELLA VISTA
+0703,Itapúa,Cambyretá,CAMBYRETÁ
+0704,Itapúa,Capitán Meza,CAPITÁN MEZA
+0705,Itapúa,Capitán Miranda,CAPITÁN MIRANDA
+0706,Itapúa,Nueva Alborada,NUEVA ALBORADA
+0707,Itapúa,Carmen del Paraná,CARMEN DEL PARANÁ
+0708,Itapúa,Coronel Bogado,CORONEL BOGADO
+0709,Itapúa,Carlos Antonio López,CARLOS ANTONIO LÓPEZ
+0710,Itapúa,Natalio,NATALIO
+0711,Itapúa,Fram,FRAM
+0712,Itapúa,General Artigas,GENERAL ARTIGAS
+0713,Itapúa,General Delgado,GENERAL DELGADO
+0714,Itapúa,Hohenau,HOHENAU
+0715,Itapúa,Jesús,JESÚS
+0716,Itapúa,José Leandro Oviedo,JOSÉ LEANDRO OVIEDO
+0717,Itapúa,Obligado,OBLIGADO
+0718,Itapúa,Mayor Julio Dionisio Otaño,MAYOR JULIO DIONISIO OTAÑO
+0719,Itapúa,San Cosme y Damián,SAN COSME Y DAMIÁN
+0720,Itapúa,San Pedro del Paraná,SAN PEDRO DEL PARANÁ
+0721,Itapúa,San Rafael del Paraná,SAN RAFAEL DEL PARANÁ
+0722,Itapúa,Trinidad,TRINIDAD
+0723,Itapúa,Edelira,EDELIRA
+0724,Itapúa,Tomás Romero Pereira,TOMÁS ROMERO PEREIRA
+0725,Itapúa,Alto Verá,ALTO VERÁ
+0726,Itapúa,La Paz,LA PAZ
+0727,Itapúa,Yatytay,YATYTAY
+0728,Itapúa,San Juan del Paraná,SAN JUAN DEL PARANÁ
+0729,Itapúa,Pirapó,PIRAPÓ
+0730,Itapúa,Itapúa Poty,ITAPÚA POTY
+0801,Misiones,San Juan Bautista de las Misiones,SAN JUAN BAUTISTA DE LAS MISIONES
+0802,Misiones,Ayolas,AYOLAS
+0803,Misiones,San Ignacio,SAN IGNACIO
+0804,Misiones,San Miguel,SAN MIGUEL
+0805,Misiones,San Patricio,SAN PATRICIO
+0806,Misiones,Santa María,SANTA MARÍA
+0807,Misiones,Santa Rosa,SANTA ROSA
+0808,Misiones,Santiago,SANTIAGO
+0809,Misiones,Villa Florida,VILLA FLORIDA
+0810,Misiones,Yabebyry,YABEBYRY
+0901,Paraguarí,Paraguarí,PARAGUARÍ
+0902,Paraguarí,Acahay,ACAHAY
+0903,Paraguarí,Caapucú,CAAPUCÚ
+0904,Paraguarí,Caballero,CABALLERO
+0905,Paraguarí,Carapeguá,CARAPEGUÁ
+0906,Paraguarí,Escobar,ESCOBAR
+0907,Paraguarí,La Colmena,LA COLMENA
+0908,Paraguarí,Mbuyapey,MBUYAPEY
+0909,Paraguarí,Pirayú,PIRAYÚ
+0910,Paraguarí,Quiindy,QUIINDY
+0911,Paraguarí,Quyquyhó,QUYQUYHÓ
+0912,Paraguarí,Roque Gonzalez de Santa Cruz,ROQUE GONZALEZ DE SANTA CRUZ
+0913,Paraguarí,Sapucái,SAPUCÁI
+0914,Paraguarí,Tebicuary-Mí,TEBICUARY-MÍ
+0915,Paraguarí,Yaguarón,YAGUARÓN
+0916,Paraguarí,Ybycuí,YBYCUÍ
+0917,Paraguarí,Ybytymí,YBYTYMÍ
+0918,Paraguarí,María Antonia,MARÍA ANTONIA
+1001,Alto Paraná,Ciudad del Este,CIUDAD DEL ESTE
+1002,Alto Paraná,Presidente Franco,PRESIDENTE FRANCO
+1003,Alto Paraná,Domingo Martínez de Irala,DOMINGO MARTÍNEZ DE IRALA
+1004,Alto Paraná,Dr. Juan León Mallorquín,DR. JUAN LEÓN MALLORQUÍN
+1005,Alto Paraná,Hernandarias,HERNANDARIAS
+1006,Alto Paraná,Itakyry,ITAKYRY
+1007,Alto Paraná,Juan E. O'Leary,JUAN E. O'LEARY
+1008,Alto Paraná,Ñacunday,ÑACUNDAY
+1009,Alto Paraná,Yguazú,YGUAZÚ
+1010,Alto Paraná,Los Cedrales,LOS CEDRALES
+1011,Alto Paraná,Minga Guazú,MINGA GUAZÚ
+1012,Alto Paraná,San Cristóbal,SAN CRISTÓBAL
+1013,Alto Paraná,Santa Rita,SANTA RITA
+1014,Alto Paraná,Naranjal,NARANJAL
+1015,Alto Paraná,Santa Rosa del Monday,SANTA ROSA DEL MONDAY
+1016,Alto Paraná,Minga Porá,MINGA PORÁ
+1017,Alto Paraná,Mbaracayú,MBARACAYÚ
+1018,Alto Paraná,San Alberto,SAN ALBERTO
+1019,Alto Paraná,Iruña,IRUÑA
+1020,Alto Paraná,Santa Fe del Paraná,SANTA FE DEL PARANÁ
+1021,Alto Paraná,Tavapy,TAVAPY
+1022,Alto Paraná,Dr. Raúl Peña,DR. RAÚL PEÑA
+1101,Central,Areguá,AREGUÁ
+1102,Central,Capiatá,CAPIATÁ
+1103,Central,Fernando de la Mora,FERNANDO DE LA MORA
+1104,Central,Guarambaré,GUARAMBARÉ
+1105,Central,Itá,ITÁ
+1106,Central,Itauguá,ITAUGUÁ
+1107,Central,Lambaré,LAMBARÉ
+1108,Central,Limpio,LIMPIO
+1109,Central,Luque,LUQUE
+1110,Central,Mariano Roque Alonso,MARIANO ROQUE ALONSO
+1111,Central,Nueva Italia,NUEVA ITALIA
+1112,Central,Ñemby,ÑEMBY
+1113,Central,San Antonio,SAN ANTONIO
+1114,Central,San Lorenzo,SAN LORENZO
+1115,Central,Villa Elisa,VILLA ELISA
+1116,Central,Villeta,VILLETA
+1117,Central,Ypacaraí,YPACARAÍ
+1118,Central,Ypané,YPANÉ
+1119,Central,J. Augusto Saldívar,J. AUGUSTO SALDÍVAR
+1201,Ñeembucú,Pilar,PILAR
+1202,Ñeembucú,Alberdi,ALBERDI
+1203,Ñeembucú,Cerrito,CERRITO
+1204,Ñeembucú,Desmochados,DESMOCHADOS
+1205,Ñeembucú,Gral. José Eduvigis Díaz,GRAL. JOSÉ EDUVIGIS DÍAZ
+1206,Ñeembucú,Guazú-Cuá,GUAZÚ-CUÁ
+1207,Ñeembucú,Humaitá,HUMAITÁ
+1208,Ñeembucú,Isla Umbú,ISLA UMBÚ
+1209,Ñeembucú,Laureles,LAURELES
+1210,Ñeembucú,Mayor José Dejesús Martínez,MAYOR JOSÉ DEJESÚS MARTÍNEZ
+1211,Ñeembucú,Paso de Patria,PASO DE PATRIA
+1212,Ñeembucú,San Juan Bautista de Ñeembucú,SAN JUAN BAUTISTA DE ÑEEMBUCÚ
+1213,Ñeembucú,Tacuaras,TACUARAS
+1214,Ñeembucú,Villa Franca,VILLA FRANCA
+1215,Ñeembucú,Villa Oliva,VILLA OLIVA
+1216,Ñeembucú,Villalbín,VILLALBÍN
+1301,Amambay,Pedro Juan Caballero,PEDRO JUAN CABALLERO
+1302,Amambay,Bella Vista,BELLA VISTA
+1303,Amambay,Capitán Bado,CAPITÁN BADO
+1304,Amambay,Zanja Pytá,ZANJA PYTÁ
+1305,Amambay,Karapaí,KARAPAÍ
+1306,Amambay,Cerro Corá,CERRO CORÁ
+1401,Canindeyú,Salto del Guairá,SALTO DEL GUAIRÁ
+1402,Canindeyú,Corpus Christi,CORPUS CHRISTI
+1403,Canindeyú,Villa Curuguaty,VILLA CURUGUATY
+1404,Canindeyú,Villa Ygatimí,VILLA YGATIMÍ
+1405,Canindeyú,Itanará,ITANARÁ
+1406,Canindeyú,Ypejhú,YPEJHÚ
+1407,Canindeyú,Francisco Caballero Alvarez,FRANCISCO CABALLERO ALVAREZ
+1408,Canindeyú,Katueté,KATUETÉ
+1409,Canindeyú,La Paloma del Espíritu Santo,LA PALOMA DEL ESPÍRITU SANTO
+1410,Canindeyú,Nueva Esperanza,NUEVA ESPERANZA
+1411,Canindeyú,Yasy Cañy,YASY CAÑY
+1412,Canindeyú,Ybyrarobaná,YBYRAROBANÁ
+1413,Canindeyú,Yby Pytá,YBY PYTÁ
+1414,Canindeyú,Maracaná,MARACANÁ
+1415,Canindeyú,Puerto Adela,PUERTO ADELA
+1416,Canindeyú,Laurel,LAUREL
+1502,Presidente Hayes,Benjamín Aceval,BENJAMÍN ACEVAL
+1503,Presidente Hayes,Puerto Pinasco,PUERTO PINASCO
+1504,Presidente Hayes,Villa Hayes,VILLA HAYES
+1505,Presidente Hayes,Nanawa,NANAWA
+1506,Presidente Hayes,José Falcón,JOSÉ FALCÓN
+1507,Presidente Hayes,Tte. 1° Manuel Irala Fernández,TTE. 1° MANUEL IRALA FERNÁNDEZ
+1508,Presidente Hayes,Teniente Esteban Martínez,TENIENTE ESTEBAN MARTÍNEZ
+1509,Presidente Hayes,General José María Bruguez,GENERAL JOSÉ MARÍA BRUGUEZ
+1510,Presidente Hayes,Campo Aceval,CAMPO ACEVAL
+1511,Presidente Hayes,Nueva Asunción,NUEVA ASUNCIÓN
+1602,Boquerón,Mariscal José Félix Estigarribia,MARISCAL JOSÉ FÉLIX ESTIGARRIBIA
+1604,Boquerón,Filadelfia,FILADELFIA
+1605,Boquerón,Loma Plata,LOMA PLATA
+1606,Boquerón,Boquerón,BOQUERÓN
+1701,Alto Paraguay,Fuerte Olimpo,FUERTE OLIMPO
+1702,Alto Paraguay,Puerto Casado,PUERTO CASADO
+1704,Alto Paraguay,Bahía Negra,BAHÍA NEGRA
+1705,Alto Paraguay,Carmelo Peralta,CARMELO PERALTA
