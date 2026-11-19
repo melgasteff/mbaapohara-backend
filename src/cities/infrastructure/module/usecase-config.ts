@@ -2,7 +2,7 @@ import { Provider } from "@nestjs/common";
 import { CountCitiesUseCase } from "src/cities/application/use-case/count.use-case";
 import { CreateCityUseCase } from "src/cities/application/use-case/create.use-case";
 import { DeleteCityUseCase } from "src/cities/application/use-case/delete.use-case";
-import { GetAllCitiesUseCase } from "src/cities/application/use-case/getAll.use-case";
+import { GetAllCitiesUseCase } from "src/cities/application/use-case/get-all.use-case";
 import { GetCityByIdUseCase } from "src/cities/application/use-case/get-city-by-id.use-case";
 import { UpdateCityUseCase } from "src/cities/application/use-case/update.use-case";
 import { CityRepository } from "src/cities/domain/repository/city.repository";

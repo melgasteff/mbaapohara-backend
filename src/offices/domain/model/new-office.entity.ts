@@ -1,4 +1,4 @@
-import { Company } from "./ company.entity";
+import { Company } from "./company.entity";
 
 export class NewOffice {
     private nombre: string

@@ -5,7 +5,7 @@ import { EvaluationRepository } from "src/evaluations/domain/repository/evaluati
 import { EvaluationTypeORMModel } from "../model/evaluation.typeorm.model";
 import { Repository } from "typeorm";
 import { EvaluationMapper } from "../../mapper/evaluation.mapper";
-import { Evaluation } from "src/evaluations/domain/model/evauation.entity";
+import { Evaluation } from "src/evaluations/domain/model/evaluation.entity";
 
 @Injectable()
 export class EvaluationTypeORMRepository implements EvaluationRepository {

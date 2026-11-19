@@ -3,7 +3,7 @@ import { CountItemsUseCase } from "src/items/application/use-case/count.use-case
 import { CreateItemUseCase } from "src/items/application/use-case/create.use-case";
 import { DeleteItemUseCase } from "src/items/application/use-case/delete.use-case";
 import { GetItemByIdUseCase } from "src/items/application/use-case/get-by-id.use-case";
-import { GetAllItemsUseCase } from "src/items/application/use-case/getAll.use-case";
+import { GetAllItemsUseCase } from "src/items/application/use-case/get-all.use-case";
 import { UpdateItemUseCase } from "src/items/application/use-case/update.use-case";
 import { ItemRepository } from "src/items/domain/repository/item.repository";
 

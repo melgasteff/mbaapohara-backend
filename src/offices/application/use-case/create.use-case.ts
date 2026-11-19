@@ -1,9 +1,9 @@
-import { Company } from "src/offices/domain/model/ company.entity";
+import { Company } from "src/offices/domain/model/company.entity";
 import { OfficeRepository } from "src/offices/domain/repository/office.repository";
 import { OfficeAlreadyExistsException } from "../exception/office-already-exists.exception";
 import { NewOffice } from "src/offices/domain/model/new-office.entity";
 import { Office } from "src/offices/domain/model/office.entity";
-import { CompanyRepository } from "src/offices/domain/repository/company.respository";
+import { CompanyRepository } from "src/offices/domain/repository/company.repository";
 
 export class CreateOfficeUseCase {
   constructor(

@@ -1,5 +1,5 @@
 import { Company } from "../model/company.entity";
-import { NewCompany } from "../model/new-comapny.entity";
+import { NewCompany } from "../model/new-company.entity";
 
 export abstract class CompanyRepository{
     abstract create(newCompany: NewCompany): Promise<Company>

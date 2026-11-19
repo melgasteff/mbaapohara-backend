@@ -1,7 +1,7 @@
 import { Office } from "src/offices/domain/model/office.entity";
 import { OfficeRepository } from "src/offices/domain/repository/office.repository";
 import { OfficeNotFoundException } from "../exception/office-not-found.exception";
-import { CompanyRepository } from "src/offices/domain/repository/company.respository";
+import { CompanyRepository } from "src/offices/domain/repository/company.repository";
 
 export class UpdateOfficeUseCase {
   constructor(

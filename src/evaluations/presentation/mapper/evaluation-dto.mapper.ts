@@ -1,4 +1,4 @@
-import { Evaluation } from "src/evaluations/domain/model/evauation.entity";
+import { Evaluation } from "src/evaluations/domain/model/evaluation.entity";
 import { EvaluationDTO } from "../dto/evaluation.dto";
 
 export class EvaluationDTOMapper {

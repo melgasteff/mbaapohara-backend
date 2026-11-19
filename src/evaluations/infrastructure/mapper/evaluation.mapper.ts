@@ -4,7 +4,7 @@ import { UserMapper } from "./user.mapper";
 import { CompanyMapper } from "./company.mapper";
 import { OfficeMapper } from "./office.mapper";
 import { NewEvaluation } from "src/evaluations/domain/model/new-evaluation.entity";
-import { Evaluation } from "src/evaluations/domain/model/evauation.entity";
+import { Evaluation } from "src/evaluations/domain/model/evaluation.entity";
 
 export class EvaluationMapper {
     static toDomain(evaluationTypeOrm: EvaluationTypeORMModel): Evaluation {

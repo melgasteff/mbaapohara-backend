@@ -1,6 +1,6 @@
 import { Company } from "src/companies/domain/model/company.entity";
 import { CompanyTypeORMModel } from "../typeorm/model/company.typeorm.model";
-import { NewCompany } from "src/companies/domain/model/new-comapny.entity";
+import { NewCompany } from "src/companies/domain/model/new-company.entity";
 
 export class CompanyMapper{
     static toDomain(companyTypeOrm: CompanyTypeORMModel): Company{

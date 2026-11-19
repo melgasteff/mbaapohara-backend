@@ -1,4 +1,4 @@
-import { Evaluation } from "../model/evauation.entity";
+import { Evaluation } from "../model/evaluation.entity";
 import { NewEvaluation } from "../model/new-evaluation.entity";
 
 export abstract class EvaluationRepository {

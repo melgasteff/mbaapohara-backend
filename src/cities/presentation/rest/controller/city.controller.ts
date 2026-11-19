@@ -7,9 +7,9 @@ import { CreateCityUseCase } from "src/cities/application/use-case/create.use-ca
 import { UpdateCityUseCase } from "src/cities/application/use-case/update.use-case";
 import { DeleteCityUseCase } from "src/cities/application/use-case/delete.use-case";
 import { GetCityByIdUseCase } from "src/cities/application/use-case/get-city-by-id.use-case";
-import { GetAllCitiesUseCase } from "src/cities/application/use-case/getAll.use-case";
+import { GetAllCitiesUseCase } from "src/cities/application/use-case/get-all.use-case";
 import { CityDTO } from "../dto/city.dto";
-import { GlobalExceptionFilter } from "src/cities/infrastructure/exception-filter/exceptionFilter";
+import { GlobalExceptionFilter } from "src/cities/infrastructure/exception-filter/exception-filter";
 
 @UseFilters(GlobalExceptionFilter)
 @Controller('cities')

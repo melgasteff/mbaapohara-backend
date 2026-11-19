@@ -5,7 +5,7 @@ import { DeleteOfficeUseCase } from "src/offices/application/use-case/delete.use
 import { GetAllOfficesUseCase } from "src/offices/application/use-case/get-all.use-case";
 import { GetOfficeByIdUseCase } from "src/offices/application/use-case/get-by-id.use-case";
 import { UpdateOfficeUseCase } from "src/offices/application/use-case/update.use-case";
-import { CompanyRepository } from "src/offices/domain/repository/company.respository";
+import { CompanyRepository } from "src/offices/domain/repository/company.repository";
 import { OfficeRepository } from "src/offices/domain/repository/office.repository";
 
 export default <Provider[]>[

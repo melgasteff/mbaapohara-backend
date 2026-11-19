@@ -3,7 +3,7 @@ import { CountCategoriesUseCase } from "src/categories/application/use-case/coun
 import { CreateCategoryUseCase } from "src/categories/application/use-case/create.use-case";
 import { DeleteCategoryUseCase } from "src/categories/application/use-case/delete.use-case";
 import { GetCategoryByIdUseCase } from "src/categories/application/use-case/get-category-by-id.use-case";
-import { GetAllCategoriesUseCase } from "src/categories/application/use-case/getAll.use-case";
+import { GetAllCategoriesUseCase } from "src/categories/application/use-case/get-all.use-case";
 import { UpdateCategoryUseCase } from "src/categories/application/use-case/update.use-case";
 import { GlobalExceptionFilter } from "src/categories/infrastructure/exception-filter/exception-filter";
 import { NewCategoryDTO } from "../dto/new-category.dto";

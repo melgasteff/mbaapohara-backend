@@ -1,5 +1,5 @@
 import { User } from "src/session-manager/domain/model/user.entity";
-import { UserRepository } from "src/session-manager/domain/repository/user.respository";
+import { UserRepository } from "src/session-manager/domain/repository/user.repository";
 import { UnauthorizedException } from "../exception/unauthorized.exception";
 import { UserNotFoundException } from "../exception/user-not-found.exception";
 import * as bcrypt from 'bcrypt';

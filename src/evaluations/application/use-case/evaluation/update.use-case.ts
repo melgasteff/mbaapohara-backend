@@ -1,4 +1,4 @@
-import { Evaluation } from "src/evaluations/domain/model/evauation.entity";
+import { Evaluation } from "src/evaluations/domain/model/evaluation.entity";
 import { UpdateEvaluationRequest } from "../../request/update-evaluation.request";
 import { EvaluationRepository } from "src/evaluations/domain/repository/evaluation.repository";
 import { JobRepository } from "src/evaluations/domain/repository/job.repository";

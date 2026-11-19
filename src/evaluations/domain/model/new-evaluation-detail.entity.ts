@@ -1,4 +1,4 @@
-import { Evaluation } from "./evauation.entity"
+import { Evaluation } from "./evaluation.entity"
 import { Item } from "./item.entity"
 
 export class NewEvaluationDetail {

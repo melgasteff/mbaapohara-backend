@@ -1,5 +1,5 @@
 import { off } from "process"
-import { Company } from "./ company.entity"
+import { Company } from "./company.entity"
 import { Job } from "./job.entity"
 import { Office } from "./office.entity"
 import { User } from "./user.entity"

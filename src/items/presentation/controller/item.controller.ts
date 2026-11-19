@@ -3,9 +3,9 @@ import { CountItemsUseCase } from "src/items/application/use-case/count.use-case
 import { CreateItemUseCase } from "src/items/application/use-case/create.use-case";
 import { DeleteItemUseCase } from "src/items/application/use-case/delete.use-case";
 import { GetItemByIdUseCase } from "src/items/application/use-case/get-by-id.use-case";
-import { GetAllItemsUseCase } from "src/items/application/use-case/getAll.use-case";
+import { GetAllItemsUseCase } from "src/items/application/use-case/get-all.use-case";
 import { UpdateItemUseCase } from "src/items/application/use-case/update.use-case";
-import { GlobalExceptionFilter } from "src/items/infrastructure/exception-filter/exceptionFilter";
+import { GlobalExceptionFilter } from "src/items/infrastructure/exception-filter/exception-filter";
 import { NewItemDTO } from "../dto/new-item.dto";
 import { ItemDTO } from "../dto/item.dto";
 import { ItemDTOMapper } from "../mapper/item-dto.mapper";

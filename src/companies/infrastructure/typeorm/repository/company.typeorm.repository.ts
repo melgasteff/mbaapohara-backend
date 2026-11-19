@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Company } from "src/companies/domain/model/company.entity";
-import { NewCompany } from "src/companies/domain/model/new-comapny.entity";
+import { NewCompany } from "src/companies/domain/model/new-company.entity";
 import { CompanyRepository } from "src/companies/domain/repository/company.repository";
 import { CompanyTypeORMModel } from "../model/company.typeorm.model";
 import { Repository } from "typeorm";

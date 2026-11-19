@@ -1,4 +1,4 @@
-import { NewCompany } from "src/companies/domain/model/new-comapny.entity";
+import { NewCompany } from "src/companies/domain/model/new-company.entity";
 import { CompanyRepository } from "src/companies/domain/repository/company.repository";
 import { CompanyAlreadyExistsException } from "../exception/company-already-exists.exception";
 import { Company } from "src/companies/domain/model/company.entity";

@@ -4,7 +4,7 @@ import { CompanyRepository } from "src/evaluations/domain/repository/company.rep
 import { CompanyTypeORMModel } from "../model/company.typeorm.model"
 import { Repository } from "typeorm"
 import { CompanyMapper } from "../../mapper/company.mapper"
-import { Company } from "src/evaluations/domain/model/ company.entity"
+import { Company } from "src/evaluations/domain/model/company.entity"
 
 
 @Injectable()

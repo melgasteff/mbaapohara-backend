@@ -1,4 +1,4 @@
-import { Company } from "src/offices/domain/model/ company.entity"
+import { Company } from "src/offices/domain/model/company.entity"
 import { CompanyDTO } from "../dto/company.dto"
 
 export class CompanyDTOMapper{
