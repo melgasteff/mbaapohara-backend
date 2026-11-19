@@ -1,3 +1,4 @@
+import { ApiTags } from "@nestjs/swagger";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
 import { CountCompaniesUseCase } from "src/companies/application/use-case/count.use-case";
 import { CreateCompanyUseCase } from "src/companies/application/use-case/create.use-case";
@@ -12,6 +13,7 @@ import { CompanyDTO } from "../dto/company.dto";
 import { NewCommpanyDTO } from "../dto/new-company.dto";
 
 @UseFilters(GlobalExceptionFilter)
+@ApiTags('Empresas')
 @Controller('companies')
 export class CompanyController {
     constructor(

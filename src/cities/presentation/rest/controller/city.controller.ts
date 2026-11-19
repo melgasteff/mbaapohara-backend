@@ -1,3 +1,4 @@
+import { ApiTags } from "@nestjs/swagger";
 import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch, Delete, Put, UseFilters } from "@nestjs/common";
 import { CityDTOMapper } from "../mapper/city-dto.mapper";
 import { CountCitiesUseCase } from "src/cities/application/use-case/count.use-case";
@@ -12,6 +13,7 @@ import { CityDTO } from "../dto/city.dto";
 import { GlobalExceptionFilter } from "src/cities/infrastructure/exception-filter/exception-filter";
 
 @UseFilters(GlobalExceptionFilter)
+@ApiTags('Ciudades')
 @Controller('cities')
 export class CityController {
     constructor(
@@ -29,9 +31,7 @@ export class CityController {
     }
     @Get()
     async getAllCities (): Promise<ResponseModel<CityDTO>> {
-        console.log('controlador')
         const cityDto = (await this.getAllCitiesUC.execute()).map(ciudad => CityDTOMapper.toDTO(ciudad));
-        console.log(cityDto)
         return {
             count: await this.countCitiesUC.execute(),
             data: cityDto

@@ -1,3 +1,4 @@
+import { ApiTags } from "@nestjs/swagger";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
 import { CountCountriesUseCase } from "src/countries/application/use-case/count.use-case";
 import { CreateCountryUseCase } from "src/countries/application/use-case/create.use-case";
@@ -12,6 +13,7 @@ import { CountryDTO } from "../dto/country.dto";
 import { GlobalExceptionFilter } from "src/countries/infrastructure/exception-filter/exception-filter";
 
 @UseFilters(GlobalExceptionFilter)
+@ApiTags('Países')
 @Controller('countries')
 export class CountryController {
     constructor(

@@ -1,3 +1,4 @@
+import { ApiTags } from "@nestjs/swagger";
 import { Body, Controller, Post, UseFilters } from "@nestjs/common";
 import { LoginUseCase } from "src/session-manager/application/use-case/login.use-case";
 import { GlobalExceptionFilter } from "src/session-manager/infrastructure/exception-filter/exception-filter";
@@ -5,6 +6,7 @@ import { UserDTO } from "../dto/user.dto";
 
 
 @UseFilters(GlobalExceptionFilter)
+@ApiTags('Login')
 @Controller('login')
 export class LoginController {
     constructor(

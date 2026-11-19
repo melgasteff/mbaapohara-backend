@@ -1,3 +1,4 @@
+import { ApiTags } from "@nestjs/swagger";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
 import { CountUsersUseCase } from "src/users/application/use-case/count.use-case";
 import { CreateUserUseCase } from "src/users/application/use-case/create.use-case";
@@ -13,6 +14,7 @@ import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto
 import { GlobalExceptionFilter } from "src/users/infrastructure/exception-filter/exception-filter";
 
 @UseFilters(GlobalExceptionFilter)
+@ApiTags('Usuarios')
 @Controller('users')
 export class UserController {
     constructor(

@@ -1,3 +1,4 @@
+import { ApiTags } from "@nestjs/swagger";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
 import { CountOfficesUseCase } from "src/offices/application/use-case/count.use-case";
 import { CreateOfficeUseCase } from "src/offices/application/use-case/create.use-case";
@@ -13,6 +14,7 @@ import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto
 import { OfficeMapper } from "src/offices/infrastructure/mapper/office.mapper";
 
 @UseFilters(GlobalExceptionFilter)
+@ApiTags('Locales')
 @Controller('offices')
 export class OfficeController {
     constructor(
