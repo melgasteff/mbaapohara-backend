@@ -54,8 +54,8 @@ src/companies/
 | --- | --- | --- | --- |
 | `catalogs` | Liviano | `cities`, `jobs`, tabla `tipo_contrato`; `countries` se elimina | 1.3 (hecha) |
 | `companies` | Liviano | `companies` + `offices` | 1.4 (hecha) |
-| `auth` | Completo | `session-manager` + registro de `users` | 1.5 |
-| `users` | Liviano | `users` | 1.5 |
+| `auth` | Completo | `session-manager` + registro de `users` | 1.5 (hecha) |
+| `users` | Liviano | `users` | 1.5 (hecha) |
 | `criteria` | Liviano | `categories` + `items` (los motivos se eliminaron en la 1.1, R4) | Fase 3 |
 | `reviews` | Completo | `evaluations` | Fase 3 |
 | `moderation` | Completo | Nuevo | 2.3 |
