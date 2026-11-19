@@ -1,3 +1,4 @@
+import { Page, PageRequest, pageOffset } from "src/shared/domain/page";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ItemRepository } from "src/items/domain/repository/item.repository";
@@ -44,7 +45,12 @@ export class ItemTypeORMRepository implements ItemRepository {
     await this.itemRepo.delete(id);
   }
 
-  async count(): Promise<number> {
-    return this.itemRepo.count();
-  }
+  async getPage(request: PageRequest): Promise<Page<Item>> {
+        const [rows, total] = await this.itemRepo.findAndCount({
+            order: { id: 'ASC' },
+            skip: pageOffset(request),
+            take: request.pageSize,
+        });
+        return { data: rows.map(row => ItemMapper.toDomain(row)), total, page: request.page, pageSize: request.pageSize };
+    }
 }

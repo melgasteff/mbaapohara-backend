@@ -1,3 +1,4 @@
+import { Page, PageRequest } from "src/shared/domain/page";
 import { Evaluation } from "../model/evaluation.entity";
 import { NewEvaluation } from "../model/new-evaluation.entity";
 
@@ -7,5 +8,5 @@ export abstract class EvaluationRepository {
     abstract getById(id: number): Promise<Evaluation | null>;
     abstract update(id: number, evaluation: Partial<Evaluation>): Promise<Evaluation>;
     abstract delete(id: number): Promise<void>;
-    abstract count(): Promise<number>;
+    abstract getPage(request: PageRequest): Promise<Page<Evaluation>>;
 }

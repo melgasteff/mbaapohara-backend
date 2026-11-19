@@ -1,5 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
-import { CountCategoriesUseCase } from "src/categories/application/use-case/count.use-case";
+import { ApiTags } from "@nestjs/swagger";
+import { Body, Query, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
+import { mapPage, Page } from "src/shared/domain/page";
+import { PaginationQueryDTO } from "src/shared/infrastructure/rest/pagination-query.dto";
 import { CreateCategoryUseCase } from "src/categories/application/use-case/create.use-case";
 import { DeleteCategoryUseCase } from "src/categories/application/use-case/delete.use-case";
 import { GetCategoryByIdUseCase } from "src/categories/application/use-case/get-category-by-id.use-case";
@@ -9,9 +11,9 @@ import { GlobalExceptionFilter } from "src/categories/infrastructure/exception-f
 import { NewCategoryDTO } from "../dto/new-category.dto";
 import { CategoryDTO } from "../dto/category.dto";
 import { CategoryDTOMapper } from "../mapper/category-dto.mapper";
-import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 
 @UseFilters(GlobalExceptionFilter)
+@ApiTags('Categorías')
 @Controller('categories')
 export class CategoryController {
     constructor(
@@ -19,8 +21,7 @@ export class CategoryController {
         private readonly updateCategoryUC: UpdateCategoryUseCase,
         private readonly deleteCategoryUC: DeleteCategoryUseCase,
         private readonly getCategoryByIdUC: GetCategoryByIdUseCase,
-        private readonly getAllCategoriesUC: GetAllCategoriesUseCase,
-        private readonly countCategoriesUC: CountCategoriesUseCase
+        private readonly getAllCategoriesUC: GetAllCategoriesUseCase
     ) { }
 
     @Post()
@@ -28,12 +29,8 @@ export class CategoryController {
         return CategoryDTOMapper.toDTO(await this.createCategoryUC.execute(categoryDto.description));
     }
     @Get()
-    async getAllCategories(): Promise<ResponseModel<CategoryDTO>> {
-        const categoryDTO = (await this.getAllCategoriesUC.execute()).map(category => CategoryDTOMapper.toDTO(category));
-        return {
-            count: await this.countCategoriesUC.execute(),
-            data: categoryDTO
-        }
+    async getAllCategories(@Query() query: PaginationQueryDTO): Promise<Page<CategoryDTO>> {
+        return mapPage(await this.getAllCategoriesUC.execute(query), category => CategoryDTOMapper.toDTO(category));
     }
 
     @Get(':id')

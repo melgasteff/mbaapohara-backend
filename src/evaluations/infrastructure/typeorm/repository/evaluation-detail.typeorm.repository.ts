@@ -1,3 +1,4 @@
+import { Page, PageRequest, pageOffset } from "src/shared/domain/page";
 import { Injectable } from "@nestjs/common";
 import { EvaluationDetailTypeORMModel } from "../model/evaluation-detail.typeorm.model";
 import { Repository } from "typeorm";
@@ -58,8 +59,15 @@ export class EvaluationDetailTypeORMRepository implements EvaluationDetailReposi
         await this.evaluationDetailRepo.delete(id)
     }
 
-    count(): Promise<number> {
-        return this.evaluationDetailRepo.count()
+    async getPage(evaluationid: number, request: PageRequest): Promise<Page<EvaluationDetail>> {
+        const [rows, total] = await this.evaluationDetailRepo.findAndCount({
+            where: { evaluation: { id: evaluationid } },
+            relations: ['item', 'evaluation'],
+            order: { id: 'ASC' },
+            skip: pageOffset(request),
+            take: request.pageSize,
+        });
+        return { data: rows.map(row => EvaluationDetailMapper.toDomain(row)), total, page: request.page, pageSize: request.pageSize };
     }
 
 }

@@ -1,3 +1,4 @@
+import { Page, PageRequest, pageOffset } from "src/shared/domain/page";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { NewEvaluation } from "src/evaluations/domain/model/new-evaluation.entity";
@@ -48,8 +49,14 @@ export class EvaluationTypeORMRepository implements EvaluationRepository {
         await this.evaluationRepo.save(evaluationORM)
     }
 
-    count(): Promise<number> {
-        return this.evaluationRepo.count()
+    async getPage(request: PageRequest): Promise<Page<Evaluation>> {
+        const [rows, total] = await this.evaluationRepo.findAndCount({
+            where: { eliminado: false },
+            order: { id: 'ASC' },
+            skip: pageOffset(request),
+            take: request.pageSize,
+        });
+        return { data: rows.map(row => EvaluationMapper.toDomain(row)), total, page: request.page, pageSize: request.pageSize };
     }
 
 }

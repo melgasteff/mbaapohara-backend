@@ -1,3 +1,4 @@
+import { Page, PageRequest, pageOffset } from "src/shared/domain/page";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Job } from "src/jobs/domain/model/job.entity";
@@ -39,8 +40,13 @@ export class JobTypeORMRepository implements JobRepository {
         await this.jobRepo.delete(id);
     }
 
-    count(): Promise<number> {
-        return this.jobRepo.count();
+    async getPage(request: PageRequest): Promise<Page<Job>> {
+        const [rows, total] = await this.jobRepo.findAndCount({
+            order: { id: 'ASC' },
+            skip: pageOffset(request),
+            take: request.pageSize,
+        });
+        return { data: rows.map(row => JobMapper.toDomain(row)), total, page: request.page, pageSize: request.pageSize };
     }
 
 }

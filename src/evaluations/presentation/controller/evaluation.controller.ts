@@ -1,5 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
-import { CountEvaluationsUseCase } from "src/evaluations/application/use-case/evaluation/count.use-case";
+import { ApiTags } from "@nestjs/swagger";
+import { Body, Query, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
+import { mapPage, Page } from "src/shared/domain/page";
+import { PaginationQueryDTO } from "src/shared/infrastructure/rest/pagination-query.dto";
 import { CreateEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/create.use-case";
 import { DeleteEvaluationUseCase } from "src/evaluations/application/use-case/evaluation/delete.use-case";
 import { GetAllEvaluationsUseCase } from "src/evaluations/application/use-case/evaluation/get-all.use-case";
@@ -9,7 +11,6 @@ import { GlobalExceptionFilter } from "src/evaluations/infrastructure/exception-
 import { EvaluationDTOMapper } from "../mapper/evaluation-dto.mapper";
 import { NewEvaluationDTO } from "../dto/new-evaluation.dto";
 import { EvaluationDTO } from "../dto/evaluation.dto";
-import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 import { EvaluationDetailDTO } from "../dto/evaluation-detail.dto";
 import { NewEvaluationDetailDTO } from "../dto/new-evaluation-detail.dto";
 import { CreateEvaluationDetailUseCase } from "src/evaluations/application/use-case/evaluation-detail/create.use-case";
@@ -17,15 +18,13 @@ import { UpdateEvaluationDetailUseCase } from "src/evaluations/application/use-c
 import { DeleteEvaluationDetailUseCase } from "src/evaluations/application/use-case/evaluation-detail/delete.use-case";
 import { GetEvaluationDetailByIdUseCase } from "src/evaluations/application/use-case/evaluation-detail/get-by-id.use-case";
 import { GetAllEvaluationDetailsUseCase } from "src/evaluations/application/use-case/evaluation-detail/get-all.use-case";
-import { CountEvaluationDetailsUseCase } from "src/evaluations/application/use-case/evaluation-detail/count.use-case";
 import { EvaluationDetailDTOMapper } from "../mapper/evaluation-detail-dto.mapper";
-import { privateDecrypt } from "crypto";
 import { EvaluationResponseDTO } from "../dto/evaluation-response.dto";
-import { EvaluationDetailRepository } from "src/evaluations/domain/repository/evaluation-detail.repository";
 import { EvaluationDetailResponseDTO } from "../dto/evaluation-detail-response.dto";
 
 
 @UseFilters(GlobalExceptionFilter)
+@ApiTags('Evaluaciones')
 @Controller('evaluation')
 export class EvaluationController {
     constructor(
@@ -34,14 +33,12 @@ export class EvaluationController {
         private readonly deleteEvaluationUC: DeleteEvaluationUseCase,
         private readonly getEvaluationByIdUC: GetEvaluationByIdUseCase,
         private readonly getAllEvaluationUC: GetAllEvaluationsUseCase,
-        private readonly countEvaluationUC: CountEvaluationsUseCase,
         //Evaluation Detail
         private readonly createEvaluationDetailUC: CreateEvaluationDetailUseCase,
         private readonly updateEvaluationDetailUC: UpdateEvaluationDetailUseCase,
         private readonly deleteEvaluationDetailUC: DeleteEvaluationDetailUseCase,
         private readonly getEvaluationDetailByIdUC: GetEvaluationDetailByIdUseCase,
-        private readonly getAllEvaluationDetailUC: GetAllEvaluationDetailsUseCase,
-        private readonly countEvaluationDetailUC: CountEvaluationDetailsUseCase
+        private readonly getAllEvaluationDetailUC: GetAllEvaluationDetailsUseCase
     ) { }
 
     @Post()
@@ -51,12 +48,8 @@ export class EvaluationController {
     }
 
     @Get()
-    async getAllEvaluations(): Promise<ResponseModel<EvaluationResponseDTO>> {
-        const evaluationDto = (await this.getAllEvaluationUC.execute()).map(evaluation => EvaluationDTOMapper.toDTOResponse(evaluation));
-        return {
-            count: await this.countEvaluationUC.execute(),
-            data: evaluationDto
-        }
+    async getAllEvaluations(@Query() query: PaginationQueryDTO): Promise<Page<EvaluationResponseDTO>> {
+        return mapPage(await this.getAllEvaluationUC.execute(query), evaluation => EvaluationDTOMapper.toDTOResponse(evaluation));
     }
 
     @Get(':id')
@@ -97,14 +90,11 @@ export class EvaluationController {
 
     @Get(':evaluationId/details')
     async getAllEvaluationDetails(
-        @Param('evaluationId', ParseIntPipe) evaluationId: number
-    ): Promise<ResponseModel<EvaluationDetailResponseDTO>> {
-        const evaluationDetailDto = (await this.getAllEvaluationDetailUC.execute(evaluationId))
-            .map(evaluationDetail => EvaluationDetailDTOMapper.toDTOResponse(evaluationDetail));
-        return {
-            count: await this.countEvaluationDetailUC.execute(),
-            data: evaluationDetailDto
-        };
+        @Param('evaluationId', ParseIntPipe) evaluationId: number,
+        @Query() query: PaginationQueryDTO
+    ): Promise<Page<EvaluationDetailResponseDTO>> {
+        return mapPage(await this.getAllEvaluationDetailUC.execute(evaluationId, query),
+            evaluationDetail => EvaluationDetailDTOMapper.toDTOResponse(evaluationDetail));
     }
 
     @Put(':evaluationId/details/:id')

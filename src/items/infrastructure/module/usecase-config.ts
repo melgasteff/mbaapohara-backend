@@ -1,5 +1,4 @@
 import { Provider } from "@nestjs/common";
-import { CountItemsUseCase } from "src/items/application/use-case/count.use-case";
 import { CreateItemUseCase } from "src/items/application/use-case/create.use-case";
 import { DeleteItemUseCase } from "src/items/application/use-case/delete.use-case";
 import { GetItemByIdUseCase } from "src/items/application/use-case/get-by-id.use-case";
@@ -9,11 +8,6 @@ import { ItemRepository } from "src/items/domain/repository/item.repository";
 
 export default <Provider[]>[
     
-    {
-        provide: CountItemsUseCase,
-        useFactory: (itemRepository: ItemRepository) => new CountItemsUseCase(itemRepository),
-        inject: [ ItemRepository ]
-    },
     {
         provide: CreateItemUseCase,
         useFactory: (itemRepository: ItemRepository) => new CreateItemUseCase(itemRepository),

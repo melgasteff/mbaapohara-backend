@@ -1,5 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
-import { CountJobsUseCase } from "src/jobs/application/use-case/count.use-case";
+import { ApiTags } from "@nestjs/swagger";
+import { Body, Query, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
+import { mapPage, Page } from "src/shared/domain/page";
+import { PaginationQueryDTO } from "src/shared/infrastructure/rest/pagination-query.dto";
 import { CreateJobUseCase } from "src/jobs/application/use-case/create.use-case";
 import { DeleteJobUseCase } from "src/jobs/application/use-case/delete.use-case";
 import { GetAllJobsUseCase } from "src/jobs/application/use-case/get-all.use-case";
@@ -9,9 +11,9 @@ import { GlobalExceptionFilter } from "src/jobs/infrastructure/exception-filter/
 import { NewJobDTO } from "../dto/new-job.dto";
 import { JobDTO } from "../dto/job.dto";
 import { JobDTOMapper } from "../mapper/job-dto.mapper";
-import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 
 @UseFilters(GlobalExceptionFilter)
+@ApiTags('Cargos')
 @Controller('jobs')
 export class JobController {
     constructor(
@@ -19,8 +21,7 @@ export class JobController {
         private readonly updateJobUC: UpdateJobUseCase,
         private readonly deleteJobUC: DeleteJobUseCase,
         private readonly getJobByIdUC: GetJobByIdUseCase,
-        private readonly getAllJobsUC: GetAllJobsUseCase,
-        private readonly countJobsUC: CountJobsUseCase
+        private readonly getAllJobsUC: GetAllJobsUseCase
     ) { }
     @Post()
     async createJob(@Body() jobDTO: NewJobDTO): Promise<JobDTO> {
@@ -28,12 +29,8 @@ export class JobController {
     }
 
     @Get()
-    async getAllJobs(): Promise<ResponseModel<JobDTO>> {
-        const jobDto = (await this.getAllJobsUC.execute()).map(job => JobDTOMapper.toDTO(job));        
-        return {
-            count: await this.countJobsUC.execute(),
-            data: jobDto
-        }
+    async getAllJobs(@Query() query: PaginationQueryDTO): Promise<Page<JobDTO>> {
+        return mapPage(await this.getAllJobsUC.execute(query), job => JobDTOMapper.toDTO(job));
     }
 
     @Get(':id')

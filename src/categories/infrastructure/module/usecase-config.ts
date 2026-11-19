@@ -1,5 +1,4 @@
 import { Provider } from "@nestjs/common";
-import { CountCategoriesUseCase } from "src/categories/application/use-case/count.use-case";
 import { CreateCategoryUseCase } from "src/categories/application/use-case/create.use-case";
 import { DeleteCategoryUseCase } from "src/categories/application/use-case/delete.use-case";
 import { GetCategoryByIdUseCase } from "src/categories/application/use-case/get-category-by-id.use-case";
@@ -9,11 +8,6 @@ import { CategoryRepository } from "src/categories/domain/repository/category.re
 
 export default <Provider[]>[
     
-    {
-        provide: CountCategoriesUseCase,
-        useFactory: (categoryRepo: CategoryRepository) => new CountCategoriesUseCase(categoryRepo),
-        inject: [ CategoryRepository ]
-    },
     {
         provide: CreateCategoryUseCase,
         useFactory: (categoryRepo: CategoryRepository) => new CreateCategoryUseCase(categoryRepo),

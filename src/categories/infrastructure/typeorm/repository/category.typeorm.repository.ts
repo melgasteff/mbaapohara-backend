@@ -1,3 +1,4 @@
+import { Page, PageRequest, pageOffset } from "src/shared/domain/page";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Category } from "src/categories/domain/model/category.entity";
@@ -39,7 +40,12 @@ export class CategoryTypeORMRepository implements CategoryRepository {
     async delete(id: number): Promise<void> {
         await this.categoryRepo.delete(id)
     }
-    async count(): Promise<number> {
-        return this.categoryRepo.count()
+    async getPage(request: PageRequest): Promise<Page<Category>> {
+        const [rows, total] = await this.categoryRepo.findAndCount({
+            order: { id: 'ASC' },
+            skip: pageOffset(request),
+            take: request.pageSize,
+        });
+        return { data: rows.map(row => CategoryMapper.toDomain(row)), total, page: request.page, pageSize: request.pageSize };
     }
 }

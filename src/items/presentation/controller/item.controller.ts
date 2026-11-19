@@ -1,5 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
-import { CountItemsUseCase } from "src/items/application/use-case/count.use-case";
+import { ApiTags } from "@nestjs/swagger";
+import { Body, Query, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseFilters } from "@nestjs/common";
+import { mapPage, Page } from "src/shared/domain/page";
+import { PaginationQueryDTO } from "src/shared/infrastructure/rest/pagination-query.dto";
 import { CreateItemUseCase } from "src/items/application/use-case/create.use-case";
 import { DeleteItemUseCase } from "src/items/application/use-case/delete.use-case";
 import { GetItemByIdUseCase } from "src/items/application/use-case/get-by-id.use-case";
@@ -9,9 +11,9 @@ import { GlobalExceptionFilter } from "src/items/infrastructure/exception-filter
 import { NewItemDTO } from "../dto/new-item.dto";
 import { ItemDTO } from "../dto/item.dto";
 import { ItemDTOMapper } from "../mapper/item-dto.mapper";
-import { ResponseModel } from "src/shared/infrastructure/rest/response-model.dto";
 
 @UseFilters(GlobalExceptionFilter)
+@ApiTags('Ítems')
 @Controller('items')
 export class ItemController {
     constructor(
@@ -19,8 +21,7 @@ export class ItemController {
         private readonly updateItemUC: UpdateItemUseCase,
         private readonly deleteItemUC: DeleteItemUseCase,
         private readonly getItemByIdUC: GetItemByIdUseCase,
-        private readonly getAllItemsUC: GetAllItemsUseCase,
-        private readonly countItemsUC : CountItemsUseCase
+        private readonly getAllItemsUC: GetAllItemsUseCase
     ) { }
 
     @Post()
@@ -28,12 +29,8 @@ export class ItemController {
         return ItemDTOMapper.toDTO(await this.createItemUC.execute(itemDto.descripcion, itemDto.idcategory));
     }
     @Get()
-    async getAllItems (): Promise<ResponseModel<ItemDTO>> {
-        const itemDto = (await this.getAllItemsUC.execute()).map(item => ItemDTOMapper.toDTO(item));
-        return {
-            count: await this.countItemsUC.execute(),
-            data: itemDto
-        }
+    async getAllItems(@Query() query: PaginationQueryDTO): Promise<Page<ItemDTO>> {
+        return mapPage(await this.getAllItemsUC.execute(query), item => ItemDTOMapper.toDTO(item));
     }
 
     @Get(':id')
