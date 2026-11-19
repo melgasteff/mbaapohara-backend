@@ -1,7 +1,7 @@
 # Arquitectura del backend
 
 Estructura objetivo y convenciones (tarea 1.1). Se aplican a cada módulo cuando una tarea del plan lo
-reescribe; el código que no se toca queda como está. Fuente: `docs/PLAN(1).md`, sección 1.2.
+reescribe; el código que no se toca queda como está.
 
 ## Dos estilos de módulo
 
