@@ -1,10 +1,10 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
+import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from "@nestjs/common";
 import { JobAlreadyExistsException } from "src/jobs/application/exception/job-already-exists.exception";
 import { JobInUseException } from "src/jobs/application/exception/job-in-use.exception";
 import { JobNotFoundException } from "src/jobs/application/exception/job-not-found.exception";
 import { Response } from 'express';
 
-@Catch()
+@Catch(JobNotFoundException, JobAlreadyExistsException, JobInUseException)
 export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -27,11 +27,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (exception instanceof JobInUseException) {
       status = HttpStatus.CONFLICT;
       message = exception.message;
-    }
-
-    if (exception instanceof HttpException) {
-      status = exception.getStatus();
-      message = exception.getResponse();
     }
 
     response.status(status).json({

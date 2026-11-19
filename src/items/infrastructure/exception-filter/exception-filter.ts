@@ -3,7 +3,6 @@ import {
   Catch,
   ArgumentsHost,
   HttpStatus,
-  HttpException,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { CategoryNotFoundException } from 'src/items/application/exception/category-not-found.exception';
@@ -11,7 +10,7 @@ import { ItemAlreadyExistsException } from 'src/items/application/exception/item
 import { ItemInUseException } from 'src/items/application/exception/item-in-use.exception';
 import { ItemNotFoundException } from 'src/items/application/exception/item-not-found.exception';
 
-@Catch()
+@Catch(ItemNotFoundException, ItemAlreadyExistsException, ItemInUseException, CategoryNotFoundException)
 export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -38,11 +37,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (exception instanceof CategoryNotFoundException) {
       status = HttpStatus.NOT_FOUND;
       message = exception.message;
-    }
-
-    if (exception instanceof HttpException) {
-      status = exception.getStatus();
-      message = exception.getResponse();
     }
 
     response.status(status).json({

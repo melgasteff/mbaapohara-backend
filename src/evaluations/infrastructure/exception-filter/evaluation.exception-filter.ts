@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
+import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from "@nestjs/common";
 import { EvaluationAlreadyExistsException } from "src/evaluations/application/exception/evaluation/evaluation-already-exists.exception";
 import { EvaluationInUseException } from "src/evaluations/application/exception/evaluation/evaluation-in-use.exception";
 import { EvaluationNotFoundException } from "src/evaluations/application/exception/evaluation/evaluation-not-found.exception";
@@ -6,12 +6,11 @@ import { Response } from 'express';
 import { EvaluationDetailNotFoundException } from "src/evaluations/application/exception/evaluation-detail/evaluation-detail-not-found.exception";
 import { EvaluationDetailAlreadyExistsException } from "src/evaluations/application/exception/evaluation-detail/evaluation-detail-already-exists.exception";
 
-@Catch()
+@Catch(EvaluationNotFoundException, EvaluationAlreadyExistsException, EvaluationInUseException, EvaluationDetailNotFoundException, EvaluationDetailAlreadyExistsException)
 export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    console.error(exception)
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: any = 'Internal server error';
@@ -39,11 +38,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (exception instanceof EvaluationDetailAlreadyExistsException) {
       status = HttpStatus.CONFLICT;
       message = exception.message;
-    }
-
-    if (exception instanceof HttpException) {
-      status = exception.getStatus();
-      message = exception.getResponse();
     }
 
     response.status(status).json({

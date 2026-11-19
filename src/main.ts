@@ -1,32 +1,40 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
-
-// CORS_ORIGINS: lista de orígenes separados por comas. Es obligatoria: sin ella la API no arranca,
-// para no quedar abierta a cualquier origen por omisión. En la tarea 1.2 pasa a @nestjs/config.
-function getCorsOrigins(): string[] {
-  const origins = (process.env.CORS_ORIGINS ?? '')
-    .split(',')
-    .map(origin => origin.trim())
-    .filter(origin => origin.length > 0);
-
-  if (origins.length === 0) {
-    throw new Error('Falta la variable de entorno CORS_ORIGINS (orígenes separados por comas)');
-  }
-  return origins;
-}
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import helmet from 'helmet';
+import { AppModule } from './app.module';
+import { EnvironmentVariables } from './shared/infrastructure/config/env.validation';
 
 async function bootstrap() {
-  const corsOrigins = getCorsOrigins();
   const app = await NestFactory.create(AppModule);
+  const config = app.get(ConfigService<EnvironmentVariables, true>);
 
+  // Swagger UI usa scripts y estilos en línea: la política de contenido los permite solo para eso.
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:'],
+      },
+    },
+  }));
 
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
     whitelist: true,
     forbidNonWhitelisted: true
   }));
-  app.enableCors({ origin: corsOrigins })
-  await app.listen(process.env.PORT ?? 3000);
+  app.enableCors({ origin: config.get('CORS_ORIGINS', { infer: true }) });
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Mbaapohara API')
+    .setDescription('Reseñas laborales anónimas y moderadas sobre empresas de Paraguay')
+    .setVersion('0.1')
+    .build();
+  SwaggerModule.setup('docs', app, SwaggerModule.createDocument(app, swaggerConfig));
+
+  await app.listen(config.get('PORT', { infer: true }));
 }
 bootstrap();
