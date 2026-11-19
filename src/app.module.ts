@@ -2,12 +2,10 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CityModule } from './cities/infrastructure/module/city.module';
-import { CountryModule } from './countries/infrastructure/module/country.module';
+import { CatalogsModule } from './catalogs/catalogs.module';
 import { UserModule } from './users/infrastructure/module/user.module';
 import { CompanyModule } from './companies/infrastructure/module/company.module';
 import { OfficeModule } from './offices/infrastructure/module/office.module';
-import { JobModule } from './jobs/infrastructure/module/job.module';
 import { LoginModule } from './session-manager/infrastructure/module/login.module';
 import { CategoryModule } from './categories/infrastructure/module/category.module';
 import { EvaluationModule } from './evaluations/infrastructure/module/evaluation.module';
@@ -31,12 +29,10 @@ import { AllExceptionsFilter } from './shared/infrastructure/rest/all-exceptions
         autoLoadEntities: true,
       }),
     }),
-    CityModule,
-    CountryModule,
+    CatalogsModule,
     UserModule,
     CompanyModule,
     OfficeModule,
-    JobModule,
     LoginModule,
     CategoryModule,
     EvaluationModule,
