@@ -76,8 +76,22 @@ Pide la contraseña por la terminal, sin mostrarla. Si la cuenta existe, la prom
 | `npm run migration:run` / `migration:show` / `migration:revert` | Migraciones con TypeORM |
 | `npm run migration:create --name=nombre` | Crea una migración vacía |
 | `npm run admin:create -- correo` | Crea o promueve un administrador |
-| `npm test` / `npm run test:e2e` | Pruebas unitarias / de punta a punta |
+| `npm test` / `npm run test:e2e` | Pruebas unitarias / de punta a punta (ver «Pruebas») |
 | `npm run lint` / `npm run format` | ESLint (corrige) / Prettier |
+
+## Pruebas
+
+Las pruebas de punta a punta (`test/*.e2e-spec.ts`) levantan la API completa y la prueban por HTTP contra una
+**base de datos aparte**, nunca la de desarrollo:
+
+```bash
+cp .env.test.example .env.test   # completar DB_PASS y JWT_SECRET; DB_NAME debe terminar en «_test»
+npm run test:e2e
+```
+
+Cada corrida crea la base si no existe, borra su esquema y aplica las migraciones; si el nombre de la base no
+termina en `_test`, se niega a seguir. Cubren autenticación y mi cuenta, el límite de intentos, los catálogos y
+empresas y locales (propuesta, visibilidad, aprobación, rechazo, duplicados, búsqueda y baja).
 
 ## Datos
 
