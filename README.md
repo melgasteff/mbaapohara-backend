@@ -8,6 +8,8 @@ Proyecto Final de Grado, Ingeniería en Informática, FCyT-UNCA.
 - **Stack:** NestJS 10 + TypeScript, PostgreSQL 16 + TypeORM 0.3, JWT, Swagger.
 - **Documentación de la API:** `http://localhost:3000/docs` (Swagger), con la API en marcha.
 - **Arquitectura:** [docs/arquitectura.md](docs/arquitectura.md).
+- **Frontend:** Angular 22, en el repositorio vecino [mbaapohara-frontend](../mbaapohara-frontend/README.md),
+  con los pasos para levantar la API y el frontend juntos y el guion de la demo.
 
 ## Requisitos
 
