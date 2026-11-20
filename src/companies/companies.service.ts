@@ -27,12 +27,17 @@ export class CompaniesService {
         private readonly offices: OfficesService,
     ) { }
 
-    // Directorio: por defecto solo empresas aprobadas. La búsqueda por nombre no distingue mayúsculas ni
-    // tildes (ILIKE + unaccent, según el recorte del plan; pg_trgm queda como mejora).
+    // Listado de empresas. Sin `estado`, todas (solo lo usa la ruta de administración; el directorio público
+    // pasa siempre «aprobada»). La búsqueda por nombre no distingue mayúsculas ni tildes (ILIKE + unaccent,
+    // según el recorte del plan; pg_trgm queda como mejora).
     async findPage(request: PageRequest, filters: CompanyFilters): Promise<Page<Company>> {
         const qb = this.repo.createQueryBuilder('empresa')
             .leftJoinAndSelect('empresa.rubro', 'rubro')
-            .where('empresa.estado = :estado', { estado: filters.estado ?? ProposalStatus.Approved });
+            .where('TRUE');
+
+        if (filters.estado) {
+            qb.andWhere('empresa.estado = :estado', { estado: filters.estado });
+        }
 
         if (filters.q) {
             qb.andWhere('lower(f_unaccent(empresa.nombre)) LIKE lower(f_unaccent(:q))', { q: `%${escapeLike(filters.q)}%` });
@@ -61,9 +66,11 @@ export class CompaniesService {
         return company;
     }
 
-    // Detalle con los locales aprobados (como mucho 100; una empresa con más se recorre con /offices).
+    // Detalle público con los locales aprobados (como mucho 100; una empresa con más se recorre con /offices).
+    // Una empresa pendiente o rechazada responde 404, igual que una que no existe.
     async findDetail(id: number): Promise<{ company: Company; offices: Office[] }> {
         const company = await this.findOne(id);
+        if (company.estado !== ProposalStatus.Approved) throw new NotFoundException(`No existe la empresa ${id}`);
         const offices = await this.offices.findByCompany(id, { page: 1, pageSize: 100 });
         return { company, offices: offices.data };
     }

@@ -4,26 +4,35 @@ import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Po
 import { ApiTags } from '@nestjs/swagger';
 import { mapPage } from 'src/shared/domain/page';
 import { CompaniesService } from './companies.service';
-import { CompaniesQueryDTO } from './dto/companies-query.dto';
+import { AdminCompaniesQueryDTO, CompaniesQueryDTO } from './dto/companies-query.dto';
+import { ProposalStatus } from './proposal-status';
 import { CompanyDetailDTO, CompanyDTO, CompanyPageDTO } from './dto/company.dto';
 import { ProposeCompanyDTO, SaveCompanyDTO } from './dto/save-company.dto';
 
-// Hasta la tarea 1.5 no hay autenticación: editar, aprobar, rechazar y borrar serán solo del administrador.
+// Lo público muestra solo empresas aprobadas; lo pendiente y lo rechazado se ve en GET /companies/admin.
 @ApiTags('Empresas')
 @Controller('companies')
 export class CompaniesController {
     constructor(private readonly service: CompaniesService) { }
 
+    /** Directorio: empresas aprobadas. */
     @Public()
-
     @Get()
     async findAll(@Query() query: CompaniesQueryDTO): Promise<CompanyPageDTO> {
-        const { q, rubro, ciudad, estado } = query;
-        return mapPage(await this.service.findPage(query, { q, rubro, ciudad, estado }), CompanyDTO.from);
+        const { q, rubro, ciudad } = query;
+        return mapPage(await this.service.findPage(query, { q, rubro, ciudad, estado: ProposalStatus.Approved }), CompanyDTO.from);
     }
 
-    @Public()
+    /** Administración: empresas en cualquier estado. Va antes de «:id» para que «admin» no se lea como id. */
+    @Roles(UserRole.Admin)
+    @Get('admin')
+    async findAllAdmin(@Query() query: AdminCompaniesQueryDTO): Promise<CompanyPageDTO> {
+        const { q, estado } = query;
+        return mapPage(await this.service.findPage(query, { q, estado }), CompanyDTO.from);
+    }
 
+    /** Empresa aprobada con sus locales aprobados. */
+    @Public()
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<CompanyDetailDTO> {
         const { company, offices } = await this.service.findDetail(id);

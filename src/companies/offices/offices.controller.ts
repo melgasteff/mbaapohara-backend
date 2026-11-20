@@ -5,10 +5,11 @@ import { ApiTags } from '@nestjs/swagger';
 import { mapPage } from 'src/shared/domain/page';
 import { PaginationQueryDTO } from 'src/shared/infrastructure/rest/pagination-query.dto';
 import { OfficeDTO, OfficePageDTO } from './dto/office.dto';
+import { AdminOfficesQueryDTO } from './dto/offices-admin-query.dto';
 import { SaveOfficeDTO } from './dto/save-office.dto';
 import { OfficesService } from './offices.service';
 
-// Hasta la tarea 1.5 no hay autenticación: editar, aprobar, rechazar y borrar serán solo del administrador.
+// Lo público muestra solo locales aprobados; lo pendiente y lo rechazado se ve en GET /offices/admin.
 @ApiTags('Empresas')
 @Controller()
 export class OfficesController {
@@ -16,7 +17,6 @@ export class OfficesController {
 
     /** Locales aprobados de una empresa. */
     @Public()
-
     @Get('companies/:id/offices')
     async findByCompany(@Param('id', ParseIntPipe) id: number, @Query() query: PaginationQueryDTO): Promise<OfficePageDTO> {
         return mapPage(await this.service.findByCompany(id, query), OfficeDTO.from);
@@ -28,11 +28,19 @@ export class OfficesController {
         return OfficeDTO.from(await this.service.propose(id, body));
     }
 
-    @Public()
+    /** Administración: locales en cualquier estado, con su empresa. Va antes de «offices/:id». */
+    @Roles(UserRole.Admin)
+    @Get('offices/admin')
+    async findAllAdmin(@Query() query: AdminOfficesQueryDTO): Promise<OfficePageDTO> {
+        const { estado, empresa } = query;
+        return mapPage(await this.service.findAdminPage(query, { estado, empresa }), OfficeDTO.from);
+    }
 
+    /** Local aprobado. */
+    @Public()
     @Get('offices/:id')
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<OfficeDTO> {
-        return OfficeDTO.from(await this.service.findOne(id));
+        return OfficeDTO.from(await this.service.findApproved(id));
     }
 
     @Roles(UserRole.Admin)

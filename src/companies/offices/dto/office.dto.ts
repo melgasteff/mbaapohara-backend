@@ -7,10 +7,17 @@ export class OfficeCityDTO {
     idDepartamento: number;
 }
 
+export class OfficeCompanyDTO {
+    id: number;
+    nombre: string;
+}
+
 export class OfficeDTO {
     id: number;
     nombre: string;
     idEmpresa: number;
+    /** Empresa del local; solo en los listados de administración. */
+    empresa?: OfficeCompanyDTO;
     ciudad: OfficeCityDTO;
     direccionReferencia: string | null;
     estado: ProposalStatus;
@@ -25,6 +32,7 @@ export class OfficeDTO {
                 : { id: office.idCiudad, nombre: null, idDepartamento: null },
             direccionReferencia: office.direccionReferencia,
             estado: office.estado,
+            ...(office.empresa ? { empresa: { id: office.empresa.id, nombre: office.empresa.nombre } } : {}),
         };
     }
 }

@@ -27,6 +27,25 @@ export class OfficesService {
         });
     }
 
+    // Administración: locales en cualquier estado, con su empresa, para la cola de propuestas.
+    findAdminPage(request: PageRequest, filters: { estado?: ProposalStatus; empresa?: number }): Promise<Page<Office>> {
+        return findPage(this.repo, request, {
+            where: {
+                ...(filters.estado ? { estado: filters.estado } : {}),
+                ...(filters.empresa ? { idEmpresa: filters.empresa } : {}),
+            },
+            relations: { ciudad: true, empresa: true },
+            order: { id: 'DESC' },
+        });
+    }
+
+    // Detalle público: un local pendiente o rechazado responde 404, igual que uno que no existe.
+    async findApproved(id: number): Promise<Office> {
+        const office = await this.findOne(id);
+        if (office.estado !== ProposalStatus.Approved) throw new NotFoundException(`No existe el local ${id}`);
+        return office;
+    }
+
     async findOne(id: number): Promise<Office> {
         const office = await this.repo.findOne({ where: { id }, relations: { ciudad: true } });
         if (!office) throw new NotFoundException(`No existe el local ${id}`);

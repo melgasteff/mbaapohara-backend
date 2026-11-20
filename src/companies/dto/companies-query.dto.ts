@@ -3,6 +3,7 @@ import { IsEnum, IsInt, IsOptional, IsString, MaxLength, Min } from 'class-valid
 import { PaginationQueryDTO } from 'src/shared/infrastructure/rest/pagination-query.dto';
 import { ProposalStatus } from '../proposal-status';
 
+// Directorio público (GET /companies): solo empresas aprobadas.
 export class CompaniesQueryDTO extends PaginationQueryDTO {
     /** Parte del nombre; no distingue mayúsculas ni tildes. */
     @IsOptional()
@@ -24,8 +25,18 @@ export class CompaniesQueryDTO extends PaginationQueryDTO {
     @IsInt()
     @Min(1)
     ciudad?: number;
+}
 
-    /** Estado de la empresa. Por defecto, solo las aprobadas. */
+// Listado de administración (GET /companies/admin): empresas en cualquier estado.
+export class AdminCompaniesQueryDTO extends PaginationQueryDTO {
+    /** Parte del nombre; no distingue mayúsculas ni tildes. */
+    @IsOptional()
+    @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
+    @IsString()
+    @MaxLength(100)
+    q?: string;
+
+    /** Estado de la empresa. Sin este filtro, todas. */
     @IsOptional()
     @IsEnum(ProposalStatus)
     estado?: ProposalStatus;
