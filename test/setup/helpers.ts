@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
+import { Test, TestingModuleBuilder } from '@nestjs/testing';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import * as request from 'supertest';
 import { AppModule } from 'src/app.module';
@@ -12,8 +12,11 @@ export const PASSWORD = 'Clave-segura-2026';
  * Levanta la API completa (AppModule) con la misma configuración HTTP que main.ts.
  * Por defecto desactiva el límite de intentos de /auth; la suite throttle.e2e-spec.ts lo prueba aparte.
  */
-export async function createTestApp(options: { throttle?: boolean } = {}): Promise<INestApplication> {
+export async function createTestApp(
+    options: { throttle?: boolean; configure?: (builder: TestingModuleBuilder) => TestingModuleBuilder } = {},
+): Promise<INestApplication> {
     let builder = Test.createTestingModule({ imports: [AppModule] });
+    if (options.configure) builder = options.configure(builder);
     if (!options.throttle) {
         builder = builder.overrideGuard(ThrottlerGuard).useValue({ canActivate: () => true });
     }
