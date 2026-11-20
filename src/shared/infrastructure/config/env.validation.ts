@@ -1,5 +1,5 @@
 import { plainToInstance, Transform } from 'class-transformer';
-import { ArrayNotEmpty, IsIn, IsInt, IsNotEmpty, IsString, IsUrl, Matches, Max, Min, MinLength, validateSync } from 'class-validator';
+import { ArrayNotEmpty, IsIn, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, Matches, Max, Min, MinLength, validateSync } from 'class-validator';
 
 // Variables de entorno de la API. Si alguna falta o es inválida, la aplicación no arranca.
 export class EnvironmentVariables {
@@ -51,6 +51,29 @@ export class EnvironmentVariables {
     // Vigencia del token de acceso, en el formato de jsonwebtoken: 2h, 30m, 1d...
     @Matches(/^\d+[smhd]$/, { message: 'JWT_EXPIRES_IN debe ser un número seguido de s, m, h o d (por ejemplo, 2h)' })
     JWT_EXPIRES_IN: string = '2h';
+
+    // Moderación (tarea 2.3). Sin clave, el clasificador no se consulta y toda reseña va a revisión humana.
+    @IsOptional()
+    @IsString()
+    ANTHROPIC_API_KEY?: string;
+
+    /** Modelo del clasificador; por defecto Claude Haiku 5.5. */
+    @IsString()
+    @IsNotEmpty()
+    MODERATION_MODEL: string = 'claude-haiku-5-5';
+
+    /** Tope de gasto mensual del clasificador, en USD (política, sección 10). */
+    @Transform(({ value }) => Number(value))
+    @IsNumber()
+    @Min(0)
+    MODERATION_MONTHLY_BUDGET_USD: number = 5;
+
+    /** Tiempo máximo de cada intento, en milisegundos. */
+    @Transform(({ value }) => Number(value))
+    @IsInt()
+    @Min(1000)
+    @Max(60000)
+    MODERATION_TIMEOUT_MS: number = 10000;
 }
 
 export function validateEnv(config: Record<string, unknown>): EnvironmentVariables {

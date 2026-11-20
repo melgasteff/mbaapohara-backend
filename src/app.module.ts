@@ -11,6 +11,7 @@ import { EvaluationModule } from './evaluations/infrastructure/module/evaluation
 import { ItemModule } from './items/infrastructure/module/item.module';
 import { EnvironmentVariables, validateEnv } from './shared/infrastructure/config/env.validation';
 import { AllExceptionsFilter } from './shared/infrastructure/rest/all-exceptions.filter';
+import { ModerationModule } from './moderation/infrastructure/module/moderation.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AllExceptionsFilter } from './shared/infrastructure/rest/all-exceptions
     AuthModule,
     UsersModule,
     CompaniesModule,
+    ModerationModule,
     CategoryModule,
     EvaluationModule,
     ItemModule
