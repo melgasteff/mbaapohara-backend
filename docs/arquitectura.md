@@ -58,7 +58,7 @@ src/companies/
 | `users` | Liviano | `users` | 1.5 (hecha) |
 | `criteria` | Liviano | `categories` + `items` (los motivos se eliminaron en la 1.1, R4) | Fase 3 |
 | `reviews` | Completo | `evaluations` | Fase 3 |
-| `moderation` | Completo | Nuevo | 2.3 |
+| `moderation` | Completo | Nuevo | 2.3 (clasificador, hecha); cola, reportes y solicitudes: 3.9 |
 | `insights` | Liviano | Nuevo | Fase 3 |
 
 `categories` e `items` funcionan y no cambian por ahora: se mueven a su módulo final solo cuando

@@ -34,6 +34,10 @@ al arrancar y no inicia si falta alguna o es inválida.
 | `CORS_ORIGINS` | Sí | Orígenes permitidos, separados por comas (por ejemplo `http://localhost:4200`) |
 | `JWT_SECRET` | Sí | Secreto para firmar los tokens, al menos 32 caracteres |
 | `JWT_EXPIRES_IN` | No | Vigencia del token de acceso (por defecto `2h`) |
+| `ANTHROPIC_API_KEY` | No | Clave de la API de Claude para el clasificador de moderación. Sin ella, toda reseña va a revisión humana |
+| `MODERATION_MODEL` | No | Modelo del clasificador (por defecto `claude-haiku-5-5`) |
+| `MODERATION_MONTHLY_BUDGET_USD` | No | Tope de gasto mensual del clasificador (por defecto `5`) |
+| `MODERATION_TIMEOUT_MS` | No | Tiempo máximo de cada llamada al modelo (por defecto `10000`) |
 | `PORT` | No | Puerto de la API (por defecto `3000`) |
 | `NODE_ENV` | No | `development` (por defecto), `production` o `test` |
 
@@ -78,6 +82,18 @@ Pide la contraseña por la terminal, sin mostrarla. Si la cuenta existe, la prom
 | `npm run admin:create -- correo` | Crea o promueve un administrador |
 | `npm test` / `npm run test:e2e` | Pruebas unitarias / de punta a punta (ver «Pruebas») |
 | `npm run lint` / `npm run format` | ESLint (corrige) / Prettier |
+
+## Moderación
+
+El módulo `moderation` aplica la [política de moderación](docs/politica-moderacion.md): reglas locales (datos de
+contacto, lista de insultos, texto repetido), un clasificador con Claude vía API detrás del puerto `TextClassifier`
+y la tabla de decisión (publicada, en revisión o rechazada). Cada decisión se registra en `decisiones_moderacion`
+con la huella del texto, nunca el texto; el gasto del mes se lleva en `gasto_moderacion`.
+
+- La clave `ANTHROPIC_API_KEY` se crea en la consola del proveedor de la API y se paga por uso. Sin clave, o al llegar al tope mensual, todo va a revisión humana.
+- Al modelo solo se envía el texto de la reseña.
+- Para probar un texto (administrador): `POST /moderation/evaluate` con `{ "loBueno": "...", "aMejorar": "..." }`;
+  el gasto del mes: `GET /moderation/spend`.
 
 ## Pruebas
 
