@@ -94,6 +94,12 @@ con la huella del texto, nunca el texto; el gasto del mes se lleva en `gasto_mod
 - Al modelo solo se envía el texto de la reseña.
 - Para probar un texto (administrador): `POST /moderation/evaluate` con `{ "loBueno": "...", "aMejorar": "..." }`;
   el gasto del mes: `GET /moderation/spend`.
+- Revisión humana (administrador, 3.9a): `GET /moderation/queue` lista las versiones en revisión, la más antigua
+  primero, con las señales de la moderación automática y sin el autor; `PATCH /moderation/queue/:idVersion/publish`
+  y `PATCH /moderation/queue/:idVersion/reject` con `{ "categoria": "TER", "motivo": "..." }`. Cada decisión queda en
+  el registro con origen `persona` y el administrador.
+- Cargos propuestos desde una reseña: `GET /jobs/admin?estado=pendiente`, `PATCH /jobs/:id/approve` y
+  `PATCH /jobs/:id/reject`.
 
 ## Pruebas
 
