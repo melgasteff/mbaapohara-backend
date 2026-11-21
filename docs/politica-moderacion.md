@@ -105,8 +105,9 @@ Motivos de rechazo, en voseo y diciendo qué corregir:
 | SPAM | «Tu reseña parece publicidad o un texto repetido. Contá tu experiencia de trabajo.» |
 | TEMA | «Tu reseña no habla de tu experiencia de trabajo en la empresa. Contá cómo fue trabajar ahí.» |
 
-**Propuesta para confirmar:** si se edita una reseña ya publicada, la versión anterior sigue visible hasta que la
-nueva se publique; si la nueva se rechaza, queda la anterior.
+**Edición (confirmado el 21/11, tarea 3.3):** si se edita una reseña ya publicada, la versión anterior sigue visible
+hasta que la nueva se publique; si la nueva se rechaza, queda la anterior. Mientras una versión espera la revisión
+humana, la reseña no se puede volver a editar.
 
 ## 8. Después de publicar
 
