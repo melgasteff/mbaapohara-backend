@@ -125,7 +125,8 @@ src/
   users/        tabla usuarios y administración de cuentas (módulo liviano)
   catalogs/     departamentos, ciudades, cargos, rubros, tipos de contrato, modalidades (liviano)
   companies/    empresas y locales, con propuesta y aprobación (liviano)
-  categories/, items/, evaluations/   módulos heredados, a reemplazar en la Fase 3
+  moderation/   clasificador de moderación: reglas, modelo de lenguaje, decisión y registro (completo)
+  categories/, items/   módulos heredados de criterios, a reemplazar en la 3.8
   shared/       configuración, base de datos, paginación y filtro de errores
 docs/           plan, arquitectura, decisiones y datos de referencia
 ```

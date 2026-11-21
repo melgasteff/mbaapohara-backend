@@ -57,7 +57,7 @@ src/companies/
 | `auth` | Completo | `session-manager` + registro de `users` | 1.5 (hecha) |
 | `users` | Liviano | `users` | 1.5 (hecha) |
 | `criteria` | Liviano | `categories` + `items` (los motivos se eliminaron en la 1.1, R4) | Fase 3 |
-| `reviews` | Completo | `evaluations` | Fase 3 |
+| `reviews` | Completo | `evaluations` (eliminado en la 3.2; tablas nuevas) | 3.2 (esquema, hecha), 3.3 (módulo) |
 | `moderation` | Completo | Nuevo | 2.3 (clasificador, hecha); cola, reportes y solicitudes: 3.9 |
 | `insights` | Liviano | Nuevo | Fase 3 |
 
