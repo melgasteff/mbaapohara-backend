@@ -56,6 +56,7 @@ class MemoryRepo extends ReviewRepository {
     async listQueue(): Promise<Page<QueueVersion>> { return { data: [], total: 0, page: 1, pageSize: 20 }; }
     async findVersion(): Promise<VersionToDecide | null> { return null; }
     async decideInReview() { return false; }
+    async retirePublished() { return null; }
 }
 
 class FakeModeration extends ModerationPort {

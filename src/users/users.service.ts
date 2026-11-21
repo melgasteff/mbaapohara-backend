@@ -116,7 +116,7 @@ export class UsersService {
     // Exporta la cuenta y todas sus reseñas, con cada versión enviada (también las rechazadas: son datos de la persona)
     // y sus respuestas. Lee las tablas de reseñas directamente: es provisorio hasta que el módulo reviews (3.3) exponga
     // su propia exportación.
-    async exportData(id: number): Promise<{ cuenta: User; resenas: unknown[] }> {
+    async exportData(id: number): Promise<{ cuenta: User; resenas: unknown[]; reportes: unknown[] }> {
         const cuenta = await this.findOneOrFail(id);
         const resenas = await this.dataSource.query(
             `SELECT r.id, emp.nombre AS empresa, s.nombre AS local, r.fecha_creacion AS "fechaCreacion",
@@ -144,6 +144,12 @@ export class UsersService {
              ORDER BY r.id`,
             [id],
         );
-        return { cuenta, resenas };
+        // Los reportes que hizo la persona también son datos suyos (3.9b). No incluyen quién escribió la reseña.
+        const reportes = await this.dataSource.query(
+            `SELECT rp.id_resena AS "idResena", rp.categoria, rp.comentario, rp.estado, rp.fecha
+             FROM reportes rp WHERE rp.id_usuario = $1 ORDER BY rp.fecha`,
+            [id],
+        );
+        return { cuenta, resenas, reportes };
     }
 }

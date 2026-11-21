@@ -35,4 +35,9 @@ export abstract class ReviewRepository {
      * Devuelve `false` si ya estaba decidida.
      */
     abstract decideInReview(reviewId: number, versionId: number, decision: VersionDecision): Promise<boolean>;
+    /**
+     * Retira la versión publicada: pasa a rechazada con la decisión y la reseña deja de verse. Devuelve la versión
+     * retirada, o `null` si la reseña no tenía una versión publicada.
+     */
+    abstract retirePublished(reviewId: number, decision: VersionDecision): Promise<{ versionId: number; loBueno: string; aMejorar: string } | null>;
 }

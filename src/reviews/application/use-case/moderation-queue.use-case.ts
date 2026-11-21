@@ -10,6 +10,15 @@ export const PUBLISHED_BY_REVIEW = 'Tu reseña ya está publicada.';
 export const REASON_MIN = 10;
 export const REASON_MAX = 500;
 
+/** Motivo que lee quien escribió: espacios normalizados, de 10 a 500 caracteres. */
+export function normalizeReason(reason: string): string {
+    const message = reason.trim().replace(/\s+/g, ' ');
+    if (message.length < REASON_MIN || message.length > REASON_MAX) {
+        throw new InvalidReviewException([`El motivo tiene que tener entre ${REASON_MIN} y ${REASON_MAX} caracteres`]);
+    }
+    return message;
+}
+
 /** Versión de la cola con las señales de la moderación automática y el tiempo de espera. */
 export interface QueueItem extends QueueVersion {
     /** Horas desde el envío; el objetivo es resolver en 48 (política, sección 6). */
@@ -57,11 +66,7 @@ export class DecideReviewUseCase {
     }
 
     async reject(adminId: number, versionId: number, category: ModerationCategory, reason: string): Promise<{ idResena: number; estado: ReviewStatus }> {
-        const message = reason.trim().replace(/\s+/g, ' ');
-        if (message.length < REASON_MIN || message.length > REASON_MAX) {
-            throw new InvalidReviewException([`El motivo tiene que tener entre ${REASON_MIN} y ${REASON_MAX} caracteres`]);
-        }
-        return this.decide(adminId, versionId, ModerationOutcome.Rejected, category, message);
+        return this.decide(adminId, versionId, ModerationOutcome.Rejected, category, normalizeReason(reason));
     }
 
     private async decide(

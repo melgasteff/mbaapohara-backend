@@ -19,4 +19,14 @@ describe('Límite de intentos en /auth (e2e)', () => {
         }
         expect((await attempt()).status).toBe(429);
     });
+
+    it('el cuarto envío del formulario de empresas en una hora responde 429 (3.9b)', async () => {
+        const http = request(app.getHttpServer());
+        // Cuerpo inválido a propósito: el límite cuenta antes de validar, así no se guarda nada.
+        const attempt = () => http.post('/company-requests').send({});
+        for (let i = 0; i < 3; i++) {
+            expect((await attempt()).status).toBe(400);
+        }
+        expect((await attempt()).status).toBe(429);
+    });
 });

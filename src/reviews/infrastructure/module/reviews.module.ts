@@ -7,6 +7,10 @@ import { DeleteReviewUseCase } from '../../application/use-case/delete-review.us
 import { EditReviewUseCase } from '../../application/use-case/edit-review.use-case';
 import { DecideReviewUseCase, ListModerationQueueUseCase } from '../../application/use-case/moderation-queue.use-case';
 import { PublishReviewUseCase } from '../../application/use-case/publish-review.use-case';
+import { KeepReportedReviewUseCase, ListReportsUseCase, ReportReviewUseCase, RetireReviewUseCase } from '../../application/use-case/reports.use-case';
+import { ReportRepository } from '../../domain/port/report-repository.port';
+import { ReportsController } from '../../presentation/reports.controller';
+import { SqlReportRepository } from '../typeorm/sql-report.repository';
 import { GetPublicReviewUseCase, ListMyReviewsUseCase, ListPublicReviewsUseCase } from '../../application/use-case/query-reviews.use-case';
 import { ReviewReferences } from '../../domain/port/review-references.port';
 import { ReviewRepository } from '../../domain/port/review-repository.port';
@@ -19,10 +23,23 @@ import { SqlReviewRepository } from '../typeorm/sql-review.repository';
 // La moderación entra por ModerationPort, que exporta ModerationModule.
 @Module({
     imports: [CatalogsModule, CompaniesModule, ModerationModule],
-    controllers: [ReviewsController, ModerationQueueController],
+    controllers: [ReviewsController, ModerationQueueController, ReportsController],
     providers: [
         { provide: ReviewRepository, useClass: SqlReviewRepository },
         { provide: ReviewReferences, useClass: CatalogReviewReferences },
+        { provide: ReportRepository, useClass: SqlReportRepository },
+        {
+            provide: ReportReviewUseCase,
+            inject: [ReviewRepository, ReportRepository],
+            useFactory: (repo: ReviewRepository, reports: ReportRepository) => new ReportReviewUseCase(repo, reports),
+        },
+        { provide: ListReportsUseCase, inject: [ReportRepository], useFactory: (reports: ReportRepository) => new ListReportsUseCase(reports) },
+        { provide: KeepReportedReviewUseCase, inject: [ReportRepository], useFactory: (reports: ReportRepository) => new KeepReportedReviewUseCase(reports) },
+        {
+            provide: RetireReviewUseCase,
+            inject: [ReviewRepository, ReportRepository, ModerationPort],
+            useFactory: (repo: ReviewRepository, reports: ReportRepository, moderation: ModerationPort) => new RetireReviewUseCase(repo, reports, moderation),
+        },
         {
             provide: PublishReviewUseCase,
             inject: [ReviewRepository, ReviewReferences, ModerationPort],
@@ -48,5 +65,7 @@ import { SqlReviewRepository } from '../typeorm/sql-review.repository';
             useFactory: (repo: ReviewRepository, moderation: ModerationPort) => new DecideReviewUseCase(repo, moderation),
         },
     ],
+    // Las solicitudes de empresas (company-requests) retiran reseñas con la misma regla y validan la reseña afectada.
+    exports: [RetireReviewUseCase, GetPublicReviewUseCase],
 })
 export class ReviewsModule { }

@@ -209,6 +209,19 @@ export class SqlReviewRepository extends ReviewRepository {
         });
     }
 
+    retirePublished(reviewId: number, decision: VersionDecision): Promise<{ versionId: number; loBueno: string; aMejorar: string } | null> {
+        return this.dataSource.transaction(async manager => {
+            const [review] = await manager.query('SELECT id_version_publicada AS id FROM resenas WHERE id = $1 FOR UPDATE', [reviewId]);
+            if (!review?.id) return null;
+            const [[version]] = await manager.query(
+                `UPDATE versiones_resena SET estado = $2, categoria_moderacion = $3, motivo_moderacion = $4, fecha_decision = now()
+                 WHERE id = $1 RETURNING id AS "versionId", lo_bueno AS "loBueno", a_mejorar AS "aMejorar"`,
+                [review.id, decision.status, decision.category, decision.message]);
+            await manager.query('UPDATE resenas SET id_version_publicada = NULL, fecha_actualizacion = now() WHERE id = $1', [reviewId]);
+            return version;
+        });
+    }
+
     /** Inserta una versión en revisión con sus respuestas, dentro de la transacción recibida. Devuelve su id. */
     private async insertVersion(manager: EntityManager, reviewId: number, numero: number, content: ReviewContent): Promise<number> {
         const jobId = 'id' in content.job ? content.job.id : await this.jobs.propose(content.job.proposed, manager);

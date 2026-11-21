@@ -7,6 +7,8 @@ import { DeleteReviewUseCase } from '../application/use-case/delete-review.use-c
 import { EditReviewUseCase } from '../application/use-case/edit-review.use-case';
 import { PublishReviewUseCase } from '../application/use-case/publish-review.use-case';
 import { GetPublicReviewUseCase, ListMyReviewsUseCase, ListPublicReviewsUseCase } from '../application/use-case/query-reviews.use-case';
+import { ReportReviewUseCase } from '../application/use-case/reports.use-case';
+import { ReportReceivedDTO, ReportReviewDTO } from './dto/report.dto';
 import { ReviewExceptionFilter } from '../infrastructure/exception-filter/review.exception-filter';
 import { MyReviewDTO, PublicReviewDTO, PublicReviewPageDTO, SubmitResultDTO } from './dto/review-response.dto';
 import { EditReviewDTO, PublishReviewDTO, ReviewsQueryDTO } from './dto/review.dto';
@@ -23,6 +25,7 @@ export class ReviewsController {
         private readonly listMineUC: ListMyReviewsUseCase,
         private readonly listPublicUC: ListPublicReviewsUseCase,
         private readonly getPublicUC: GetPublicReviewUseCase,
+        private readonly reportUC: ReportReviewUseCase,
     ) { }
 
     /** Reseñas publicadas, filtrables por empresa, local, cargo, ciudad, contrato, modalidad y situación (RF5). */
@@ -50,6 +53,13 @@ export class ReviewsController {
     @Post()
     async publish(@CurrentUser() user: AuthenticatedUser, @Body() body: PublishReviewDTO): Promise<SubmitResultDTO> {
         return toSubmitResultDTO(await this.publishUC.execute(user.id, body.idLocal, toReviewInput(body)));
+    }
+
+    /** Reporta una reseña publicada que rompe las reglas. Sigue visible mientras se revisa. */
+    @Post(':id/reports')
+    async report(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseIntPipe) id: number, @Body() body: ReportReviewDTO): Promise<ReportReceivedDTO> {
+        await this.reportUC.execute(user.id, id, body.categoria, body.comentario ?? null);
+        return { mensaje: 'Gracias. Vamos a revisar la reseña; mientras tanto sigue visible.' };
     }
 
     /** Edita una reseña propia. La versión publicada sigue visible hasta que la nueva se publique. */

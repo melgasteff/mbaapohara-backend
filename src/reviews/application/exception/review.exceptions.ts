@@ -41,3 +41,24 @@ export class VersionAlreadyDecidedException extends Error {
         super(`La versión ${id} ya no está en revisión`);
     }
 }
+
+/** Una cuenta reporta una misma reseña una sola vez (política, sección 8). */
+export class ReportAlreadyExistsException extends Error {
+    constructor() {
+        super('Ya reportaste esta reseña. La estamos revisando.');
+    }
+}
+
+/** La reseña no está publicada: no hay nada que retirar. */
+export class ReviewNotPublishedException extends Error {
+    constructor(id: number) {
+        super(`La reseña ${id} no está publicada`);
+    }
+}
+
+/** No hay reportes pendientes de esa reseña. */
+export class NoPendingReportsException extends Error {
+    constructor(id: number) {
+        super(`La reseña ${id} no tiene reportes pendientes`);
+    }
+}
