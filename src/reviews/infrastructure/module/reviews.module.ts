@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CatalogsModule } from 'src/catalogs/catalogs.module';
 import { CompaniesModule } from 'src/companies/companies.module';
+import { CriteriaModule } from 'src/criteria/criteria.module';
 import { ModerationModule } from 'src/moderation/infrastructure/module/moderation.module';
 import { ModerationPort } from 'src/moderation/domain/port/moderation.port';
 import { DeleteReviewUseCase } from '../../application/use-case/delete-review.use-case';
@@ -22,7 +23,7 @@ import { SqlReviewRepository } from '../typeorm/sql-review.repository';
 // Módulo completo (docs/arquitectura.md): los casos de uso no tienen decoradores de Nest; se crean acá con sus puertos.
 // La moderación entra por ModerationPort, que exporta ModerationModule.
 @Module({
-    imports: [CatalogsModule, CompaniesModule, ModerationModule],
+    imports: [CatalogsModule, CompaniesModule, CriteriaModule, ModerationModule],
     controllers: [ReviewsController, ModerationQueueController, ReportsController],
     providers: [
         { provide: ReviewRepository, useClass: SqlReviewRepository },

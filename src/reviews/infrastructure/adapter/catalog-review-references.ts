@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DataSource } from 'typeorm';
 import { ContractTypesService } from 'src/catalogs/contract-types/contract-types.service';
 import { JobsService } from 'src/catalogs/jobs/jobs.service';
 import { WorkModesService } from 'src/catalogs/work-modes/work-modes.service';
 import { CompaniesService } from 'src/companies/companies.service';
+import { CriteriaService } from 'src/criteria/criteria.service';
 import { OfficesService } from 'src/companies/offices/offices.service';
 import { ProposalStatus } from 'src/shared/domain/proposal-status';
 import { ActiveCriterion } from '../../domain/model/review';
@@ -20,7 +20,7 @@ async function exists(find: () => Promise<unknown>): Promise<boolean> {
     }
 }
 
-// Adaptador de ReviewReferences con los servicios que exportan `companies` y `catalogs` (docs/arquitectura.md, regla 2).
+// Adaptador de ReviewReferences con los servicios que exportan `companies`, `catalogs` y `criteria` (docs/arquitectura.md, regla 2).
 @Injectable()
 export class CatalogReviewReferences extends ReviewReferences {
     constructor(
@@ -29,7 +29,7 @@ export class CatalogReviewReferences extends ReviewReferences {
         private readonly jobs: JobsService,
         private readonly contractTypes: ContractTypesService,
         private readonly workModes: WorkModesService,
-        private readonly dataSource: DataSource,
+        private readonly criteria: CriteriaService,
     ) {
         super();
     }
@@ -56,13 +56,7 @@ export class CatalogReviewReferences extends ReviewReferences {
         return exists(() => this.workModes.findOne(id));
     }
 
-    // Lee las tablas de los módulos heredados `categories` e `items`, que no conocen el código, el orden ni el estado
-    // activo. Es provisorio hasta que la 3.8 cree el módulo `criteria` y su servicio.
     activeCriteria(): Promise<ActiveCriterion[]> {
-        return this.dataSource.query(
-            `SELECT i.id, i.codigo AS code
-             FROM items i JOIN categorias c ON c.id = i.id_categoria
-             WHERE i.activo AND c.activo AND i.codigo IS NOT NULL
-             ORDER BY c.orden, c.id, i.orden, i.id`);
+        return this.criteria.activeCriteria();
     }
 }

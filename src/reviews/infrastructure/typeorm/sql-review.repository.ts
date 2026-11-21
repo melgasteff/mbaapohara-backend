@@ -14,7 +14,7 @@ const ANSWERS = `COALESCE((
     FROM respuestas_criterio rc
     JOIN items i ON i.id = rc.id_item
     JOIN categorias cat ON cat.id = i.id_categoria
-    WHERE rc.id_version = v.id AND i.activo AND cat.activo AND i.codigo IS NOT NULL), '[]')`;
+    WHERE rc.id_version = v.id AND i.activo AND cat.activo), '[]')`;
 
 const PLACE = `json_build_object('id', e.id, 'nombre', e.nombre) AS empresa,
     json_build_object('id', s.id, 'nombre', s.nombre, 'ciudad', ci.nombre) AS local`;

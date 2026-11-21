@@ -6,8 +6,7 @@ import { CatalogsModule } from './catalogs/catalogs.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/infrastructure/module/auth.module';
 import { CompaniesModule } from './companies/companies.module';
-import { CategoryModule } from './categories/infrastructure/module/category.module';
-import { ItemModule } from './items/infrastructure/module/item.module';
+import { CriteriaModule } from './criteria/criteria.module';
 import { ReviewsModule } from './reviews/infrastructure/module/reviews.module';
 import { CompanyRequestsModule } from './company-requests/company-requests.module';
 import { EnvironmentVariables, validateEnv } from './shared/infrastructure/config/env.validation';
@@ -35,8 +34,7 @@ import { ModerationModule } from './moderation/infrastructure/module/moderation.
     UsersModule,
     CompaniesModule,
     ModerationModule,
-    CategoryModule,
-    ItemModule,
+    CriteriaModule,
     ReviewsModule,
     CompanyRequestsModule
   ],

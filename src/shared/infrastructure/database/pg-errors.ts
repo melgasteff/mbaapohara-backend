@@ -14,3 +14,7 @@ export const isUniqueViolation = (error: unknown) => pgCode(error) === UNIQUE_VI
 
 // Se violó una clave foránea (por ejemplo, borrar un registro que otro usa).
 export const isForeignKeyViolation = (error: unknown) => pgCode(error) === FOREIGN_KEY_VIOLATION;
+
+// Nombre de la restricción que falló (por ejemplo «UQ_items_codigo»), para dar un mensaje preciso.
+export const violatedConstraint = (error: unknown): string | undefined =>
+    error instanceof QueryFailedError ? (error.driverError as { constraint?: string })?.constraint : undefined;
