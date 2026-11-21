@@ -16,6 +16,21 @@ export class JobsService {
         return findPage(this.repo, request, { where: { estado: ProposalStatus.Approved }, order: { descripcion: 'ASC' } });
     }
 
+    // Administración: cargos en cualquier estado (por ejemplo, los propuestos desde una reseña, pendientes).
+    findAdminPage(request: PageRequest, estado?: ProposalStatus): Promise<Page<Job>> {
+        return findPage(this.repo, request, { where: estado ? { estado } : {}, order: { descripcion: 'ASC' } });
+    }
+
+    /** Aprueba un cargo propuesto: pasa a la lista pública y se muestra en sus reseñas. */
+    approve(id: number): Promise<Job> {
+        return this.resolve(id, ProposalStatus.Approved);
+    }
+
+    /** Rechaza un cargo propuesto: no entra en la lista y sus reseñas siguen mostrando «Otro cargo». */
+    reject(id: number): Promise<Job> {
+        return this.resolve(id, ProposalStatus.Rejected);
+    }
+
     async findOne(id: number): Promise<Job> {
         const job = await this.repo.findOneBy({ id, estado: ProposalStatus.Approved });
         if (!job) throw new NotFoundException(`No existe el cargo ${id}`);
@@ -55,6 +70,14 @@ export class JobsService {
             if (isForeignKeyViolation(error)) throw new ConflictException(`El cargo ${id} está en uso y no se puede eliminar`);
             throw error;
         }
+    }
+
+    private async resolve(id: number, estado: ProposalStatus.Approved | ProposalStatus.Rejected): Promise<Job> {
+        const job = await this.repo.findOneBy({ id });
+        if (!job) throw new NotFoundException(`No existe el cargo ${id}`);
+        if (job.estado !== ProposalStatus.Pending) throw new ConflictException(`El cargo ${id} ya está ${job.estado}`);
+        job.estado = estado;
+        return this.repo.save(job);
     }
 
     private async saveOrConflict(job: Job): Promise<Job> {

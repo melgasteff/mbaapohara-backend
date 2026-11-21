@@ -3,6 +3,8 @@ import { SubmitResult } from '../application/use-case/review-steps';
 import { CriterionAnswer, ReviewInput, WorkSituation } from '../domain/model/review';
 import { AnswerView, MyReview, PublicReview, PublicReviewFilters } from '../domain/model/review-views';
 import { AnswerDTO, MyReviewDTO, PublicReviewDTO, SubmitResultDTO } from './dto/review-response.dto';
+import { QueueItemDTO } from './dto/moderation-queue.dto';
+import { QueueItem } from '../application/use-case/moderation-queue.use-case';
 import { AnswerValue, EditReviewDTO, ReviewsQueryDTO, SituationValue } from './dto/review.dto';
 
 // Traduce entre los valores de la API (los del JSON del frontend) y los del dominio (los de la base).
@@ -80,4 +82,8 @@ export function toPublicReviewDTO(review: PublicReview): PublicReviewDTO {
 export function toMyReviewDTO(review: MyReview): MyReviewDTO {
     const v = review.ultimaVersion;
     return { ...review, ultimaVersion: { ...v, situacion: SITUATION_OUT[v.situacion], respuestas: toAnswers(v.respuestas) } };
+}
+
+export function toQueueItemDTO(item: QueueItem): QueueItemDTO {
+    return { ...item, situacion: SITUATION_OUT[item.situacion], respuestas: toAnswers(item.respuestas) };
 }

@@ -44,6 +44,14 @@ export class ModerationDecisionEntity {
     @Column({ name: 'motivo_modelo', type: 'varchar', length: 300, nullable: true })
     motivoModelo: string | null;
 
+    /** Administrador que decidió, en la revisión humana (origen «persona»). */
+    @Column({ name: 'id_administrador', type: 'int', nullable: true })
+    idAdministrador: number | null;
+
+    /** Motivo que lee quien escribió, en la revisión humana. */
+    @Column({ name: 'motivo_decision', type: 'varchar', length: 500, nullable: true })
+    motivoDecision: string | null;
+
     @Column({ name: 'costo_usd', type: 'numeric', precision: 12, scale: 6, default: 0 })
     costoUsd: string;
 

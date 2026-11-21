@@ -1,4 +1,4 @@
-import { CategoryScores, ModerationOutcome as O, RuleSignal, Verdict } from '../../domain/model/moderation';
+import { AutomaticSignals, CategoryScores, HumanDecision, ModerationOutcome as O, RuleSignal, Verdict } from '../../domain/model/moderation';
 import { LocalRules } from '../../domain/port/local-rules.port';
 import { ModerationLog } from '../../domain/port/moderation-log.port';
 import { ClassifierResult, TextClassifier } from '../../domain/port/text-classifier.port';
@@ -21,6 +21,9 @@ class MemoryLog extends ModerationLog {
     async record(verdict: Verdict, hash: string, reviewId: number | null) { this.records.push({ verdict, hash, reviewId }); }
     async monthSpendUsd() { return this.spent; }
     async addSpend(cost: number) { this.spent += cost; }
+    human: { decision: HumanDecision; hash: string; reviewId: number; versionId: number }[] = [];
+    async recordHuman(decision: HumanDecision, hash: string, reviewId: number, versionId: number) { this.human.push({ decision, hash, reviewId, versionId }); }
+    async signalsFor(): Promise<AutomaticSignals[]> { return []; }
 }
 const ok = (scores: Partial<CategoryScores>, costUsd = 0.0003): ClassifierResult => ({
     ok: true, classification: { scores: { ...zero, ...scores }, provider: 'prueba', model: 'modelo-prueba', promptVersion: 'v-prueba', costUsd, reason: 'motivo' },
@@ -66,5 +69,14 @@ describe('EvaluateTextUseCase', () => {
         const classifier = new FakeClassifier(ok({}));
         await new EvaluateTextUseCase(new FakeRules(), classifier, new MemoryLog(), 5).evaluate(text);
         expect(classifier.calls[0]).toBe('Lo bueno: Pagan en fecha y el ambiente es bueno.\nA mejorar: Las horas extra se pagan tarde.');
+    });
+
+    it('registra la decisión humana con la misma huella del texto que la automática', async () => {
+        const log = new MemoryLog();
+        const useCase = new EvaluateTextUseCase(new FakeRules(), new FakeClassifier(ok({})), log, 5);
+        await useCase.evaluate(text, { reviewId: 3, versionId: 4 });
+        const decision: HumanDecision = { outcome: O.Published, category: null, message: 'ok', adminId: 1 };
+        await useCase.recordHumanDecision(text, decision, { reviewId: 3, versionId: 4 });
+        expect(log.human).toEqual([{ decision, hash: log.records[0].hash, reviewId: 3, versionId: 4 }]);
     });
 });

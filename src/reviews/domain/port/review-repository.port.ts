@@ -1,6 +1,6 @@
 import { Page, PageRequest } from 'src/shared/domain/page';
 import { ReviewContent, ReviewStatus } from '../model/review';
-import { MyReview, OwnedReview, PublicReview, PublicReviewFilters } from '../model/review-views';
+import { MyReview, OwnedReview, PublicReview, PublicReviewFilters, QueueVersion, VersionToDecide } from '../model/review-views';
 
 /** Resultado de moderar una versión, tal como se guarda en ella. */
 export interface VersionDecision {
@@ -27,4 +27,12 @@ export abstract class ReviewRepository {
     abstract listMine(userId: number): Promise<MyReview[]>;
     abstract listPublic(filters: PublicReviewFilters, page: PageRequest): Promise<Page<PublicReview>>;
     abstract findPublic(reviewId: number): Promise<PublicReview | null>;
+    /** Versiones en revisión humana, la más antigua primero. */
+    abstract listQueue(page: PageRequest): Promise<Page<QueueVersion>>;
+    abstract findVersion(versionId: number): Promise<VersionToDecide | null>;
+    /**
+     * Aplica una decisión humana solo si la versión sigue en revisión (otra decisión pudo llegar antes).
+     * Devuelve `false` si ya estaba decidida.
+     */
+    abstract decideInReview(reviewId: number, versionId: number, decision: VersionDecision): Promise<boolean>;
 }

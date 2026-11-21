@@ -2,6 +2,7 @@ import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/commo
 import { Request, Response } from 'express';
 import {
     InvalidReviewException, ReviewAlreadyExistsException, ReviewInReviewException, ReviewNotFoundException,
+    VersionAlreadyDecidedException, VersionNotFoundException,
 } from '../../application/exception/review.exceptions';
 
 const STATUS = new Map<Function, HttpStatus>([
@@ -9,9 +10,12 @@ const STATUS = new Map<Function, HttpStatus>([
     [ReviewAlreadyExistsException, HttpStatus.CONFLICT],
     [ReviewInReviewException, HttpStatus.CONFLICT],
     [InvalidReviewException, HttpStatus.BAD_REQUEST],
+    [VersionNotFoundException, HttpStatus.NOT_FOUND],
+    [VersionAlreadyDecidedException, HttpStatus.CONFLICT],
 ]);
 
-@Catch(ReviewNotFoundException, ReviewAlreadyExistsException, ReviewInReviewException, InvalidReviewException)
+@Catch(ReviewNotFoundException, ReviewAlreadyExistsException, ReviewInReviewException, InvalidReviewException,
+    VersionNotFoundException, VersionAlreadyDecidedException)
 export class ReviewExceptionFilter implements ExceptionFilter {
     catch(exception: Error, host: ArgumentsHost) {
         const ctx = host.switchToHttp();

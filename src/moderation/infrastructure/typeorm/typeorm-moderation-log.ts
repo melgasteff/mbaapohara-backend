@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Verdict } from '../../domain/model/moderation';
+import { AutomaticSignals, HumanDecision, Verdict } from '../../domain/model/moderation';
 import { ModerationLog } from '../../domain/port/moderation-log.port';
 import { ModerationDecisionEntity } from './moderation-decision.entity';
 
@@ -47,5 +47,30 @@ export class TypeOrmModerationLog extends ModerationLog {
                                              llamadas = gasto_moderacion.llamadas + 1`,
             [currentMonth(), costUsd.toFixed(6)],
         );
+    }
+
+    async recordHuman(decision: HumanDecision, textHash: string, reviewId: number, versionId: number): Promise<void> {
+        await this.decisions.insert({
+            idResena: reviewId,
+            idVersionResena: versionId,
+            huellaTexto: textHash,
+            resultado: decision.outcome,
+            categoria: decision.category,
+            origen: 'persona',
+            idAdministrador: decision.adminId,
+            motivoDecision: decision.message,
+        });
+    }
+
+    signalsFor(versionIds: number[]): Promise<AutomaticSignals[]> {
+        // La última decisión automática de cada versión; las humanas no cuentan como señal.
+        return this.decisions.query(
+            `SELECT DISTINCT ON (id_version_resena)
+                    id_version_resena AS "versionId", categoria AS category, reglas AS rules, confianzas AS scores,
+                    falla AS failure, motivo_modelo AS "modelReason"
+             FROM decisiones_moderacion
+             WHERE id_version_resena = ANY($1) AND origen <> 'persona'
+             ORDER BY id_version_resena, fecha DESC, id DESC`,
+            [versionIds]);
     }
 }

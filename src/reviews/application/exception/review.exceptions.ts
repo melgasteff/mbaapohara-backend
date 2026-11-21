@@ -27,3 +27,17 @@ export class InvalidReviewException extends Error {
         super(problems.join('. '));
     }
 }
+
+/** La versión no existe. */
+export class VersionNotFoundException extends Error {
+    constructor(id: number) {
+        super(`No existe la versión ${id}`);
+    }
+}
+
+/** La versión ya no está en revisión: otra decisión llegó antes. */
+export class VersionAlreadyDecidedException extends Error {
+    constructor(id: number) {
+        super(`La versión ${id} ya no está en revisión`);
+    }
+}

@@ -63,3 +63,28 @@ export interface Verdict {
     modelReason: string | null;
     costUsd: number;
 }
+
+/** Decisión de una persona del equipo en la revisión humana (política, sección 6). */
+export interface HumanDecision {
+    outcome: ModerationOutcome.Published | ModerationOutcome.Rejected;
+    /** Categoría del rechazo; `null` al publicar. */
+    category: ModerationCategory | null;
+    /** Lo que lee quien escribió la reseña. */
+    message: string;
+    adminId: number;
+}
+
+/** Señales de la última moderación automática de una versión, para la cola de revisión humana. */
+export interface AutomaticSignals {
+    versionId: number;
+    category: ModerationCategory | null;
+    rules: RuleSignal[];
+    scores: CategoryScores | null;
+    failure: ClassifierFailure | null;
+    modelReason: string | null;
+}
+
+/** Texto que se analiza y del que se guarda la huella: los dos campos juntos (R6). */
+export function joinReviewText(text: ReviewText): string {
+    return `Lo bueno: ${text.loBueno.trim()}\nA mejorar: ${text.aMejorar.trim()}`;
+}

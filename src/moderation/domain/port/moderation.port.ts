@@ -1,4 +1,4 @@
-import { ReviewText, Verdict } from '../model/moderation';
+import { AutomaticSignals, HumanDecision, ReviewText, Verdict } from '../model/moderation';
 
 /** Reseña y versión que se moderan; se guardan en el registro. Sin ellas, la decisión queda sin reseña (pruebas). */
 export interface ModerationContext {
@@ -12,4 +12,8 @@ export interface ModerationContext {
  */
 export abstract class ModerationPort {
     abstract evaluate(text: ReviewText, context?: ModerationContext): Promise<Verdict>;
+    /** Registra la decisión de la revisión humana, con la huella del texto que se revisó (sección 9). */
+    abstract recordHumanDecision(text: ReviewText, decision: HumanDecision, context: Required<ModerationContext>): Promise<void>;
+    /** Señales de la última moderación automática de cada versión (las que no tienen registro no aparecen). */
+    abstract signalsFor(versionIds: number[]): Promise<AutomaticSignals[]>;
 }

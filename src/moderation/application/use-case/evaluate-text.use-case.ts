@@ -1,6 +1,6 @@
 import { createHash } from 'crypto';
 import { decide } from '../../domain/model/decision-policy';
-import { Classification, ClassifierFailure, ReviewText, Verdict } from '../../domain/model/moderation';
+import { AutomaticSignals, Classification, ClassifierFailure, HumanDecision, joinReviewText, ReviewText, Verdict } from '../../domain/model/moderation';
 import { LocalRules } from '../../domain/port/local-rules.port';
 import { ModerationLog } from '../../domain/port/moderation-log.port';
 import { ModerationContext, ModerationPort } from '../../domain/port/moderation.port';
@@ -21,7 +21,7 @@ export class EvaluateTextUseCase extends ModerationPort {
     }
 
     async evaluate(text: ReviewText, context: ModerationContext = {}): Promise<Verdict> {
-        const joined = `Lo bueno: ${text.loBueno.trim()}\nA mejorar: ${text.aMejorar.trim()}`;
+        const joined = joinReviewText(text);
         const rules = this.rules.check(joined);
 
         // El clasificador se consulta solo si las reglas no rechazaron y queda presupuesto en el mes.
@@ -55,7 +55,20 @@ export class EvaluateTextUseCase extends ModerationPort {
         };
 
         if (costUsd > 0) await this.log.addSpend(costUsd);
-        await this.log.record(verdict, createHash('sha256').update(joined).digest('hex'), context.reviewId ?? null, context.versionId ?? null);
+        await this.log.record(verdict, hash(joined), context.reviewId ?? null, context.versionId ?? null);
         return verdict;
     }
+
+    async recordHumanDecision(text: ReviewText, decision: HumanDecision, context: Required<ModerationContext>): Promise<void> {
+        await this.log.recordHuman(decision, hash(joinReviewText(text)), context.reviewId, context.versionId);
+    }
+
+    signalsFor(versionIds: number[]): Promise<AutomaticSignals[]> {
+        return versionIds.length ? this.log.signalsFor(versionIds) : Promise.resolve([]);
+    }
+}
+
+/** Huella SHA-256 del texto: el registro nunca guarda el texto (minimización de datos). */
+function hash(text: string): string {
+    return createHash('sha256').update(text).digest('hex');
 }

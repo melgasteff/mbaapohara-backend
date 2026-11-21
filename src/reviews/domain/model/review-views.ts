@@ -77,3 +77,33 @@ export interface OwnedReview {
     id: number;
     lastStatus: ReviewStatus;
 }
+
+/** Versión que espera la revisión humana. Nunca lleva el autor (política de moderación, sección 6). */
+export interface QueueVersion {
+    idVersion: number;
+    idResena: number;
+    numero: number;
+    empresa: NamedRef;
+    local: NamedRef & { ciudad: string };
+    cargo: { descripcion: string; aprobado: boolean };
+    situacion: WorkSituation;
+    ultimoAnio: number | null;
+    tipoContrato: NamedRef;
+    modalidad: NamedRef;
+    calificacion: number;
+    loBueno: string;
+    aMejorar: string;
+    respuestas: AnswerView[];
+    fechaEnvio: Date;
+    /** La reseña tiene otra versión publicada, que se sigue viendo mientras tanto. */
+    tieneVersionPublicada: boolean;
+}
+
+/** Versión que se va a decidir, con lo necesario para registrar la decisión. */
+export interface VersionToDecide {
+    idVersion: number;
+    idResena: number;
+    estado: ReviewStatus;
+    loBueno: string;
+    aMejorar: string;
+}

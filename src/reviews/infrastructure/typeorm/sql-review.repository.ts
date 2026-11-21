@@ -5,7 +5,7 @@ import { Page, PageRequest, pageOffset } from 'src/shared/domain/page';
 import { isUniqueViolation } from 'src/shared/infrastructure/database/pg-errors';
 import { ReviewAlreadyExistsException } from '../../application/exception/review.exceptions';
 import { ReviewContent, ReviewStatus } from '../../domain/model/review';
-import { MyReview, OwnedReview, PublicReview, PublicReviewFilters } from '../../domain/model/review-views';
+import { MyReview, OwnedReview, PublicReview, PublicReviewFilters, QueueVersion, VersionToDecide } from '../../domain/model/review-views';
 import { ReviewRepository, VersionDecision } from '../../domain/port/review-repository.port';
 
 // Respuestas de una versión a los criterios activos, en el orden de los criterios, como JSON.
@@ -161,6 +161,52 @@ export class SqlReviewRepository extends ReviewRepository {
     async findPublic(reviewId: number): Promise<PublicReview | null> {
         const rows: PublicReview[] = await this.dataSource.query(`${PUBLIC_SELECT} ${PUBLIC_FROM} WHERE r.id = $1`, [reviewId]);
         return rows[0] ?? null;
+    }
+
+    async listQueue(request: PageRequest): Promise<Page<QueueVersion>> {
+        // Cola de revisión humana: sin id_usuario ni datos de la cuenta (política, sección 6).
+        const from = `FROM versiones_resena v
+            JOIN resenas r ON r.id = v.id_resena
+            JOIN sucursales s ON s.id = r.id_sucursal
+            JOIN empresas e ON e.id = s.id_empresa
+            JOIN ciudades ci ON ci.id = s.id_ciudad
+            ${VERSION_JOINS}
+            WHERE v.estado = 'en_revision'`;
+        const [data, [{ total }]] = await Promise.all([
+            this.dataSource.query(
+                `SELECT v.id AS "idVersion", r.id AS "idResena", v.numero, ${PLACE},
+                        json_build_object('descripcion', c.descripcion, 'aprobado', c.estado = 'aprobada') AS cargo, ${RELATION},
+                        v.fecha_creacion AS "fechaEnvio", (r.id_version_publicada IS NOT NULL) AS "tieneVersionPublicada"
+                 ${from}
+                 ORDER BY v.fecha_creacion, v.id
+                 LIMIT $1 OFFSET $2`,
+                [request.pageSize, pageOffset(request)]),
+            this.dataSource.query(`SELECT count(*)::int AS total ${from}`),
+        ]);
+        return { data, total, page: request.page, pageSize: request.pageSize };
+    }
+
+    async findVersion(versionId: number): Promise<VersionToDecide | null> {
+        const rows: VersionToDecide[] = await this.dataSource.query(
+            `SELECT id AS "idVersion", id_resena AS "idResena", estado, lo_bueno AS "loBueno", a_mejorar AS "aMejorar"
+             FROM versiones_resena WHERE id = $1`,
+            [versionId]);
+        return rows[0] ?? null;
+    }
+
+    decideInReview(reviewId: number, versionId: number, decision: VersionDecision): Promise<boolean> {
+        return this.dataSource.transaction(async manager => {
+            const [rows] = await manager.query(
+                `UPDATE versiones_resena SET estado = $2, categoria_moderacion = $3, motivo_moderacion = $4, fecha_decision = now()
+                 WHERE id = $1 AND estado = 'en_revision' RETURNING id`,
+                [versionId, decision.status, decision.category, decision.message]);
+            if (!rows.length) return false;
+            if (decision.status === ReviewStatus.Published) {
+                await manager.query(
+                    'UPDATE resenas SET id_version_publicada = $2, fecha_actualizacion = now() WHERE id = $1', [reviewId, versionId]);
+            }
+            return true;
+        });
     }
 
     /** Inserta una versión en revisión con sus respuestas, dentro de la transacción recibida. Devuelve su id. */
