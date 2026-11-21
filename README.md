@@ -147,7 +147,7 @@ src/
   reviews/      reseñas: publicar, editar, borrar y consultar con filtros, con la moderación integrada (completo)
   criteria/     criterios de la reseña: categorías e ítems, con alta, edición y desactivación (liviano)
   shared/       configuración, base de datos, paginación y filtro de errores
-docs/           plan, arquitectura, decisiones y datos de referencia
+docs/           arquitectura, datos de referencia y diagramas (docs/diagramas/)
 ```
 
 Toda ruta exige un token (`Authorization: Bearer <token>`) salvo las marcadas como públicas; las acciones de
