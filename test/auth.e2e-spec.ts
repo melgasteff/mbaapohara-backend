@@ -76,6 +76,7 @@ describe('Autenticación y mi cuenta (e2e)', () => {
             expect(me.body).toMatchObject({ email, rol: 'usuario' });
             const exported = await http.get('/users/me/export').set(bearer(token)).expect(200);
             expect(JSON.stringify(exported.body)).toContain(email);
+            expect(exported.body.resenas).toEqual([]);
         });
 
         it('elimina la cuenta con la contraseña y el token deja de servir', async () => {

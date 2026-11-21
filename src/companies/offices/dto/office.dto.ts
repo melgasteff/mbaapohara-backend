@@ -1,4 +1,4 @@
-import { ProposalStatus } from '../../proposal-status';
+import { ProposalStatus } from 'src/shared/domain/proposal-status';
 import { Office } from '../office.entity';
 
 export class OfficeCityDTO {

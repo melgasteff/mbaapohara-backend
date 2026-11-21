@@ -1,7 +1,7 @@
 import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 import { PaginationQueryDTO } from 'src/shared/infrastructure/rest/pagination-query.dto';
-import { ProposalStatus } from '../proposal-status';
+import { ProposalStatus } from 'src/shared/domain/proposal-status';
 
 // Directorio público (GET /companies): solo empresas aprobadas.
 export class CompaniesQueryDTO extends PaginationQueryDTO {

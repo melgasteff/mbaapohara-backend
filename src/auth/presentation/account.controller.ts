@@ -22,13 +22,13 @@ export class AccountController {
         return this.getMyAccountUC.execute(user.id);
     }
 
-    /** Todos los datos de la cuenta y sus evaluaciones, en JSON (derecho de acceso). */
+    /** Todos los datos de la cuenta y sus reseñas, en JSON (derecho de acceso). */
     @Get('export')
     export(@CurrentUser() user: AuthenticatedUser): Promise<unknown> {
         return this.exportMyDataUC.execute(user.id);
     }
 
-    /** Elimina la cuenta y sus evaluaciones (D9). Pide la contraseña para confirmar. */
+    /** Elimina la cuenta y sus reseñas (D9). Pide la contraseña para confirmar. */
     @Delete()
     @HttpCode(204)
     delete(@CurrentUser() user: AuthenticatedUser, @Body() body: DeleteAccountDTO): Promise<void> {

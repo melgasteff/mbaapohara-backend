@@ -3,17 +3,17 @@
 // No corre en producción. Se puede correr varias veces: no duplica lo que ya existe.
 // Los datos de referencia (departamentos, ciudades, rubros, contratos, modalidades, cargos) están en la
 // migración base, no acá.
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import dataSource from '../data-source';
 
-// Criterios PROVISIONALES: los 10 ítems de prueba del backend, agrupados en 4 categorías genéricas.
-// No vienen del cuestionario. Se reemplazan con los criterios de la encuesta (R1, 26/11) cambiando solo
-// estos datos.
-const CRITERIOS: Record<string, string[]> = {
-    'Condiciones de trabajo': ['Ambiente de trabajo', 'Salario', 'Beneficios'],
-    'Desarrollo profesional': ['Crecimiento profesional', 'Liderazgo', 'Balance vida-trabajo'],
-    'Organización': ['Cultura organizacional', 'Comunicación interna', 'Estabilidad laboral'],
-    'Instalaciones': ['Infraestructura'],
-};
+// Criterios PROVISIONALES de las preguntas 5 a 8 del cuestionario (docs/datos/criterios-provisionales.json, la misma
+// copia que usa el frontend). Se reemplazan con los resultados de la encuesta (R1, 26/11) cambiando solo ese archivo:
+// lo que deja de figurar se desactiva, no se borra, para que las respuestas viejas sigan siendo válidas.
+interface CriteriaFile {
+    categorias: { codigo: string; nombre: string; orden: number; items: { codigo: string; orden: number; texto: string }[] }[];
+}
+const CRITERIA: CriteriaFile = JSON.parse(readFileSync(join(process.cwd(), 'docs/datos/criterios-provisionales.json'), 'utf8'));
 
 // Empresas de demostración (aprobadas), con la sección CIIU de su rubro.
 const EMPRESAS: [nombre: string, ciiu: string][] = [
@@ -42,21 +42,40 @@ async function main() {
     try {
         await dataSource.transaction(async manager => {
             let nuevas = 0;
-            for (const [categoria, items] of Object.entries(CRITERIOS)) {
+            const categoryCodes: string[] = [];
+            const itemCodes: string[] = [];
+            for (const category of CRITERIA.categorias) {
+                categoryCodes.push(category.codigo);
+                // Una categoría cargada antes de existir los códigos se adopta por su descripción, en vez de duplicarla.
                 await manager.query(
-                    `INSERT INTO categorias (descripcion) SELECT $1::text
-                     WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE lower(descripcion) = lower($1::text))`, [categoria]);
-                for (const item of items) {
-                    const inserted: unknown[] = await manager.query(
-                        `INSERT INTO items (descripcion, id_categoria)
-                         SELECT $1::text, c.id FROM categorias c
-                         WHERE lower(c.descripcion) = lower($2::text)
-                           AND NOT EXISTS (SELECT 1 FROM items i WHERE i.id_categoria = c.id AND lower(i.descripcion) = lower($1::text))
-                         RETURNING id`,
-                        [item, categoria]);
-                    nuevas += inserted.length;
+                    `UPDATE categorias SET codigo = $1 WHERE codigo IS NULL AND lower(descripcion) = lower($2)
+                       AND NOT EXISTS (SELECT 1 FROM categorias WHERE codigo = $1)`,
+                    [category.codigo, category.nombre]);
+                const [{ id: idCategoria }] = await manager.query(
+                    `INSERT INTO categorias (codigo, descripcion, orden, activo) VALUES ($1, $2, $3, true)
+                     ON CONFLICT (codigo) WHERE codigo IS NOT NULL
+                     DO UPDATE SET descripcion = EXCLUDED.descripcion, orden = EXCLUDED.orden, activo = true
+                     RETURNING id`,
+                    [category.codigo, category.nombre, category.orden]);
+                for (const item of category.items) {
+                    itemCodes.push(item.codigo);
+                    await manager.query(
+                        `UPDATE items SET codigo = $1 WHERE codigo IS NULL AND id_categoria = $2 AND lower(descripcion) = lower($3)
+                           AND NOT EXISTS (SELECT 1 FROM items WHERE codigo = $1)`,
+                        [item.codigo, idCategoria, item.texto]);
+                    const [row] = await manager.query(
+                        `INSERT INTO items (codigo, descripcion, id_categoria, orden, activo) VALUES ($1, $2, $3, $4, true)
+                         ON CONFLICT (codigo) WHERE codigo IS NOT NULL
+                         DO UPDATE SET descripcion = EXCLUDED.descripcion, id_categoria = EXCLUDED.id_categoria,
+                                       orden = EXCLUDED.orden, activo = true
+                         RETURNING (xmax = 0) AS insertado`,
+                        [item.codigo, item.texto, idCategoria, item.orden]);
+                    if (row.insertado) nuevas++;
                 }
             }
+            // Lo que no está en el archivo (incluidos los 10 ítems genéricos anteriores) queda inactivo.
+            await manager.query(`UPDATE items SET activo = false WHERE codigo IS NULL OR NOT (codigo = ANY($1))`, [itemCodes]);
+            await manager.query(`UPDATE categorias SET activo = false WHERE codigo IS NULL OR NOT (codigo = ANY($1))`, [categoryCodes]);
             for (const [nombre, ciiu] of EMPRESAS) {
                 const inserted: unknown[] = await manager.query(
                     `INSERT INTO empresas (nombre, id_rubro, estado)

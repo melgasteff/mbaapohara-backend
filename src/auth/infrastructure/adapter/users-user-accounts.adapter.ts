@@ -37,8 +37,8 @@ export class UsersUserAccountsAdapter implements UserAccounts {
     }
 
     async exportData(id: number): Promise<unknown> {
-        const { cuenta, evaluaciones } = await this.users.exportData(id);
-        return { cuenta: toView(cuenta), evaluaciones, fechaExportacion: new Date() };
+        const { cuenta, resenas } = await this.users.exportData(id);
+        return { cuenta: toView(cuenta), resenas, fechaExportacion: new Date() };
     }
 
     delete(id: number): Promise<void> {

@@ -7,7 +7,7 @@ import { findPage } from 'src/shared/infrastructure/database/find-page';
 import { isForeignKeyViolation, isUniqueViolation } from 'src/shared/infrastructure/database/pg-errors';
 import { ensureCatalogRef } from '../catalog-refs';
 import { Company } from '../company.entity';
-import { ProposalStatus } from '../proposal-status';
+import { ProposalStatus } from 'src/shared/domain/proposal-status';
 import { SaveOfficeDTO } from './dto/save-office.dto';
 import { Office } from './office.entity';
 
@@ -108,7 +108,7 @@ export class OfficesService {
         try {
             await this.repo.delete(id);
         } catch (error) {
-            if (isForeignKeyViolation(error)) throw new ConflictException(`El local ${id} tiene evaluaciones y no se puede eliminar`);
+            if (isForeignKeyViolation(error)) throw new ConflictException(`El local ${id} tiene reseñas y no se puede eliminar`);
             throw error;
         }
     }

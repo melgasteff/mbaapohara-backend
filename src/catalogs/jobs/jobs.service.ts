@@ -1,3 +1,4 @@
+import { ProposalStatus } from 'src/shared/domain/proposal-status';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -10,12 +11,13 @@ import { Job } from './job.entity';
 export class JobsService {
     constructor(@InjectRepository(Job) private readonly repo: Repository<Job>) { }
 
+    // Lista pública: solo cargos aprobados. Los propuestos desde una reseña los revisa el administrador (3.9).
     findPage(request: PageRequest): Promise<Page<Job>> {
-        return findPage(this.repo, request, { order: { descripcion: 'ASC' } });
+        return findPage(this.repo, request, { where: { estado: ProposalStatus.Approved }, order: { descripcion: 'ASC' } });
     }
 
     async findOne(id: number): Promise<Job> {
-        const job = await this.repo.findOneBy({ id });
+        const job = await this.repo.findOneBy({ id, estado: ProposalStatus.Approved });
         if (!job) throw new NotFoundException(`No existe el cargo ${id}`);
         return job;
     }

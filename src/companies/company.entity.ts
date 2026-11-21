@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Sector } from 'src/catalogs/sectors/sector.entity';
 import { Office } from './offices/office.entity';
-import { ProposalStatus } from './proposal-status';
+import { ProposalStatus } from 'src/shared/domain/proposal-status';
 
 @Entity({ name: 'empresas' })
 export class Company {

@@ -5,7 +5,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { mapPage } from 'src/shared/domain/page';
 import { CompaniesService } from './companies.service';
 import { AdminCompaniesQueryDTO, CompaniesQueryDTO } from './dto/companies-query.dto';
-import { ProposalStatus } from './proposal-status';
+import { ProposalStatus } from 'src/shared/domain/proposal-status';
 import { CompanyDetailDTO, CompanyDTO, CompanyPageDTO } from './dto/company.dto';
 import { ProposeCompanyDTO, SaveCompanyDTO } from './dto/save-company.dto';
 

@@ -1,7 +1,7 @@
 import { OfficeDTO } from '../offices/dto/office.dto';
 import { Company } from '../company.entity';
 import { Office } from '../offices/office.entity';
-import { ProposalStatus } from '../proposal-status';
+import { ProposalStatus } from 'src/shared/domain/proposal-status';
 
 export class CompanySectorDTO {
     id: number;

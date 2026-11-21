@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { City } from 'src/catalogs/cities/city.entity';
 import { Company } from '../company.entity';
-import { ProposalStatus } from '../proposal-status';
+import { ProposalStatus } from 'src/shared/domain/proposal-status';
 
 // Local (tabla sucursales). Sin datos de contacto: nombre, ciudad y una dirección de referencia.
 @Entity({ name: 'sucursales' })

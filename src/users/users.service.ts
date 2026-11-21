@@ -70,7 +70,7 @@ export class UsersService {
         await this.repo.update(id, { passwordHash, rol, estado: AccountStatus.Active });
     }
 
-    // D9: borra la cuenta; la base borra en cascada sus evaluaciones y detalles.
+    // D9: borra la cuenta; la base borra en cascada sus reseñas, versiones y respuestas.
     async remove(id: number): Promise<void> {
         await this.repo.delete(id);
     }
@@ -113,27 +113,37 @@ export class UsersService {
 
     // ---------- exportación de datos (derecho de acceso)
 
-    // Lee las evaluaciones del usuario directamente de sus tablas: es provisorio hasta que reviews (Fase 3)
-    // exponga su propia exportación.
-    async exportData(id: number): Promise<{ cuenta: User; evaluaciones: unknown[] }> {
+    // Exporta la cuenta y todas sus reseñas, con cada versión enviada (también las rechazadas: son datos de la persona)
+    // y sus respuestas. Lee las tablas de reseñas directamente: es provisorio hasta que el módulo reviews (3.3) exponga
+    // su propia exportación.
+    async exportData(id: number): Promise<{ cuenta: User; resenas: unknown[] }> {
         const cuenta = await this.findOneOrFail(id);
-        const evaluaciones = await this.dataSource.query(
-            `SELECT e.id, emp.nombre AS empresa, s.nombre AS local, c.descripcion AS cargo, e.desde, e.hasta,
-                    e.eliminado,
-                    COALESCE(json_agg(json_build_object(
-                        'item', i.descripcion, 'calificacion', d.calificacion, 'otroMotivo', d.otro_motivo)
-                    ) FILTER (WHERE d.id IS NOT NULL), '[]') AS detalles
-             FROM evaluaciones e
-             LEFT JOIN empresas emp ON emp.id = e.id_empresa
-             LEFT JOIN sucursales s ON s.id = e.id_sucursal
-             LEFT JOIN cargos c ON c.id = e.id_cargo
-             LEFT JOIN detalle_evaluacion d ON d.id_evaluacion = e.id
-             LEFT JOIN items i ON i.id = d.id_item
-             WHERE e.id_usuario = $1
-             GROUP BY e.id, emp.nombre, s.nombre, c.descripcion
-             ORDER BY e.id`,
+        const resenas = await this.dataSource.query(
+            `SELECT r.id, emp.nombre AS empresa, s.nombre AS local, r.eliminada, r.fecha_creacion AS "fechaCreacion",
+                    (r.id_version_publicada IS NOT NULL) AS publicada,
+                    COALESCE((
+                        SELECT json_agg(json_build_object(
+                            'numero', v.numero, 'estado', v.estado, 'cargo', c.descripcion, 'situacion', v.situacion,
+                            'ultimoAnio', v.ultimo_anio, 'tipoContrato', tc.nombre, 'modalidad', m.nombre,
+                            'calificacion', v.calificacion, 'loBueno', v.lo_bueno, 'aMejorar', v.a_mejorar,
+                            'motivoModeracion', v.motivo_moderacion, 'fecha', v.fecha_creacion,
+                            'respuestas', COALESCE((
+                                SELECT json_agg(json_build_object('criterio', i.descripcion, 'respuesta', rc.respuesta) ORDER BY i.orden)
+                                FROM respuestas_criterio rc JOIN items i ON i.id = rc.id_item
+                                WHERE rc.id_version = v.id), '[]')
+                        ) ORDER BY v.numero)
+                        FROM versiones_resena v
+                        JOIN cargos c ON c.id = v.id_cargo
+                        JOIN tipo_contrato tc ON tc.id = v.id_tipo_contrato
+                        JOIN modalidades m ON m.id = v.id_modalidad
+                        WHERE v.id_resena = r.id), '[]') AS versiones
+             FROM resenas r
+             JOIN sucursales s ON s.id = r.id_sucursal
+             JOIN empresas emp ON emp.id = s.id_empresa
+             WHERE r.id_usuario = $1
+             ORDER BY r.id`,
             [id],
         );
-        return { cuenta, evaluaciones };
+        return { cuenta, resenas };
     }
 }

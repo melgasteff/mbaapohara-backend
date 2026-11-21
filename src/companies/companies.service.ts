@@ -9,7 +9,7 @@ import { Company } from './company.entity';
 import { ProposeCompanyDTO, SaveCompanyDTO } from './dto/save-company.dto';
 import { Office } from './offices/office.entity';
 import { OfficesService } from './offices/offices.service';
-import { ProposalStatus } from './proposal-status';
+import { ProposalStatus } from 'src/shared/domain/proposal-status';
 
 export interface CompanyFilters {
     q?: string;
@@ -112,7 +112,7 @@ export class CompaniesService {
             await this.repo.delete(id);
         } catch (error) {
             if (isForeignKeyViolation(error)) {
-                throw new ConflictException(`La empresa ${id} tiene locales o evaluaciones y no se puede eliminar; se puede rechazar`);
+                throw new ConflictException(`La empresa ${id} tiene locales o reseñas y no se puede eliminar; se puede rechazar`);
             }
             throw error;
         }

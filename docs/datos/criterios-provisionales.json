@@ -1,0 +1,235 @@
+{
+  "version": "provisional-2026-11-19b",
+  "nota": "Criterios PROVISIONALES tomados de las preguntas 5 a 8 del cuestionario de la encuesta. Se reemplazan el 26/11 con los resultados. Cargarlos siempre como datos, nunca escritos en el código.",
+  "opcionesRespuesta": [
+    {
+      "valor": "SI",
+      "etiqueta": "Sí"
+    },
+    {
+      "valor": "EN_PARTE",
+      "etiqueta": "En parte"
+    },
+    {
+      "valor": "NO",
+      "etiqueta": "No"
+    },
+    {
+      "valor": "NO_SABE",
+      "etiqueta": "No sé o no aplica"
+    }
+  ],
+  "situaciones": [
+    {
+      "valor": "ACTUAL",
+      "etiqueta": "Trabajo aquí actualmente"
+    },
+    {
+      "valor": "ANTERIOR",
+      "etiqueta": "Trabajé aquí antes"
+    }
+  ],
+  "tiposContrato": [
+    {
+      "valor": "INDEFINIDO",
+      "etiqueta": "Por tiempo indefinido"
+    },
+    {
+      "valor": "PLAZO_FIJO",
+      "etiqueta": "A plazo fijo"
+    },
+    {
+      "valor": "OBRA_SERVICIO",
+      "etiqueta": "Por obra o servicio"
+    },
+    {
+      "valor": "SIN_CONTRATO_ESCRITO",
+      "etiqueta": "Sin contrato escrito"
+    },
+    {
+      "valor": "NO_SABE",
+      "etiqueta": "No sé"
+    }
+  ],
+  "modalidades": [
+    {
+      "valor": "PRESENCIAL",
+      "etiqueta": "Presencial"
+    },
+    {
+      "valor": "REMOTA",
+      "etiqueta": "Remota"
+    },
+    {
+      "valor": "HIBRIDA",
+      "etiqueta": "Híbrida"
+    }
+  ],
+  "calificacionGeneral": {
+    "minimo": 1,
+    "maximo": 5,
+    "etiqueta": "Calificación general",
+    "pregunta": "¿Cómo calificás a la empresa en general?",
+    "palabras": {
+      "1": "Muy malo",
+      "2": "Malo",
+      "3": "Regular",
+      "4": "Bueno",
+      "5": "Excelente"
+    }
+  },
+  "textos": [
+    {
+      "codigo": "LO_BUENO",
+      "etiqueta": "Lo bueno",
+      "placeholder": "¿Qué valorás de trabajar ahí?",
+      "minimo": 50,
+      "maximo": 1000
+    },
+    {
+      "codigo": "A_MEJORAR",
+      "etiqueta": "A mejorar",
+      "placeholder": "¿Qué debería mejorar la empresa?",
+      "minimo": 50,
+      "maximo": 1000
+    }
+  ],
+  "categorias": [
+    {
+      "codigo": "CONTRATACION_PAGOS",
+      "nombre": "Contratación, formalidad y pagos",
+      "orden": 1,
+      "items": [
+        {
+          "codigo": "CP01",
+          "orden": 1,
+          "texto": "Firmé un contrato de trabajo escrito y recibí una copia."
+        },
+        {
+          "codigo": "CP02",
+          "orden": 2,
+          "texto": "Me inscribieron en el IPS desde el inicio de la relación laboral."
+        },
+        {
+          "codigo": "CP03",
+          "orden": 3,
+          "texto": "El período de prueba no superó 30 días (60 en puestos calificados)."
+        },
+        {
+          "codigo": "CP04",
+          "orden": 4,
+          "texto": "Recibí al menos el salario mínimo vigente."
+        },
+        {
+          "codigo": "CP05",
+          "orden": 5,
+          "texto": "Me pagaron en la fecha acordada."
+        },
+        {
+          "codigo": "CP06",
+          "orden": 6,
+          "texto": "Recibí un comprobante o recibo de cada pago."
+        },
+        {
+          "codigo": "CP07",
+          "orden": 7,
+          "texto": "Las horas extra se pagaron con el recargo legal."
+        },
+        {
+          "codigo": "CP08",
+          "orden": 8,
+          "texto": "Recibí el aguinaldo completo antes de fin de año."
+        },
+        {
+          "codigo": "CP09",
+          "orden": 9,
+          "texto": "No me hicieron descuentos que la ley no permite."
+        }
+      ]
+    },
+    {
+      "codigo": "JORNADA_LICENCIAS",
+      "nombre": "Jornada, descansos y licencias",
+      "orden": 2,
+      "items": [
+        {
+          "codigo": "JL01",
+          "orden": 1,
+          "texto": "La jornada no superó 8 horas diarias o 48 semanales (7 o 42 si era nocturna)."
+        },
+        {
+          "codigo": "JL02",
+          "orden": 2,
+          "texto": "Tuve al menos media hora de descanso durante la jornada."
+        },
+        {
+          "codigo": "JL03",
+          "orden": 3,
+          "texto": "Tuve un día de descanso semanal."
+        },
+        {
+          "codigo": "JL04",
+          "orden": 4,
+          "texto": "Descansé en los feriados o me pagaron el recargo correspondiente."
+        },
+        {
+          "codigo": "JL05",
+          "orden": 5,
+          "texto": "Pude tomar mis vacaciones remuneradas según mi antigüedad."
+        },
+        {
+          "codigo": "JL06",
+          "orden": 6,
+          "texto": "Me concedieron licencias pagadas por matrimonio, nacimiento o duelo cuando las solicité."
+        },
+        {
+          "codigo": "JL07",
+          "orden": 7,
+          "texto": "Se respetó el permiso de maternidad o paternidad que me correspondía."
+        }
+      ]
+    },
+    {
+      "codigo": "SEGURIDAD_TRATO",
+      "nombre": "Seguridad, trato y ambiente laboral",
+      "orden": 3,
+      "items": [
+        {
+          "codigo": "ST01",
+          "orden": 1,
+          "texto": "La empresa me proporcionó los equipos de protección que mi trabajo requería."
+        },
+        {
+          "codigo": "ST02",
+          "orden": 2,
+          "texto": "Recibí capacitación sobre seguridad e higiene."
+        },
+        {
+          "codigo": "ST03",
+          "orden": 3,
+          "texto": "La empresa cubrió los exámenes médicos que exigía."
+        },
+        {
+          "codigo": "ST04",
+          "orden": 4,
+          "texto": "Mis superiores me trataron con respeto."
+        },
+        {
+          "codigo": "ST05",
+          "orden": 5,
+          "texto": "No presencié ni sufrí discriminación por sexo, edad, origen, religión u opinión."
+        },
+        {
+          "codigo": "ST06",
+          "orden": 6,
+          "texto": "Mujeres y varones recibían igual salario por el mismo trabajo."
+        },
+        {
+          "codigo": "ST07",
+          "orden": 7,
+          "texto": "Podía afiliarme a un sindicato sin temor a represalias."
+        }
+      ]
+    }
+  ]
+}
