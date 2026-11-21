@@ -16,9 +16,10 @@ export class TypeOrmModerationLog extends ModerationLog {
         super();
     }
 
-    async record(verdict: Verdict, textHash: string, reviewId: number | null): Promise<void> {
+    async record(verdict: Verdict, textHash: string, reviewId: number | null, versionId: number | null = null): Promise<void> {
         await this.decisions.insert({
             idResena: reviewId,
+            idVersionResena: versionId,
             huellaTexto: textHash,
             resultado: verdict.outcome,
             categoria: verdict.category,

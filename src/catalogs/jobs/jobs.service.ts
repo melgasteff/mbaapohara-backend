@@ -1,7 +1,7 @@
 import { ProposalStatus } from 'src/shared/domain/proposal-status';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Page, PageRequest } from 'src/shared/domain/page';
 import { findPage } from 'src/shared/infrastructure/database/find-page';
 import { isForeignKeyViolation, isUniqueViolation } from 'src/shared/infrastructure/database/pg-errors';
@@ -20,6 +20,20 @@ export class JobsService {
         const job = await this.repo.findOneBy({ id, estado: ProposalStatus.Approved });
         if (!job) throw new NotFoundException(`No existe el cargo ${id}`);
         return job;
+    }
+
+    /**
+     * Cargo que una persona propone al escribir una reseña: si ya existe uno con esa descripción (sin distinguir
+     * mayúsculas), se usa ese; si no, se crea pendiente hasta que el administrador lo apruebe (como D10).
+     * Recibe el `EntityManager` de la transacción de la reseña. Devuelve el id.
+     */
+    async propose(descripcion: string, manager: EntityManager): Promise<number> {
+        // ON CONFLICT sobre el índice «UQ_cargos_descripcion»: dos propuestas iguales a la vez no hacen fallar la transacción.
+        await manager.query(
+            `INSERT INTO cargos (descripcion, estado) VALUES ($1, $2) ON CONFLICT ((lower(descripcion))) DO NOTHING`,
+            [descripcion, ProposalStatus.Pending]);
+        const [{ id }] = await manager.query('SELECT id FROM cargos WHERE lower(descripcion) = lower($1)', [descripcion]);
+        return id;
     }
 
     // El duplicado lo detecta la restricción UNIQUE de la base, no una búsqueda previa.

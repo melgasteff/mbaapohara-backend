@@ -119,7 +119,7 @@ export class UsersService {
     async exportData(id: number): Promise<{ cuenta: User; resenas: unknown[] }> {
         const cuenta = await this.findOneOrFail(id);
         const resenas = await this.dataSource.query(
-            `SELECT r.id, emp.nombre AS empresa, s.nombre AS local, r.eliminada, r.fecha_creacion AS "fechaCreacion",
+            `SELECT r.id, emp.nombre AS empresa, s.nombre AS local, r.fecha_creacion AS "fechaCreacion",
                     (r.id_version_publicada IS NOT NULL) AS publicada,
                     COALESCE((
                         SELECT json_agg(json_build_object(

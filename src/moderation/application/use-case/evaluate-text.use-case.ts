@@ -3,7 +3,7 @@ import { decide } from '../../domain/model/decision-policy';
 import { Classification, ClassifierFailure, ReviewText, Verdict } from '../../domain/model/moderation';
 import { LocalRules } from '../../domain/port/local-rules.port';
 import { ModerationLog } from '../../domain/port/moderation-log.port';
-import { ModerationPort } from '../../domain/port/moderation.port';
+import { ModerationContext, ModerationPort } from '../../domain/port/moderation.port';
 import { ClassifierResult, TextClassifier } from '../../domain/port/text-classifier.port';
 
 /**
@@ -20,7 +20,7 @@ export class EvaluateTextUseCase extends ModerationPort {
         super();
     }
 
-    async evaluate(text: ReviewText, context: { reviewId?: number } = {}): Promise<Verdict> {
+    async evaluate(text: ReviewText, context: ModerationContext = {}): Promise<Verdict> {
         const joined = `Lo bueno: ${text.loBueno.trim()}\nA mejorar: ${text.aMejorar.trim()}`;
         const rules = this.rules.check(joined);
 
@@ -55,7 +55,7 @@ export class EvaluateTextUseCase extends ModerationPort {
         };
 
         if (costUsd > 0) await this.log.addSpend(costUsd);
-        await this.log.record(verdict, createHash('sha256').update(joined).digest('hex'), context.reviewId ?? null);
+        await this.log.record(verdict, createHash('sha256').update(joined).digest('hex'), context.reviewId ?? null, context.versionId ?? null);
         return verdict;
     }
 }

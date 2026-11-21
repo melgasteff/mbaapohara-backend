@@ -6,9 +6,13 @@ export class ModerationDecisionEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    /** Reseña moderada; `null` en las pruebas del administrador. La clave foránea se agrega en la Fase 3. */
+    /** Reseña moderada; `null` en las pruebas del administrador o si la reseña se eliminó (D9). */
     @Column({ name: 'id_resena', type: 'int', nullable: true })
     idResena: number | null;
+
+    /** Versión de la reseña que se moderó; `null` en los mismos casos. */
+    @Column({ name: 'id_version_resena', type: 'int', nullable: true })
+    idVersionResena: number | null;
 
     @Column({ name: 'huella_texto', type: 'char', length: 64 })
     huellaTexto: string;

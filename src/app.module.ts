@@ -8,6 +8,7 @@ import { AuthModule } from './auth/infrastructure/module/auth.module';
 import { CompaniesModule } from './companies/companies.module';
 import { CategoryModule } from './categories/infrastructure/module/category.module';
 import { ItemModule } from './items/infrastructure/module/item.module';
+import { ReviewsModule } from './reviews/infrastructure/module/reviews.module';
 import { EnvironmentVariables, validateEnv } from './shared/infrastructure/config/env.validation';
 import { AllExceptionsFilter } from './shared/infrastructure/rest/all-exceptions.filter';
 import { ModerationModule } from './moderation/infrastructure/module/moderation.module';
@@ -34,7 +35,8 @@ import { ModerationModule } from './moderation/infrastructure/module/moderation.
     CompaniesModule,
     ModerationModule,
     CategoryModule,
-    ItemModule
+    ItemModule,
+    ReviewsModule
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

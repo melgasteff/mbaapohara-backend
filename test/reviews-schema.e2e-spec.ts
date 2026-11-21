@@ -63,11 +63,11 @@ describe('Modelo de datos de la reseña (e2e)', () => {
         expect(row.id_version_publicada).toBe(version);
     });
 
-    it('una reseña por persona y local, sin contar las eliminadas', async () => {
+    it('una reseña por persona y local; borrada, se puede volver a escribir (3.3)', async () => {
         const { id: usuario } = await userToken(app);
         const first = await newReview(usuario);
         expect(await pgError('INSERT INTO resenas (id_usuario, id_sucursal) VALUES ($1, $2)', [usuario, ref.sucursal])).toBe('23505');
-        await db.query('UPDATE resenas SET eliminada = true WHERE id = $1', [first]);
+        await db.query('DELETE FROM resenas WHERE id = $1', [first]);
         await expect(newReview(usuario)).resolves.toBeGreaterThan(first);
     });
 
