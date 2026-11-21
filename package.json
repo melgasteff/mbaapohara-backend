@@ -30,6 +30,8 @@
     "db:setup": "npm run migration:run && npm run seed",
     "db:reset": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/scripts/reset-schema.ts && npm run db:setup",
     "admin:create": "ts-node -r tsconfig-paths/register src/auth/infrastructure/cli/create-admin.ts",
+    "moderation:classify": "ts-node -r tsconfig-paths/register src/moderation/infrastructure/cli/classify-dataset.ts",
+    "moderation:metrics": "ts-node -r tsconfig-paths/register src/moderation/infrastructure/cli/measure.ts",
     "migration:create": "npm run typeorm -- migration:create ./src/shared/infrastructure/database/migrations/$npm_config_name"
   },
   "dependencies": {

@@ -5,6 +5,16 @@ import { CATEGORIES, CategoryScores, ClassifierFailure, ModerationCategory, Mode
 export const REVIEW_THRESHOLD = 0.5;
 export const REJECT_THRESHOLD = 0.85;
 
+/** Umbrales de la tabla de decisión. La API usa los de la política; la medición (2.4) prueba otros. */
+export interface Thresholds {
+    /** Desde esta confianza la categoría cuenta como probable: revisión humana (o rechazo, si llega al otro). */
+    review: number;
+    /** Desde esta confianza se rechaza (salvo ACU, que siempre va a revisión). */
+    reject: number;
+}
+
+export const POLICY_THRESHOLDS: Thresholds = { review: REVIEW_THRESHOLD, reject: REJECT_THRESHOLD };
+
 /** Mensajes para quien escribió la reseña (sección 7). */
 export const REJECTION_MESSAGES: Record<ModerationCategory, string> = {
     DP: 'Tu reseña tiene datos de contacto (un teléfono, un correo, un documento o un enlace). Sacalos y volvé a enviarla.',
@@ -44,8 +54,9 @@ function top(scores: CategoryScores, accept: (category: ModerationCategory, scor
  * Aplica la tabla de decisión en orden; gana la primera fila que se cumple.
  * 1. Regla DP → rechazada. 2. ACU ≥ 0,5 → revisión. 3. Otra categoría ≥ 0,85 → rechazada.
  * 4. Alguna entre 0,5 y 0,85, lista de insultos o texto repetido → revisión. 5. Sin modelo → revisión. 6. Publicada.
+ * Los umbrales son los de la política salvo que se pasen otros (solo lo hace la medición de la tarea 2.4).
  */
-export function decide(input: DecisionInput): Decision {
+export function decide(input: DecisionInput, thresholds: Thresholds = POLICY_THRESHOLDS): Decision {
     const { rules, scores, failure } = input;
 
     if (rules.includes('datos_contacto')) {
@@ -57,16 +68,16 @@ export function decide(input: DecisionInput): Decision {
         return { outcome: ModerationOutcome.InReview, category: ruleCategory, message: REVIEW_MESSAGE, origin: ruleCategory ? 'reglas' : 'modelo' };
     }
 
-    if (scores.ACU >= REVIEW_THRESHOLD) {
+    if (scores.ACU >= thresholds.review) {
         return { outcome: ModerationOutcome.InReview, category: ModerationCategory.ACU, message: REVIEW_MESSAGE, origin: 'modelo' };
     }
 
-    const rejected = top(scores, (category, score) => category !== ModerationCategory.ACU && score >= REJECT_THRESHOLD);
+    const rejected = top(scores, (category, score) => category !== ModerationCategory.ACU && score >= thresholds.reject);
     if (rejected) {
         return { outcome: ModerationOutcome.Rejected, category: rejected, message: REJECTION_MESSAGES[rejected], origin: 'modelo' };
     }
 
-    const doubtful = top(scores, (_category, score) => score >= REVIEW_THRESHOLD);
+    const doubtful = top(scores, (_category, score) => score >= thresholds.review);
     if (doubtful) {
         return { outcome: ModerationOutcome.InReview, category: doubtful, message: REVIEW_MESSAGE, origin: 'modelo' };
     }
