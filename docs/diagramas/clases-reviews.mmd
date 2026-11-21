@@ -1,0 +1,122 @@
+%% Diagrama de clases del módulo reviews (módulo completo, Anexo D). Los puertos son clases abstractas: el dominio y
+%% los casos de uso no conocen TypeORM ni Nest. Los métodos asíncronos devuelven una promesa del tipo indicado.
+classDiagram
+    direction LR
+
+    class ReviewInput {
+        <<interface>>
+        job: ReviewJob
+        situation: WorkSituation
+        lastYear: number
+        contractTypeId: number
+        workModeId: number
+        rating: number
+        loBueno: string
+        aMejorar: string
+        answers: código → CriterionAnswer
+    }
+    class ReviewContent {
+        <<interface>>
+        answers: itemId, answer
+    }
+    class ReviewStatus {
+        <<enumeration>>
+        en_revision
+        publicada
+        rechazada
+    }
+    class CriterionAnswer {
+        <<enumeration>>
+        si
+        en_parte
+        no
+        no_sabe
+    }
+    class ReviewRules {
+        <<dominio>>
+        +validateReview(input, criteria, year) content o problems
+        +reportProblem(category, comment) string
+    }
+
+    class ReviewRepository {
+        <<abstract · puerto>>
+        +create(userId, officeId, content) reviewId, versionId
+        +addVersion(reviewId, content) versionId
+        +applyDecision(reviewId, versionId, decision)
+        +findOwned(reviewId, userId) OwnedReview
+        +delete(reviewId)
+        +listMine(userId) MyReview[]
+        +listPublic(filters, page) Page~PublicReview~
+        +findPublic(reviewId) PublicReview
+        +listQueue(page) Page~QueueVersion~
+        +decideInReview(reviewId, versionId, decision) boolean
+        +retirePublished(reviewId, decision)
+    }
+    class ReviewReferences {
+        <<abstract · puerto>>
+        +isOfficeOpen(officeId) boolean
+        +isJobAvailable(jobId) boolean
+        +contractTypeExists(id) boolean
+        +workModeExists(id) boolean
+        +activeCriteria() ActiveCriterion[]
+    }
+    class ReportRepository {
+        <<abstract · puerto>>
+        +create(reviewId, userId, category, comment)
+        +listPending(page) Page~ReportedReview~
+        +resolvePending(reviewId, status, adminId) number
+    }
+    class ModerationPort {
+        <<abstract · puerto de moderation>>
+        +evaluate(text, context) Verdict
+        +recordHumanDecision(text, decision, context)
+        +signalsFor(versionIds) AutomaticSignals[]
+    }
+
+    class PublishReviewUseCase { +execute(userId, officeId, input) SubmitResult }
+    class EditReviewUseCase { +execute(userId, reviewId, input) SubmitResult }
+    class DeleteReviewUseCase { +execute(userId, reviewId) }
+    class ListPublicReviewsUseCase { +execute(filters, page) Page~PublicReview~ }
+    class ListModerationQueueUseCase { +execute(page) Page~QueueItem~ }
+    class DecideReviewUseCase {
+        +publish(adminId, versionId)
+        +reject(adminId, versionId, category, reason)
+    }
+    class ReportReviewUseCase { +execute(userId, reviewId, category, comment) }
+    class RetireReviewUseCase { +execute(adminId, reviewId, category, reason) }
+
+    class SqlReviewRepository { <<adaptador · SQL>> }
+    class SqlReportRepository { <<adaptador · SQL>> }
+    class CatalogReviewReferences {
+        <<adaptador>>
+        usa CompaniesService, JobsService, CriteriaService
+    }
+
+    ReviewContent --|> ReviewInput : sin answers por código
+    ReviewRules ..> ReviewInput
+    ReviewRules ..> ReviewContent : produce
+
+    PublishReviewUseCase ..> ReviewRepository
+    PublishReviewUseCase ..> ReviewReferences
+    PublishReviewUseCase ..> ModerationPort
+    PublishReviewUseCase ..> ReviewRules
+    EditReviewUseCase ..> ReviewRepository
+    EditReviewUseCase ..> ReviewReferences
+    EditReviewUseCase ..> ModerationPort
+    DeleteReviewUseCase ..> ReviewRepository
+    ListPublicReviewsUseCase ..> ReviewRepository
+    ListModerationQueueUseCase ..> ReviewRepository
+    ListModerationQueueUseCase ..> ModerationPort
+    DecideReviewUseCase ..> ReviewRepository
+    DecideReviewUseCase ..> ModerationPort
+    ReportReviewUseCase ..> ReviewRepository
+    ReportReviewUseCase ..> ReportRepository
+    RetireReviewUseCase ..> ReviewRepository
+    RetireReviewUseCase ..> ReportRepository
+    RetireReviewUseCase ..> ModerationPort
+
+    ReviewRepository <|-- SqlReviewRepository
+    ReportRepository <|-- SqlReportRepository
+    ReviewReferences <|-- CatalogReviewReferences
+    ReviewRepository ..> ReviewStatus
+    ReviewContent ..> CriterionAnswer

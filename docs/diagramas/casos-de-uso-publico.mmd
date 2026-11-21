@@ -1,0 +1,51 @@
+%% Casos de uso de Mbaapohara: visitante, trabajador registrado, empresa y servicio de moderación (Anexo C).
+%% Mermaid no tiene diagrama de casos de uso: los actores son círculos y los casos, óvalos. Entre corchetes, el requisito.
+%% Línea punteada «incluye»: el caso siempre ejecuta el otro. Los casos con borde punteado están pendientes.
+flowchart LR
+    V((Visitante))
+    T((Trabajador<br/>registrado))
+    E((Persona de<br/>una empresa))
+    M((Servicio de<br/>moderación<br/>«sistema externo»))
+    T -. "es un" .-> V
+
+    subgraph S[Mbaapohara]
+        direction TB
+        UC1([Buscar empresas y locales<br/>RF2])
+        UC2([Ver el perfil de una empresa<br/>RF2])
+        UC3([Leer y filtrar reseñas por local, cargo,<br/>contrato, modalidad y situación<br/>RF5])
+        UC4([Ver indicadores de la empresa<br/>RF6 · pendiente 3.6])
+        UC5([Consultar derechos laborales<br/>RF7 · pendiente 3.7])
+        UC6([Crear cuenta con consentimiento<br/>RNF1])
+        UC7([Ingresar])
+        UC8([Publicar una reseña<br/>RF1, RF3])
+        UC9([Editar o borrar su reseña<br/>RNF2])
+        UC10([Ver «Mis reseñas»: estado y motivo<br/>RNF2])
+        UC11([Proponer una empresa, un local o un cargo<br/>RF2, D10])
+        UC12([Reportar una reseña])
+        UC13([Ver, descargar o eliminar «Mi cuenta»<br/>Ley 7593/2025])
+        UC14([Pedir la revisión de una reseña<br/>o corregir datos de la empresa])
+        UC15([Moderar el texto antes de publicar<br/>RF4])
+    end
+
+    V --- UC1
+    V --- UC2
+    V --- UC3
+    V --- UC4
+    V --- UC5
+    V --- UC6
+    V --- UC7
+    T --- UC8
+    T --- UC9
+    T --- UC10
+    T --- UC11
+    T --- UC12
+    T --- UC13
+    UC14 --- E
+    UC8 -. "incluye" .-> UC15
+    UC9 -. "incluye" .-> UC15
+    UC15 --- M
+
+    classDef actor fill:#fff,stroke:#333,stroke-width:1.5px;
+    classDef pending stroke-dasharray:5 4,color:#666;
+    class V,T,E,M actor;
+    class UC4,UC5 pending;

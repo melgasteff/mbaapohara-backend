@@ -1,0 +1,178 @@
+%% Diagrama entidad-relación de Mbaapohara (Anexo D). Generado del esquema real que dejan las migraciones
+%% (src/shared/infrastructure/database/migrations/), leído de la base de pruebas el 21/11/2026.
+%% Tipos: int = integer, varchar = character varying, ts = timestamp with time zone. Los enums se listan en el README.
+erDiagram
+    departamentos ||--o{ ciudades : "tiene"
+    ciudades ||--o{ sucursales : "ubica"
+    rubros ||--o{ empresas : "clasifica"
+    empresas ||--|{ sucursales : "tiene"
+    usuarios ||--o{ resenas : "escribe"
+    sucursales ||--o{ resenas : "recibe"
+    resenas ||--|{ versiones_resena : "guarda cada envío en"
+    resenas |o--o| versiones_resena : "muestra (id_version_publicada)"
+    versiones_resena ||--|{ respuestas_criterio : "responde"
+    items ||--o{ respuestas_criterio : "se responde en"
+    categorias ||--|{ items : "agrupa"
+    cargos ||--o{ versiones_resena : "cargo"
+    tipo_contrato ||--o{ versiones_resena : "contrato"
+    modalidades ||--o{ versiones_resena : "modalidad"
+    resenas ||--o{ reportes : "recibe"
+    usuarios ||--o{ reportes : "reporta"
+    usuarios |o--o{ reportes : "decide (administrador)"
+    resenas |o--o{ decisiones_moderacion : "se registra en"
+    versiones_resena |o--o{ decisiones_moderacion : "se registra en"
+    usuarios |o--o{ decisiones_moderacion : "decide (administrador)"
+    resenas |o--o{ solicitudes_empresa : "es objeto de"
+    empresas |o--o{ solicitudes_empresa : "es objeto de"
+    usuarios |o--o{ solicitudes_empresa : "responde (administrador)"
+
+    departamentos {
+        int id PK
+        varchar codigo_ine UK "INE 2022"
+        varchar nombre UK
+    }
+    ciudades {
+        int id PK
+        varchar codigo_ine UK
+        varchar nombre "único por departamento"
+        int id_departamento FK
+    }
+    rubros {
+        int id PK
+        char codigo_ciiu UK "sección CIIU Rev. 4"
+        varchar nombre UK
+        varchar descripcion
+    }
+    tipo_contrato {
+        int id PK
+        varchar nombre UK
+    }
+    modalidades {
+        int id PK
+        varchar nombre UK
+    }
+    cargos {
+        int id PK
+        varchar descripcion UK "sin distinguir mayúsculas"
+        estado_propuesta estado
+    }
+    empresas {
+        int id PK
+        varchar nombre UK "sin mayúsculas ni tildes"
+        int id_rubro FK
+        estado_propuesta estado
+        ts fecha_creacion
+    }
+    sucursales {
+        int id PK
+        int id_empresa FK
+        int id_ciudad FK
+        varchar nombre "único por empresa"
+        varchar direccion_referencia "nulo"
+        estado_propuesta estado
+        ts fecha_creacion
+    }
+    usuarios {
+        int id PK
+        varchar email UK
+        varchar hash_contrasena "bcrypt"
+        rol_usuario rol
+        estado_cuenta estado
+        ts fecha_consentimiento
+        ts fecha_creacion
+    }
+    categorias {
+        int id PK
+        varchar codigo UK "no se edita"
+        varchar descripcion UK
+        int orden
+        boolean activo
+    }
+    items {
+        int id PK
+        varchar codigo UK "no se edita"
+        varchar descripcion "única por categoría"
+        int id_categoria FK
+        int orden
+        boolean activo
+    }
+    resenas {
+        int id PK
+        int id_usuario FK "único con id_sucursal"
+        int id_sucursal FK "una reseña por persona y local"
+        int id_version_publicada FK "nulo: sin versión visible"
+        ts fecha_creacion
+        ts fecha_actualizacion
+    }
+    versiones_resena {
+        int id PK
+        int id_resena FK
+        int numero "único por reseña"
+        int id_cargo FK
+        situacion_laboral situacion
+        smallint ultimo_anio "solo el año; nulo si es actual"
+        int id_tipo_contrato FK
+        int id_modalidad FK
+        smallint calificacion "CHECK 1 a 5"
+        text lo_bueno "CHECK 50 a 1000"
+        text a_mejorar "CHECK 50 a 1000"
+        estado_resena estado
+        varchar categoria_moderacion "nulo"
+        varchar motivo_moderacion "nulo; lo lee quien escribió"
+        ts fecha_creacion
+        ts fecha_decision "nulo"
+    }
+    respuestas_criterio {
+        int id_version PK, FK
+        int id_item PK, FK
+        respuesta_criterio respuesta
+    }
+    reportes {
+        int id PK
+        int id_resena FK "único con id_usuario"
+        int id_usuario FK "quien reporta"
+        varchar categoria "CHECK política u OTRO"
+        varchar comentario "obligatorio con OTRO"
+        estado_reporte estado
+        int id_administrador FK "nulo"
+        ts fecha
+        ts fecha_decision "nulo"
+    }
+    decisiones_moderacion {
+        int id PK
+        int id_resena FK "nulo al borrar la reseña"
+        int id_version_resena FK "nulo al borrar la reseña"
+        char huella_texto "SHA-256, nunca el texto"
+        varchar resultado "CHECK"
+        varchar categoria "nulo"
+        varchar origen "reglas, modelo o persona"
+        varchar_array reglas
+        jsonb confianzas "nulo"
+        varchar falla "nulo"
+        varchar modelo "nulo"
+        varchar version_instruccion "nulo"
+        varchar motivo_modelo "nulo"
+        int id_administrador FK "nulo"
+        varchar motivo_decision "nulo"
+        numeric costo_usd
+        ts fecha
+    }
+    gasto_moderacion {
+        char mes PK "AAAA-MM"
+        numeric costo_usd
+        int llamadas
+    }
+    solicitudes_empresa {
+        int id PK
+        tipo_solicitud tipo
+        int id_resena FK "nulo"
+        int id_empresa FK "nulo"
+        varchar nombre "CHECK: se borra al responder"
+        varchar correo "CHECK: se borra al responder"
+        varchar mensaje
+        estado_solicitud estado
+        varchar respuesta "nulo"
+        int id_administrador FK "nulo"
+        ts fecha
+        ts fecha_respuesta "nulo"
+    }

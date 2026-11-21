@@ -1,0 +1,37 @@
+%% Casos de uso del administrador de Mbaapohara (Anexo C). Un solo rol, que también modera (D5).
+%% Mermaid no tiene diagrama de casos de uso: el actor es un círculo y los casos, óvalos. Entre corchetes, el requisito.
+flowchart LR
+    A((Administrador))
+    M((Servicio de<br/>moderación<br/>«sistema externo»))
+
+    subgraph S[Mbaapohara · /admin]
+        direction TB
+        UA1([Decidir las reseñas en revisión:<br/>publicar o rechazar con motivo<br/>RF4])
+        UA2([Decidir reportes:<br/>mantener o retirar la reseña])
+        UA3([Responder solicitudes de empresas<br/>y borrar sus datos de contacto])
+        UA4([Aprobar o rechazar empresas y locales propuestos<br/>D10])
+        UA5([Dar de alta una empresa con su primer local])
+        UA6([Gestionar una empresa y sus locales])
+        UA7([Aprobar o rechazar cargos propuestos])
+        UA8([Administrar criterios: crear, editar, desactivar<br/>3.8])
+        UA9([Bloquear o desbloquear cuentas y cambiar su rol<br/>solo API])
+        UA10([Probar la moderación de un texto<br/>y ver el gasto del mes · solo API])
+        UA11([Retirar una reseña publicada])
+    end
+
+    A --- UA1
+    A --- UA2
+    A --- UA3
+    A --- UA4
+    A --- UA5
+    A --- UA6
+    A --- UA7
+    A --- UA8
+    A --- UA9
+    A --- UA10
+    UA2 -. "extiende: si incumple" .-> UA11
+    UA3 -. "extiende: si incumple" .-> UA11
+    UA10 --- M
+
+    classDef actor fill:#fff,stroke:#333,stroke-width:1.5px;
+    class A,M actor;

@@ -1,0 +1,73 @@
+%% Diagrama de clases del módulo auth (módulo completo, Anexo D). Seguro por defecto: los dos guards son globales y
+%% toda ruta exige token salvo las marcadas con @Public().
+classDiagram
+    direction LR
+
+    class UserAccounts {
+        <<abstract · puerto>>
+        +findByEmail(email) AuthAccount
+        +findById(id) AuthAccount
+        +view(id) AccountView
+        +create(account) AccountView
+        +setPasswordAndRole(id, hash, rol)
+        +exportData(id)
+        +delete(id)
+    }
+    class PasswordHasher {
+        <<abstract · puerto>>
+        +hash(plain) string
+        +matches(plain, hash) boolean
+    }
+    class TokenService {
+        <<abstract · puerto>>
+        +sign(payload) token, expiresIn
+        +verify(token) TokenPayload
+    }
+    class AuthAccount {
+        <<interface>>
+        id: number
+        email: string
+        passwordHash: string
+        rol: usuario o administrador
+        estado: activo o bloqueado
+    }
+
+    class RegisterUseCase { +execute(request) AccountView }
+    class LoginUseCase { +execute(email, password) token, expiresIn }
+    class CreateAdminUseCase { +execute(email, password) creada o promovida }
+    class GetMyAccountUseCase { +execute(id) AccountView }
+    class ExportMyDataUseCase { +execute(id) datos }
+    class DeleteMyAccountUseCase { +execute(id, password) }
+
+    class UsersUserAccountsAdapter {
+        <<adaptador>>
+        usa UsersService
+    }
+    class BcryptPasswordHasher { <<adaptador · bcrypt>> }
+    class JwtTokenService { <<adaptador · JWT>> }
+    class JwtAuthGuard {
+        <<guard global>>
+        exige Bearer y carga la cuenta en cada petición
+    }
+    class RolesGuard {
+        <<guard global>>
+        aplica @Roles(Admin)
+    }
+
+    RegisterUseCase ..> UserAccounts
+    RegisterUseCase ..> PasswordHasher
+    LoginUseCase ..> UserAccounts
+    LoginUseCase ..> PasswordHasher
+    LoginUseCase ..> TokenService
+    CreateAdminUseCase ..> UserAccounts
+    CreateAdminUseCase ..> PasswordHasher
+    GetMyAccountUseCase ..> UserAccounts
+    ExportMyDataUseCase ..> UserAccounts
+    DeleteMyAccountUseCase ..> UserAccounts
+    DeleteMyAccountUseCase ..> PasswordHasher
+    UserAccounts ..> AuthAccount
+    UserAccounts <|-- UsersUserAccountsAdapter
+    PasswordHasher <|-- BcryptPasswordHasher
+    TokenService <|-- JwtTokenService
+    JwtAuthGuard ..> TokenService
+    JwtAuthGuard ..> UserAccounts

@@ -1,0 +1,31 @@
+%% Módulos del backend y sus dependencias (Anexo D). Rectángulo doble: módulo completo (dominio, aplicación,
+%% infraestructura, presentación). Rectángulo simple: módulo liviano (controlador, servicio, entidad, DTO).
+%% Flecha: «importa y usa el servicio o el puerto que exporta». Ningún módulo registra entidades ajenas.
+%% Todos los módulos usan src/shared (configuración, conexión a la base, paginación y errores).
+flowchart TB
+    front[Frontend Angular 22]
+    subgraph API[API NestJS]
+        auth[[auth<br/>guards globales JWT y roles]]
+        users[users]
+        reviews[[reviews]]
+        moderation[[moderation]]
+        catalogs[catalogs]
+        companies[companies]
+        criteria[criteria]
+        requests[company-requests]
+        shared[shared<br/>configuración, TypeORM, paginación, errores]
+    end
+    claude[API de Claude<br/>«servicio externo»]
+    db[(PostgreSQL)]
+
+    front -- "HTTP + JWT: toda petición pasa por los guards" --> auth
+    auth --> users
+    reviews --> catalogs
+    reviews --> companies
+    reviews --> criteria
+    reviews -- ModerationPort --> moderation
+    companies --> catalogs
+    requests --> companies
+    requests -- RetireReviewUseCase --> reviews
+    moderation -- "solo el texto de la reseña" --> claude
+    shared --> db

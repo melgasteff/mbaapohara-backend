@@ -1,0 +1,99 @@
+%% Diagrama de clases del módulo moderation (módulo completo, Anexo D). El caso de uso implementa ModerationPort, que
+%% es lo único que ven los demás módulos. Cambiar de proveedor de PLN es cambiar el adaptador de TextClassifier.
+classDiagram
+    direction LR
+
+    class ModerationPort {
+        <<abstract · puerto>>
+        +evaluate(text, context) Verdict
+        +recordHumanDecision(text, decision, context)
+        +signalsFor(versionIds) AutomaticSignals[]
+    }
+    class LocalRules {
+        <<abstract · puerto>>
+        +check(text) RuleSignal[]
+    }
+    class TextClassifier {
+        <<abstract · puerto>>
+        +classify(text) ClassifierResult
+    }
+    class ModerationLog {
+        <<abstract · puerto>>
+        +record(verdict, textHash, reviewId, versionId)
+        +recordHuman(decision, textHash, reviewId, versionId)
+        +monthSpendUsd() number
+        +addSpend(costUsd)
+        +signalsFor(versionIds) AutomaticSignals[]
+    }
+
+    class EvaluateTextUseCase {
+        -monthlyBudgetUsd: number
+        +evaluate(text, context) Verdict
+        +recordHumanDecision(text, decision, context)
+        +signalsFor(versionIds) AutomaticSignals[]
+    }
+    class DecisionPolicy {
+        <<dominio · función pura>>
+        +REVIEW_THRESHOLD = 0.5
+        +REJECT_THRESHOLD = 0.85
+        +decide(input, thresholds) Decision
+    }
+    class Verdict {
+        <<interface>>
+        outcome: ModerationOutcome
+        category: ModerationCategory
+        message: string
+        origin: reglas o modelo
+        rules: RuleSignal[]
+        scores: CategoryScores
+        failure: ClassifierFailure
+        costUsd: number
+    }
+    class ModerationCategory {
+        <<enumeration>>
+        DP
+        TER
+        ACU
+        INS
+        SPAM
+        TEMA
+    }
+    class ModerationOutcome {
+        <<enumeration>>
+        publicada
+        en_revision
+        rechazada
+    }
+
+    class KeywordLocalRules {
+        <<adaptador>>
+        datos de contacto, lista de insultos, texto repetido
+    }
+    class AnthropicClassifier {
+        <<adaptador · Claude Haiku 5.5>>
+        -timeoutMs
+        +classify(text) ClassifierResult
+    }
+    class TypeOrmModerationLog {
+        <<adaptador · TypeORM>>
+        decisiones_moderacion, gasto_moderacion
+    }
+    class MetricsEvaluation {
+        <<aplicación · tarea 2.4>>
+        +measure(reference, predictions, thresholds) Measurement
+        +sweep(reference, predictions, review, reject) Measurement[]
+        +cohenKappa(a, b) number
+    }
+
+    ModerationPort <|-- EvaluateTextUseCase
+    EvaluateTextUseCase ..> LocalRules
+    EvaluateTextUseCase ..> TextClassifier
+    EvaluateTextUseCase ..> ModerationLog
+    EvaluateTextUseCase ..> DecisionPolicy
+    EvaluateTextUseCase ..> Verdict : produce
+    Verdict ..> ModerationCategory
+    Verdict ..> ModerationOutcome
+    LocalRules <|-- KeywordLocalRules
+    TextClassifier <|-- AnthropicClassifier
+    ModerationLog <|-- TypeOrmModerationLog
+    MetricsEvaluation ..> DecisionPolicy : mismos umbrales que la API
