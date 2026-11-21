@@ -98,6 +98,12 @@ con la huella del texto, nunca el texto; el gasto del mes se lleva en `gasto_mod
   primero, con las señales de la moderación automática y sin el autor; `PATCH /moderation/queue/:idVersion/publish`
   y `PATCH /moderation/queue/:idVersion/reject` con `{ "categoria": "TER", "motivo": "..." }`. Cada decisión queda en
   el registro con origen `persona` y el administrador.
+- Reportes (3.9b): `POST /reviews/:id/reports` (con sesión, una vez por cuenta, no las propias); el administrador ve
+  `GET /moderation/reports` (agrupados por reseña, sin quién reportó ni el autor) y decide con
+  `PATCH /moderation/reviews/:id/keep` o `PATCH /moderation/reviews/:id/retire` (`{ categoria, motivo }`).
+- Solicitudes de empresas (3.9b): `POST /company-requests` es público (3 por hora por IP); el administrador las ve en
+  `GET /moderation/company-requests` y registra la respuesta, enviada por correo a mano, con
+  `PATCH /moderation/company-requests/:id/answer`: ahí se borran el nombre y el correo.
 - Cargos propuestos desde una reseña: `GET /jobs/admin?estado=pendiente`, `PATCH /jobs/:id/approve` y
   `PATCH /jobs/:id/reject`.
 
@@ -132,6 +138,7 @@ src/
   catalogs/     departamentos, ciudades, cargos, rubros, tipos de contrato, modalidades (liviano)
   companies/    empresas y locales, con propuesta y aprobación (liviano)
   moderation/   clasificador de moderación: reglas, modelo de lenguaje, decisión y registro (completo)
+  company-requests/  solicitudes de empresas: formulario público y bandeja (liviano)
   reviews/      reseñas: publicar, editar, borrar y consultar con filtros, con la moderación integrada (completo)
   categories/, items/   módulos heredados de criterios, a reemplazar en la 3.8
   shared/       configuración, base de datos, paginación y filtro de errores

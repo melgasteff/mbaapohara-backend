@@ -123,6 +123,9 @@ revise una reseña o para corregir los datos de la empresa y sus locales.
 - La solicitud se evalúa con **esta misma política**: una reseña se retira solo si incumple las reglas de la
   sección 3, nunca por ser negativa.
 - Cada respuesta queda registrada con su motivo.
+- **Implementación (3.9b, 21/11):** la respuesta se manda por correo a mano y se registra en el sistema; al
+  registrarla se borran el nombre y el correo de quien escribió (quedan el mensaje y la respuesta). El formulario
+  admite 3 envíos por hora por IP. Los reportes se agrupan por reseña y no muestran quién reportó.
 
 ## 9. Registro de decisiones
 
