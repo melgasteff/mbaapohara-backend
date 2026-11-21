@@ -163,5 +163,6 @@ exactitud, precisión, exhaustividad y F1 por categoría, con la matriz de confu
 
 - **Pregunta 19 de la encuesta:** cuando haya datos, confirmar qué temen más quienes publicarían (sobre todo la
   19.2, datos personales y de terceros) y ajustar categorías o mensajes.
-- **Tarea 2.4:** recalibrar los umbrales con la primera medición.
+- **Tarea 2.4:** recalibrar los umbrales con la primera medición. El script está listo (`npm run moderation:metrics`,
+  con barrido de umbrales); falta el etiquetado de dos personas y la corrida con el modelo.
 - Confirmar con el tutor los valores mínimos de la sección 11 y la propuesta de la sección 7.
