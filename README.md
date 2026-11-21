@@ -106,6 +106,10 @@ con la huella del texto, nunca el texto; el gasto del mes se lleva en `gasto_mod
   `PATCH /moderation/company-requests/:id/answer`: ahí se borran el nombre y el correo.
 - Cargos propuestos desde una reseña: `GET /jobs/admin?estado=pendiente`, `PATCH /jobs/:id/approve` y
   `PATCH /jobs/:id/reject`.
+- Criterios (3.8): `GET /criteria` es público (categorías activas con sus ítems activos, en orden). El administrador
+  ve todo con `GET /criteria/admin` (con la cantidad de respuestas de cada ítem), crea con `POST /criteria/categories`
+  y `POST /criteria/items`, y cambia texto, orden o `activo` con `PATCH /criteria/categories/:id` y
+  `PATCH /criteria/items/:id`. El código no se cambia y no hay borrado.
 
 ## Pruebas
 
@@ -119,7 +123,8 @@ npm run test:e2e
 
 Cada corrida crea la base si no existe, borra su esquema y aplica las migraciones; si el nombre de la base no
 termina en `_test`, se niega a seguir. Cubren autenticación y mi cuenta, el límite de intentos, los catálogos y
-empresas y locales (propuesta, visibilidad, aprobación, rechazo, duplicados, búsqueda y baja).
+empresas y locales (propuesta, visibilidad, aprobación, rechazo, duplicados, búsqueda y baja), y la
+administración de criterios (alta, edición, desactivación y duplicados).
 
 ## Datos
 
@@ -127,7 +132,7 @@ empresas y locales (propuesta, visibilidad, aprobación, rechazo, duplicados, b�
   2022, ver [docs/datos/catalogo-ine-2022.csv](docs/datos/catalogo-ine-2022.csv)), las 21 secciones de la
   CIIU Rev. 4 como rubros, tipos de contrato, modalidades y cargos iniciales.
 - **De demostración** (`npm run seed`): criterios provisionales, empresas y locales de ejemplo. No se cargan en
-  producción.
+  producción. Los criterios se cargan solo si no hay ninguna categoría; después se administran desde la API (3.8).
 
 ## Estructura
 
@@ -140,7 +145,7 @@ src/
   moderation/   clasificador de moderación: reglas, modelo de lenguaje, decisión y registro (completo)
   company-requests/  solicitudes de empresas: formulario público y bandeja (liviano)
   reviews/      reseñas: publicar, editar, borrar y consultar con filtros, con la moderación integrada (completo)
-  categories/, items/   módulos heredados de criterios, a reemplazar en la 3.8
+  criteria/     criterios de la reseña: categorías e ítems, con alta, edición y desactivación (liviano)
   shared/       configuración, base de datos, paginación y filtro de errores
 docs/           plan, arquitectura, decisiones y datos de referencia
 ```
