@@ -1,7 +1,7 @@
 import { CategoryScores, ModerationCategory } from '../../domain/model/moderation';
 import {
-    agreement, categoryMetrics, cohenKappa, csvRecords, detected, evaluate, macroF1, measure, parseCsv, Prediction,
-    Reference, referenceFromIntention, referenceFromLabels, sweep, toCsv,
+    agreement, categoryMetrics, cohenKappa, csvRecords, detected, evaluate, INITIAL_THRESHOLDS, macroF1, measure, parseCsv,
+    Prediction, Reference, referenceFromIntention, referenceFromLabels, sweep, sweepAcu, toCsv,
 } from './metrics';
 
 const zero: CategoryScores = { DP: 0, TER: 0, ACU: 0, INS: 0, SPAM: 0, TEMA: 0 };
@@ -44,7 +44,13 @@ describe('Detección', () => {
     it('cuenta las reglas y las confianzas desde el umbral de revisión', () => {
         const p: Prediction = { id: 'M1', rules: ['datos_contacto', 'lista_insultos'], scores: { ...zero, TER: 0.5, TEMA: 0.49 }, failure: null };
         expect([...detected(p)].sort()).toEqual(['DP', 'INS', 'TER']);
-        expect([...detected(p, { review: 0.4, reject: 0.9 })].sort()).toEqual(['DP', 'INS', 'TEMA', 'TER']);
+        expect([...detected(p, { review: 0.4, reject: 0.9, acu: 0.15 })].sort()).toEqual(['DP', 'INS', 'TEMA', 'TER']);
+    });
+
+    it('ACU se detecta con su propio umbral', () => {
+        const p = scored('M1', { ACU: 0.15, TER: 0.15 });
+        expect([...detected(p)]).toEqual(['ACU']);
+        expect([...detected(p, INITIAL_THRESHOLDS)]).toEqual([]);
     });
 
     it('sin el modelo solo cuentan las reglas', () => {
@@ -136,5 +142,16 @@ describe('Indicadores de la política', () => {
         expect(runs.map(r => [r.thresholds.review, r.thresholds.reject])).toEqual([[0.5, 0.85], [0.5, 0.95], [0.9, 0.95]]);
         // Con rechazo en 0,95 el TEMA de 0,9 ya no rechaza: va a revisión.
         expect(runs[1].noneRejected).toBe(0);
+    });
+
+    it('el barrido usa para ACU el umbral de revisión, salvo que se pase otro', () => {
+        expect(sweep(ref, preds, [0.4], [0.85]).map(r => r.thresholds.acu)).toEqual([0.4]);
+        expect(sweep(ref, preds, [0.4], [0.85], 0.15).map(r => r.thresholds.acu)).toEqual([0.15]);
+    });
+
+    it('el barrido de ACU solo cambia el umbral de ACU', () => {
+        expect(sweepAcu(ref, preds, [0.1, 0.3], INITIAL_THRESHOLDS).map(r => r.thresholds)).toEqual([
+            { review: 0.5, reject: 0.85, acu: 0.1 }, { review: 0.5, reject: 0.85, acu: 0.3 },
+        ]);
     });
 });

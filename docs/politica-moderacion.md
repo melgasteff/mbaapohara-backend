@@ -1,7 +1,7 @@
 # Política de moderación de Mbaapohara
 
 Tarea 2.1 del plan · aprobada el 19/11/2026 · **provisional** hasta tener la pregunta 19 de la encuesta y la
-primera medición (tarea 2.4). Es la fuente de la página «Cómo moderamos» (1.9), de la guía de etiquetado (2.2),
+medición final (tarea 4.2). Es la fuente de la página «Cómo moderamos» (1.9), de la guía de etiquetado (2.2),
 del módulo `moderation` (2.3) y de la sección de moderación del PFG.
 
 ## 1. Principio
@@ -66,13 +66,16 @@ reintento**.
 | # | Condición | Resultado |
 | --- | --- | --- |
 | 1 | Regla DP | **Rechazada** con explicación (se puede corregir y reenviar) |
-| 2 | ACU con confianza ≥ 0,5 | **En revisión humana** (nunca se rechaza ni se publica sola) |
+| 2 | ACU con confianza ≥ **0,15** | **En revisión humana** (nunca se rechaza ni se publica sola) |
 | 3 | Cualquier otra categoría con confianza ≥ **0,85** | **Rechazada** con explicación |
-| 4 | Cualquier categoría entre **0,5 y 0,85**, una palabra de la lista de insultos o texto repetido | **En revisión humana** |
+| 4 | Cualquier otra categoría entre **0,5 y 0,85**, una palabra de la lista de insultos o texto repetido | **En revisión humana** |
 | 5 | El modelo no responde, responde algo inválido o se alcanzó el **tope de gasto** | **En revisión humana** |
-| 6 | Todas las categorías por debajo de 0,5 | **Publicada** |
+| 6 | ACU por debajo de 0,15 y las demás por debajo de 0,5 | **Publicada** |
 
-Los umbrales **0,5 y 0,85** son provisionales y se recalibran con la medición de la tarea 2.4.
+Los umbrales **0,5 y 0,85** se fijaron antes de medir y la medición de la 2.4 los mantiene. El de **ACU** bajó de 0,5 a
+**0,15** el 23/11: con 0,5 el modelo detectaba 12 de 32 acusaciones, casi siempre por no tomar un cargo («el chef», «el
+administrador») como persona identificable. ACU nunca rechaza, así que bajarlo solo suma revisión humana (de 14,3 % a
+18,0 %). Como se eligió con el mismo conjunto de evaluación, se confirma con textos nuevos en la 4.2.
 
 La lista de insultos **no rechaza sola**: muchas palabras del jopara cambian de sentido según el contexto. Por eso
 deriva a revisión, salvo que el modelo también marque INS con 0,85 o más.
@@ -163,6 +166,5 @@ exactitud, precisión, exhaustividad y F1 por categoría, con la matriz de confu
 
 - **Pregunta 19 de la encuesta:** cuando haya datos, confirmar qué temen más quienes publicarían (sobre todo la
   19.2, datos personales y de terceros) y ajustar categorías o mensajes.
-- **Tarea 2.4:** recalibrar los umbrales con la primera medición. El script está listo (`npm run moderation:metrics`,
-  con barrido de umbrales); falta el etiquetado de dos personas y la corrida con el modelo.
+- **Tarea 4.2:** confirmar el umbral de ACU (0,15) con textos que no se usaron para elegirlo.
 - Confirmar con el tutor los valores mínimos de la sección 11 y la propuesta de la sección 7.

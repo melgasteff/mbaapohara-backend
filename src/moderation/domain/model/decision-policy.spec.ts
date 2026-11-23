@@ -11,9 +11,15 @@ describe('Tabla de decisión de la política de moderación (sección 5)', () =>
         });
     });
 
-    it('fila 2: una acusación con 0,5 o más va siempre a revisión, aunque supere 0,85', () => {
+    it('fila 2: una acusación con 0,15 o más va siempre a revisión, aunque supere 0,85', () => {
         expect(decide({ rules: [], scores: scores({ ACU: 0.99 }), failure: null })).toMatchObject({ outcome: O.InReview, category: C.ACU });
-        expect(decide({ rules: [], scores: scores({ ACU: 0.5, INS: 0.95 }), failure: null }).outcome).toBe(O.InReview);
+        expect(decide({ rules: [], scores: scores({ ACU: 0.15, INS: 0.95 }), failure: null })).toMatchObject({ outcome: O.InReview, category: C.ACU });
+        expect(decide({ rules: [], scores: scores({ ACU: 0.14 }), failure: null }).outcome).toBe(O.Published);
+    });
+
+    it('fila 2: el umbral de ACU es propio: no cambia el de las demás categorías', () => {
+        expect(decide({ rules: [], scores: scores({ TER: 0.4, INS: 0.4 }), failure: null }).outcome).toBe(O.Published);
+        expect(decide({ rules: [], scores: scores({ ACU: 0.3 }), failure: null }, { review: 0.5, reject: 0.85, acu: 0.5 }).outcome).toBe(O.Published);
     });
 
     it('fila 3: otra categoría con 0,85 o más rechaza con su mensaje, eligiendo la de mayor confianza', () => {

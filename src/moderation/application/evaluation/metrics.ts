@@ -91,14 +91,20 @@ const RULE_CATEGORY: Record<RuleSignal, ModerationCategory> = {
     texto_repetido: ModerationCategory.SPAM,
 };
 
+/** Umbrales fijados antes de medir (19/11). Dan el resultado principal del OE5; la API usa `POLICY_THRESHOLDS`. */
+export const INITIAL_THRESHOLDS: Thresholds = { review: 0.5, reject: 0.85, acu: 0.5 };
+
 /**
- * Categorías que el sistema detecta en un texto: las que marca una regla y las que el modelo puntúa con el umbral de
- * revisión o más (desde ahí el sistema actúa: revisa o rechaza).
+ * Categorías que el sistema detecta en un texto: las que marca una regla y las que el modelo puntúa con su umbral de
+ * revisión o más (desde ahí el sistema actúa: revisa o rechaza). ACU tiene un umbral de revisión propio.
  */
 export function detected(prediction: Prediction, thresholds: Thresholds = POLICY_THRESHOLDS): Set<ModerationCategory> {
     const found = new Set(prediction.rules.map(rule => RULE_CATEGORY[rule]));
     if (prediction.scores) {
-        for (const category of CATEGORIES) if (prediction.scores[category] >= thresholds.review) found.add(category);
+        for (const category of CATEGORIES) {
+            const threshold = category === ModerationCategory.ACU ? thresholds.acu : thresholds.review;
+            if (prediction.scores[category] >= threshold) found.add(category);
+        }
     }
     return found;
 }
@@ -241,7 +247,15 @@ export function measure(reference: Reference, predictions: Prediction[], thresho
     };
 }
 
-/** Recalcula la medición con cada par de umbrales (revisión < rechazo), para recalibrar (política, sección 12). */
-export function sweep(reference: Reference, predictions: Prediction[], review: number[], reject: number[]): Measurement[] {
-    return review.flatMap(r => reject.filter(j => j > r).map(j => measure(reference, predictions, { review: r, reject: j })));
+/**
+ * Recalcula la medición con cada par de umbrales (revisión < rechazo), para recalibrar (política, sección 12).
+ * Sin `acu`, ACU usa el mismo umbral de revisión que las demás.
+ */
+export function sweep(reference: Reference, predictions: Prediction[], review: number[], reject: number[], acu?: number): Measurement[] {
+    return review.flatMap(r => reject.filter(j => j > r).map(j => measure(reference, predictions, { review: r, reject: j, acu: acu ?? r })));
+}
+
+/** Recalcula la medición cambiando solo el umbral de ACU. */
+export function sweepAcu(reference: Reference, predictions: Prediction[], acu: number[], base: Thresholds = POLICY_THRESHOLDS): Measurement[] {
+    return acu.map(value => measure(reference, predictions, { ...base, acu: value }));
 }
