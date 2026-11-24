@@ -39,6 +39,11 @@ services:
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4200}
       JWT_SECRET: ${JWT_SECRET:?Falta JWT_SECRET en .env (generar con openssl rand -base64 48)}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-2h}
+      # Moderación: sin clave la API arranca igual, pero toda reseña sin datos de contacto va a revisión humana.
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      MODERATION_MODEL: ${MODERATION_MODEL:-claude-haiku-5-5}
+      MODERATION_MONTHLY_BUDGET_USD: ${MODERATION_MONTHLY_BUDGET_USD:-5}
+      MODERATION_TIMEOUT_MS: ${MODERATION_TIMEOUT_MS:-10000}
     ports:
       - "${COMPOSE_API_PORT:-3000}:3000"
     volumes:

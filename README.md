@@ -49,7 +49,9 @@ docker compose up --build
 
 Levanta PostgreSQL y la API con recarga. Al arrancar, la API aplica las migraciones y carga los datos de
 demostración. La API queda en `http://localhost:3000` y la base del contenedor en el puerto `5433` de la máquina.
-Los datos persisten en el volumen `pgdata`; `docker compose down -v` los borra.
+Los datos persisten en el volumen `pgdata`; `docker compose down -v` los borra. Compose toma del `.env` también las
+variables de moderación. Para comprobar que el modelo está activo, entrar como administrador y pedir
+`GET /moderation/spend`: `conClave` debe ser `true`. Si el puerto está ocupado, `COMPOSE_API_PORT` y `COMPOSE_DB_PORT`.
 
 ### 2b. Sin contenedores
 
