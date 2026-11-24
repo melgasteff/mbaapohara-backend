@@ -233,7 +233,12 @@ export class CompanyDirectoryService {
     private where(filters: DirectoryFilters, params: Params, skip: FilterName[] = []): string {
         const active = (name: FilterName) => filters[name] !== undefined && !skip.includes(name);
         const conditions = [`e.estado = 'aprobada'`];
-        if (active('q') && filters.q) conditions.push(`lower(f_unaccent(e.nombre)) LIKE lower(f_unaccent(${params.add(`%${escapeLike(filters.q)}%`)}))`);
+        if (active('q') && filters.q) {
+            const text = params.add(`%${escapeLike(filters.q)}%`);
+            const matches = (column: string) => `lower(f_unaccent(${column})) LIKE lower(f_unaccent(${text}))`;
+            conditions.push(`(${matches('e.nombre')} OR ${matches('rub.nombre')} OR EXISTS (SELECT 1 FROM sucursales s
+                WHERE s.id_empresa = e.id AND s.estado = 'aprobada' AND ${matches('s.nombre')}))`);
+        }
         if (active('rubro')) conditions.push(`e.id_rubro = ${params.add(filters.rubro)}`);
         if (active('grupo')) conditions.push(`rub.codigo_ciiu = ANY(${params.add(GROUP_SECTIONS[filters.grupo])})`);
         if (active('departamento')) {

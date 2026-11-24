@@ -8,7 +8,7 @@ import { SectorGroup } from '../sector-groups';
 
 // Filtros del directorio público: solo empresas aprobadas. Los usan el listado y sus facetas.
 export class CompanyFiltersDTO {
-    /** Parte del nombre; no distingue mayúsculas ni tildes. */
+    /** Parte del nombre de la empresa, de un local aprobado o del rubro; no distingue mayúsculas ni tildes. */
     @IsOptional()
     @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
     @IsString()

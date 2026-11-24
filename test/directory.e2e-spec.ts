@@ -137,6 +137,16 @@ describe('Directorio y perfil con reseñas (e2e)', () => {
             expect(await names({ orden: 'calificacion' })).toEqual(['Delta', 'Alfa', 'Beta', 'Gama']);
         });
 
+        it('busca también por el nombre de un local aprobado y por el rubro, sin tildes ni mayúsculas', async () => {
+            const found = async (q: string) => (await get('/companies', { q, pageSize: 100 })).data.map((c: { id: number }) => c.id);
+            expect(await found('ALFA NORTE')).toContain(company.Alfa);
+            expect(await found('construccion')).toContain(company.Beta);
+            expect(await found('construccion')).not.toContain(company.Gama);
+            await db.query(`UPDATE sucursales SET estado = 'pendiente' WHERE id = $1`, [office['Gama centro']]);
+            expect(await found('gama centro')).not.toContain(company.Gama);
+            await db.query(`UPDATE sucursales SET estado = 'aprobada' WHERE id = $1`, [office['Gama centro']]);
+        });
+
         it('pagina y valida los filtros', async () => {
             const page = await get('/companies', { q: mark, pageSize: 2, page: 2 });
             expect(page).toMatchObject({ total: 4, page: 2, pageSize: 2 });

@@ -115,7 +115,7 @@ con la huella del texto, nunca el texto; el gasto del mes se lleva en `gasto_mod
 
 ### Directorio y perfil
 
-- `GET /companies`: `q`, `rubro`, `grupo`, `departamento`, `ciudad`, `conResenas` (`true` o `false`) y `orden` (`nombre`,
+- `GET /companies`: `q` (nombre de la empresa, de un local o del rubro), `rubro`, `grupo`, `departamento`, `ciudad`, `conResenas` (`true` o `false`) y `orden` (`nombre`,
   `resenas` o `calificacion`). Cada empresa trae su cantidad de reseñas publicadas, promedio y tema principal.
 - `GET /companies/facets`: conteos por grupo, departamento, ciudad y con o sin reseñas. Cada uno aplica los demás filtros.
 - `GET /companies/:id`: suma distribución, temas y reseñas por local. Con menos de 3 reseñas, distribución y temas vacíos.
