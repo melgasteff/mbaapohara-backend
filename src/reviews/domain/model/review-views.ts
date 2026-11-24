@@ -97,7 +97,8 @@ export interface MyReviewVersion {
 /** Reseña de la persona que la escribió («Mis reseñas»). */
 export interface MyReview {
     id: number;
-    empresa: NamedRef;
+    /** Con la sección CIIU de su rubro, de la que sale el color del sello. */
+    empresa: NamedRef & { codigoCiiu: string | null };
     local: NamedRef & { ciudad: string };
     /** Hay una versión publicada visible (puede ser anterior a la última). */
     publicada: boolean;

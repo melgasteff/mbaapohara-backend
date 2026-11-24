@@ -18,8 +18,9 @@ const ANSWERS = `COALESCE((
     JOIN categorias cat ON cat.id = i.id_categoria
     WHERE rc.id_version = v.id AND i.activo AND cat.activo), '[]')`;
 
-const PLACE = `json_build_object('id', e.id, 'nombre', e.nombre) AS empresa,
-    json_build_object('id', s.id, 'nombre', s.nombre, 'ciudad', ci.nombre) AS local`;
+const OFFICE = `json_build_object('id', s.id, 'nombre', s.nombre, 'ciudad', ci.nombre) AS local`;
+
+const PLACE = `json_build_object('id', e.id, 'nombre', e.nombre) AS empresa, ${OFFICE}`;
 
 const RELATION = `v.situacion, v.ultimo_anio AS "ultimoAnio",
     json_build_object('id', tc.id, 'nombre', tc.nombre) AS "tipoContrato",
@@ -137,7 +138,8 @@ export class SqlReviewRepository extends ReviewRepository {
 
     listMine(userId: number): Promise<MyReview[]> {
         return this.dataSource.query(
-            `SELECT r.id, ${PLACE}, (r.id_version_publicada IS NOT NULL) AS publicada,
+            `SELECT r.id, json_build_object('id', e.id, 'nombre', e.nombre, 'codigoCiiu', rub.codigo_ciiu) AS empresa, ${OFFICE},
+                    (r.id_version_publicada IS NOT NULL) AS publicada,
                     json_build_object(
                         'numero', v.numero, 'estado', v.estado, 'categoria', v.categoria_moderacion,
                         'motivo', v.motivo_moderacion, 'fecha', v.fecha_creacion,
@@ -151,6 +153,7 @@ export class SqlReviewRepository extends ReviewRepository {
              FROM resenas r
              JOIN sucursales s ON s.id = r.id_sucursal
              JOIN empresas e ON e.id = s.id_empresa
+             JOIN rubros rub ON rub.id = e.id_rubro
              JOIN ciudades ci ON ci.id = s.id_ciudad
              CROSS JOIN LATERAL (SELECT * FROM versiones_resena WHERE id_resena = r.id ORDER BY numero DESC LIMIT 1) v
              ${VERSION_JOINS}

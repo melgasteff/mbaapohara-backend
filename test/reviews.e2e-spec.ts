@@ -139,6 +139,7 @@ describe('Reseñas (e2e)', () => {
         const { body: mine } = await http.get('/reviews/mine').set(bearer(token)).expect(200);
         expect(mine).toEqual([expect.objectContaining({
             id: result.id, publicada: false,
+            empresa: { id: expect.any(Number), nombre: expect.any(String), grupo: expect.stringMatching(/^(comercio|industria|servicios|gastronomia|transporte|agro-otros)$/) },
             ultimaVersion: expect.objectContaining({ numero: 1, estado: 'rechazada', categoria: 'DP', situacion: 'ANTERIOR' }),
         })]);
     });

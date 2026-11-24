@@ -1,3 +1,4 @@
+import { sectorGroup } from 'src/companies/sector-groups';
 import { InvalidReviewException } from '../application/exception/review.exceptions';
 import { SubmitResult } from '../application/use-case/review-steps';
 import { CriterionAnswer, ReviewInput, WorkSituation } from '../domain/model/review';
@@ -86,7 +87,8 @@ export function toFacetsDTO(facets: PublicReviewFacets): ReviewFacetsDTO {
 
 export function toMyReviewDTO(review: MyReview): MyReviewDTO {
     const v = review.ultimaVersion;
-    return { ...review, ultimaVersion: { ...v, situacion: SITUATION_OUT[v.situacion], respuestas: toAnswers(v.respuestas) } };
+    const { codigoCiiu, ...empresa } = review.empresa;
+    return { ...review, empresa: { ...empresa, grupo: sectorGroup(codigoCiiu) }, ultimaVersion: { ...v, situacion: SITUATION_OUT[v.situacion], respuestas: toAnswers(v.respuestas) } };
 }
 
 export function toQueueItemDTO(item: QueueItem): QueueItemDTO {

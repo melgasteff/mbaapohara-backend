@@ -1,3 +1,4 @@
+import { SectorGroup } from 'src/companies/sector-groups';
 import { ReviewStatus } from '../../domain/model/review';
 import { AnswerValue, SituationValue } from './review.dto';
 
@@ -117,9 +118,14 @@ export class MyReviewVersionDTO {
     fecha: Date;
 }
 
+export class MyCompanyDTO extends NamedRefDTO {
+    /** Grupo de rubro: define el color del sello. */
+    grupo: SectorGroup;
+}
+
 export class MyReviewDTO {
     id: number;
-    empresa: NamedRefDTO;
+    empresa: MyCompanyDTO;
     local: OfficeRefDTO;
     /** Hay una versión publicada visible (puede ser anterior a la última). */
     publicada: boolean;
