@@ -1,12 +1,13 @@
-import { OfficeDTO } from '../offices/dto/office.dto';
 import { Company } from '../company.entity';
-import { Office } from '../offices/office.entity';
+import { SectorGroup, sectorGroup } from '../sector-groups';
 import { ProposalStatus } from 'src/shared/domain/proposal-status';
 
 export class CompanySectorDTO {
     id: number;
     codigoCiiu: string;
     nombre: string;
+    /** Grupo de rubro; define el color del sello. */
+    grupo: SectorGroup;
 }
 
 export class CompanyDTO {
@@ -20,19 +21,10 @@ export class CompanyDTO {
             id: company.id,
             nombre: company.nombre,
             rubro: company.rubro
-                ? { id: company.rubro.id, codigoCiiu: company.rubro.codigoCiiu, nombre: company.rubro.nombre }
-                : { id: company.idRubro, codigoCiiu: null, nombre: null },
+                ? { id: company.rubro.id, codigoCiiu: company.rubro.codigoCiiu, nombre: company.rubro.nombre, grupo: sectorGroup(company.rubro.codigoCiiu) }
+                : { id: company.idRubro, codigoCiiu: null, nombre: null, grupo: sectorGroup(null) },
             estado: company.estado,
         };
-    }
-}
-
-export class CompanyDetailDTO extends CompanyDTO {
-    /** Locales aprobados de la empresa. */
-    locales: OfficeDTO[];
-
-    static fromDetail(company: Company, offices: Office[]): CompanyDetailDTO {
-        return { ...CompanyDTO.from(company), locales: offices.map(OfficeDTO.from) };
     }
 }
 

@@ -4,23 +4,30 @@ import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Po
 import { ApiTags } from '@nestjs/swagger';
 import { mapPage } from 'src/shared/domain/page';
 import { CompaniesService } from './companies.service';
-import { AdminCompaniesQueryDTO, CompaniesQueryDTO } from './dto/companies-query.dto';
-import { ProposalStatus } from 'src/shared/domain/proposal-status';
-import { CompanyDetailDTO, CompanyDTO, CompanyPageDTO } from './dto/company.dto';
+import { CompanyDirectoryService } from './company-directory.service';
+import { AdminCompaniesQueryDTO, CompaniesQueryDTO, CompanyFiltersDTO } from './dto/companies-query.dto';
+import { CompanyDTO, CompanyPageDTO } from './dto/company.dto';
+import { CompanyDetailDTO, CompanyFacetsDTO, CompanySummaryPageDTO } from './dto/company-summary.dto';
 import { ProposeCompanyDTO, SaveCompanyDTO } from './dto/save-company.dto';
 
 // Lo público muestra solo empresas aprobadas; lo pendiente y lo rechazado se ve en GET /companies/admin.
 @ApiTags('Empresas')
 @Controller('companies')
 export class CompaniesController {
-    constructor(private readonly service: CompaniesService) { }
+    constructor(private readonly service: CompaniesService, private readonly directory: CompanyDirectoryService) { }
 
-    /** Directorio: empresas aprobadas. */
+    /** Directorio: empresas aprobadas con el resumen de sus reseñas publicadas. */
     @Public()
     @Get()
-    async findAll(@Query() query: CompaniesQueryDTO): Promise<CompanyPageDTO> {
-        const { q, rubro, ciudad } = query;
-        return mapPage(await this.service.findPage(query, { q, rubro, ciudad, estado: ProposalStatus.Approved }), CompanyDTO.from);
+    findAll(@Query() query: CompaniesQueryDTO): Promise<CompanySummaryPageDTO> {
+        return this.directory.findPage(query, query, query.orden);
+    }
+
+    /** Conteos del directorio por grupo, departamento, ciudad y con o sin reseñas. Va antes de «:id». */
+    @Public()
+    @Get('facets')
+    facets(@Query() filters: CompanyFiltersDTO): Promise<CompanyFacetsDTO> {
+        return this.directory.facets(filters);
     }
 
     /** Administración: empresas en cualquier estado. Va antes de «:id» para que «admin» no se lea como id. */
@@ -31,12 +38,11 @@ export class CompaniesController {
         return mapPage(await this.service.findPage(query, { q, estado }), CompanyDTO.from);
     }
 
-    /** Empresa aprobada con sus locales aprobados. */
+    /** Empresa aprobada con sus locales aprobados y el resumen de sus reseñas. */
     @Public()
     @Get(':id')
-    async findOne(@Param('id', ParseIntPipe) id: number): Promise<CompanyDetailDTO> {
-        const { company, offices } = await this.service.findDetail(id);
-        return CompanyDetailDTO.fromDetail(company, offices);
+    findOne(@Param('id', ParseIntPipe) id: number): Promise<CompanyDetailDTO> {
+        return this.directory.findDetail(id);
     }
 
     /** Propone una empresa nueva con su primer local. Ambos quedan pendientes de aprobación. */

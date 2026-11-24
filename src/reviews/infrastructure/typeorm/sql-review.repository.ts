@@ -4,8 +4,10 @@ import { JobsService } from 'src/catalogs/jobs/jobs.service';
 import { Page, PageRequest, pageOffset } from 'src/shared/domain/page';
 import { isUniqueViolation } from 'src/shared/infrastructure/database/pg-errors';
 import { ReviewAlreadyExistsException } from '../../application/exception/review.exceptions';
-import { ReviewContent, ReviewStatus } from '../../domain/model/review';
-import { MyReview, OwnedReview, PublicReview, PublicReviewFilters, QueueVersion, VersionToDecide } from '../../domain/model/review-views';
+import { ReviewContent, ReviewStatus, WorkSituation } from '../../domain/model/review';
+import {
+    MyReview, NamedCount, OfficeCount, OwnedReview, PublicReview, PublicReviewFacets, PublicReviewFilters, PublicReviewOrder, QueueVersion, VersionToDecide,
+} from '../../domain/model/review-views';
 import { ReviewRepository, VersionDecision } from '../../domain/port/review-repository.port';
 
 // Respuestas de una versión a los criterios activos, en el orden de los criterios, como JSON.
@@ -28,11 +30,13 @@ const VERSION_JOINS = `JOIN cargos c ON c.id = v.id_cargo
     JOIN tipo_contrato tc ON tc.id = v.id_tipo_contrato
     JOIN modalidades m ON m.id = v.id_modalidad`;
 
-// Reseñas visibles para el público: con versión publicada, en un local y una empresa aprobados. Nunca el autor.
-const PUBLIC_FROM = `FROM resenas r
-    JOIN versiones_resena v ON v.id = r.id_version_publicada
-    JOIN sucursales s ON s.id = r.id_sucursal AND s.estado = 'aprobada'
-    JOIN empresas e ON e.id = s.id_empresa AND e.estado = 'aprobada'
+// Reseñas visibles para el público: las define la vista resenas_publicas (versión publicada, en un local y una empresa
+// aprobados). Nunca el autor.
+const PUBLIC_FROM = `FROM resenas_publicas p
+    JOIN resenas r ON r.id = p.id_resena
+    JOIN versiones_resena v ON v.id = p.id_version
+    JOIN sucursales s ON s.id = p.id_sucursal
+    JOIN empresas e ON e.id = p.id_empresa
     JOIN ciudades ci ON ci.id = s.id_ciudad
     ${VERSION_JOINS}`;
 
@@ -41,6 +45,31 @@ const PUBLIC_FROM = `FROM resenas r
 const PUBLIC_SELECT = `SELECT r.id, ${PLACE},
     CASE WHEN c.estado = 'aprobada' THEN c.descripcion END AS cargo, ${RELATION},
     to_char(v.fecha_decision AT TIME ZONE 'America/Asuncion', 'YYYY-MM') AS "mesPublicacion"`;
+
+const PUBLIC_ORDER: Record<PublicReviewOrder, string> = {
+    [PublicReviewOrder.Recent]: 'v.fecha_decision DESC, r.id DESC',
+    [PublicReviewOrder.Best]: 'v.calificacion DESC, v.fecha_decision DESC, r.id DESC',
+    [PublicReviewOrder.Worst]: 'v.calificacion, v.fecha_decision DESC, r.id DESC',
+};
+
+/** Condiciones del listado público. Siempre empieza con WHERE, para poder sumarle otras. */
+function publicWhere(filters: PublicReviewFilters): { where: string; params: unknown[] } {
+    const conditions: string[] = ['TRUE'];
+    const params: unknown[] = [];
+    const add = (sql: string, value: unknown) => {
+        if (value === undefined) return;
+        params.push(value);
+        conditions.push(sql.replace('?', `$${params.length}`));
+    };
+    add('e.id = ?', filters.companyId);
+    add('s.id = ?', filters.officeId);
+    add('v.id_cargo = ?', filters.jobId);
+    add('s.id_ciudad = ?', filters.cityId);
+    add('v.id_tipo_contrato = ?', filters.contractTypeId);
+    add('v.id_modalidad = ?', filters.workModeId);
+    add('v.situacion = ?', filters.situation);
+    return { where: `WHERE ${conditions.join(' AND ')}`, params };
+}
 
 /**
  * Adaptador de ReviewRepository con SQL sobre las tablas de la migración 3.2. Usa SQL y no entidades de TypeORM porque
@@ -130,32 +159,42 @@ export class SqlReviewRepository extends ReviewRepository {
             [userId]);
     }
 
-    async listPublic(filters: PublicReviewFilters, request: PageRequest): Promise<Page<PublicReview>> {
-        const conditions: string[] = [];
-        const params: unknown[] = [];
-        const add = (sql: string, value: unknown) => {
-            if (value === undefined) return;
-            params.push(value);
-            conditions.push(sql.replace('?', `$${params.length}`));
-        };
-        add('e.id = ?', filters.companyId);
-        add('s.id = ?', filters.officeId);
-        add('v.id_cargo = ?', filters.jobId);
-        add('s.id_ciudad = ?', filters.cityId);
-        add('v.id_tipo_contrato = ?', filters.contractTypeId);
-        add('v.id_modalidad = ?', filters.workModeId);
-        add('v.situacion = ?', filters.situation);
-        const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+    async listPublic(filters: PublicReviewFilters, request: PageRequest, order: PublicReviewOrder): Promise<Page<PublicReview>> {
+        const { where, params } = publicWhere(filters);
 
         const [data, [{ total }]] = await Promise.all([
             this.dataSource.query(
                 `${PUBLIC_SELECT} ${PUBLIC_FROM} ${where}
-                 ORDER BY v.fecha_decision DESC, r.id DESC
+                 ORDER BY ${PUBLIC_ORDER[order]}
                  LIMIT $${params.length + 1} OFFSET $${params.length + 2}`,
                 [...params, request.pageSize, pageOffset(request)]),
             this.dataSource.query(`SELECT count(*)::int AS total ${PUBLIC_FROM} ${where}`, params),
         ]);
         return { data, total, page: request.page, pageSize: request.pageSize };
+    }
+
+    async publicFacets(filters: PublicReviewFilters): Promise<PublicReviewFacets> {
+        // Cada conteo aplica los demás filtros y no el propio.
+        const facet = async <T>(own: keyof PublicReviewFilters, select: string, groupBy: string, extra = ''): Promise<{ total: number; opciones: T[] }> => {
+            const { where, params } = publicWhere({ ...filters, [own]: undefined });
+            const [[{ total }], opciones] = await Promise.all([
+                this.dataSource.query(`SELECT count(*)::int AS total ${PUBLIC_FROM} ${where}`, params),
+                this.dataSource.query(
+                    `SELECT ${select}, count(*)::int AS cantidad ${PUBLIC_FROM} ${where} ${extra} GROUP BY ${groupBy} ORDER BY ${groupBy}`, params),
+            ]);
+            return { total, opciones };
+        };
+        const { where, params } = publicWhere(filters);
+        const [[{ total }], local, cargo, tipoContrato, modalidad, situacion] = await Promise.all([
+            this.dataSource.query(`SELECT count(*)::int AS total ${PUBLIC_FROM} ${where}`, params),
+            facet<OfficeCount>('officeId', 's.id, s.nombre, ci.nombre AS ciudad', 'ci.nombre, s.nombre, s.id'),
+            // Un cargo propuesto y sin aprobar no se muestra: su texto no pasa por la moderación.
+            facet<NamedCount>('jobId', 'c.id, c.descripcion AS nombre', 'c.descripcion, c.id', `AND c.estado = 'aprobada'`),
+            facet<NamedCount>('contractTypeId', 'tc.id, tc.nombre', 'tc.id, tc.nombre'),
+            facet<NamedCount>('workModeId', 'm.id, m.nombre', 'm.id, m.nombre'),
+            facet<{ valor: WorkSituation; cantidad: number }>('situation', 'v.situacion AS valor', 'v.situacion'),
+        ]);
+        return { total, local, cargo, tipoContrato, modalidad, situacion };
     }
 
     async findPublic(reviewId: number): Promise<PublicReview | null> {

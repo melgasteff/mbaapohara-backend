@@ -72,6 +72,9 @@ una tarea los modifique.
    registra la entidad ajena con `forFeature` ni redefine el modelo. Excepción: un módulo liviano puede
    declarar un `@ManyToOne` de solo lectura hacia una entidad de `catalogs` para mostrarla en un listado
    (por ejemplo, el rubro de una empresa); validar que el id existe se hace siempre con el servicio dueño.
+   Segunda excepción, de solo lectura: `companies` (resumen y facetas del directorio) lee la vista `resenas_publicas` y
+   `respuestas_criterio`, y `criteria` cuenta respuestas. Importar `reviews` crearía un ciclo, porque `reviews` ya usa a
+   los dos. Qué reseña es pública se define solo en esa vista.
 3. **Los módulos completos no dependen de los livianos directamente.** Por ejemplo, `reviews` define un
    puerto (`OfficeLookupPort`) y el adaptador llama al servicio de `companies`. Así el dominio de la reseña
    no conoce TypeORM.

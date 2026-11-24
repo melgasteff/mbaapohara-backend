@@ -43,6 +43,38 @@ export interface PublicReviewFilters {
     situation?: WorkSituation;
 }
 
+export enum PublicReviewOrder {
+    Recent = 'recientes',
+    Best = 'mejor',
+    Worst = 'peor',
+}
+
+export interface NamedCount extends NamedRef {
+    cantidad: number;
+}
+
+export interface OfficeCount extends NamedCount {
+    ciudad: string;
+}
+
+/** Conteos de un filtro. `total` es el de «todos»: las reseñas sin aplicar ese filtro. */
+export interface Facet<T> {
+    total: number;
+    opciones: T[];
+}
+
+/** Conteos por opción de cada filtro del listado público; cada uno aplica los demás filtros y no el propio. */
+export interface PublicReviewFacets {
+    /** Reseñas con todos los filtros. */
+    total: number;
+    local: Facet<OfficeCount>;
+    /** Solo cargos aprobados: puede sumar menos que el total. */
+    cargo: Facet<NamedCount>;
+    tipoContrato: Facet<NamedCount>;
+    modalidad: Facet<NamedCount>;
+    situacion: Facet<{ valor: WorkSituation; cantidad: number }>;
+}
+
 /** Última versión de una reseña propia, con todo lo necesario para mostrarla o editarla. */
 export interface MyReviewVersion {
     numero: number;

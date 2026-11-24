@@ -12,7 +12,7 @@ import { KeepReportedReviewUseCase, ListReportsUseCase, ReportReviewUseCase, Ret
 import { ReportRepository } from '../../domain/port/report-repository.port';
 import { ReportsController } from '../../presentation/reports.controller';
 import { SqlReportRepository } from '../typeorm/sql-report.repository';
-import { GetPublicReviewUseCase, ListMyReviewsUseCase, ListPublicReviewsUseCase } from '../../application/use-case/query-reviews.use-case';
+import { GetPublicReviewUseCase, ListMyReviewsUseCase, ListPublicReviewsUseCase, PublicReviewFacetsUseCase } from '../../application/use-case/query-reviews.use-case';
 import { ReviewReferences } from '../../domain/port/review-references.port';
 import { ReviewRepository } from '../../domain/port/review-repository.port';
 import { ModerationQueueController } from '../../presentation/moderation-queue.controller';
@@ -54,6 +54,7 @@ import { SqlReviewRepository } from '../typeorm/sql-review.repository';
         { provide: DeleteReviewUseCase, inject: [ReviewRepository], useFactory: (repo: ReviewRepository) => new DeleteReviewUseCase(repo) },
         { provide: ListMyReviewsUseCase, inject: [ReviewRepository], useFactory: (repo: ReviewRepository) => new ListMyReviewsUseCase(repo) },
         { provide: ListPublicReviewsUseCase, inject: [ReviewRepository], useFactory: (repo: ReviewRepository) => new ListPublicReviewsUseCase(repo) },
+        { provide: PublicReviewFacetsUseCase, inject: [ReviewRepository], useFactory: (repo: ReviewRepository) => new PublicReviewFacetsUseCase(repo) },
         { provide: GetPublicReviewUseCase, inject: [ReviewRepository], useFactory: (repo: ReviewRepository) => new GetPublicReviewUseCase(repo) },
         {
             provide: ListModerationQueueUseCase,

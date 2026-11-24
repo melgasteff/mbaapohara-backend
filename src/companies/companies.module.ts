@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatalogsModule } from 'src/catalogs/catalogs.module';
 import { CompaniesController } from './companies.controller';
+import { CompanyDirectoryService } from './company-directory.service';
 import { CompaniesService } from './companies.service';
 import { Company } from './company.entity';
 import { Office } from './offices/office.entity';
@@ -12,7 +13,7 @@ import { OfficesService } from './offices/offices.service';
 @Module({
     imports: [TypeOrmModule.forFeature([Company, Office]), CatalogsModule],
     controllers: [CompaniesController, OfficesController],
-    providers: [CompaniesService, OfficesService],
+    providers: [CompaniesService, CompanyDirectoryService, OfficesService],
     exports: [CompaniesService, OfficesService],
 })
 export class CompaniesModule { }

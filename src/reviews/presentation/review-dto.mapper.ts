@@ -1,8 +1,8 @@
 import { InvalidReviewException } from '../application/exception/review.exceptions';
 import { SubmitResult } from '../application/use-case/review-steps';
 import { CriterionAnswer, ReviewInput, WorkSituation } from '../domain/model/review';
-import { AnswerView, MyReview, PublicReview, PublicReviewFilters } from '../domain/model/review-views';
-import { AnswerDTO, MyReviewDTO, PublicReviewDTO, SubmitResultDTO } from './dto/review-response.dto';
+import { AnswerView, MyReview, PublicReview, PublicReviewFacets, PublicReviewFilters } from '../domain/model/review-views';
+import { AnswerDTO, MyReviewDTO, PublicReviewDTO, ReviewFacetsDTO, SubmitResultDTO } from './dto/review-response.dto';
 import { QueueItemDTO } from './dto/moderation-queue.dto';
 import { QueueItem } from '../application/use-case/moderation-queue.use-case';
 import { AnswerValue, EditReviewDTO, ReviewsQueryDTO, SituationValue } from './dto/review.dto';
@@ -52,7 +52,7 @@ export function toReviewInput(dto: EditReviewDTO): ReviewInput {
     };
 }
 
-export function toFilters(query: ReviewsQueryDTO): PublicReviewFilters {
+export function toFilters(query: Omit<ReviewsQueryDTO, 'page' | 'pageSize' | 'orden'>): PublicReviewFilters {
     return {
         companyId: query.empresa,
         officeId: query.local,
@@ -77,6 +77,11 @@ export function toSubmitResultDTO(result: SubmitResult): SubmitResultDTO {
 
 export function toPublicReviewDTO(review: PublicReview): PublicReviewDTO {
     return { ...review, situacion: SITUATION_OUT[review.situacion], respuestas: toAnswers(review.respuestas) };
+}
+
+export function toFacetsDTO(facets: PublicReviewFacets): ReviewFacetsDTO {
+    const opciones = facets.situacion.opciones.map(option => ({ ...option, valor: SITUATION_OUT[option.valor] }));
+    return { ...facets, situacion: { ...facets.situacion, opciones } };
 }
 
 export function toMyReviewDTO(review: MyReview): MyReviewDTO {

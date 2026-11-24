@@ -2,7 +2,7 @@ import { ModerationCategory, ModerationOutcome, ReviewText, Verdict } from 'src/
 import { ModerationContext, ModerationPort } from 'src/moderation/domain/port/moderation.port';
 import { Page } from 'src/shared/domain/page';
 import { ActiveCriterion, CriterionAnswer, ReviewContent, ReviewInput, ReviewStatus, WorkSituation } from '../../domain/model/review';
-import { MyReview, OwnedReview, PublicReview, QueueVersion, VersionToDecide } from '../../domain/model/review-views';
+import { MyReview, OwnedReview, PublicReview, PublicReviewFacets, QueueVersion, VersionToDecide } from '../../domain/model/review-views';
 import { ReviewReferences } from '../../domain/port/review-references.port';
 import { ReviewRepository, VersionDecision } from '../../domain/port/review-repository.port';
 import { InvalidReviewException, ReviewAlreadyExistsException, ReviewInReviewException, ReviewNotFoundException } from '../exception/review.exceptions';
@@ -51,6 +51,10 @@ class MemoryRepo extends ReviewRepository {
     async delete(reviewId: number) { this.reviews.delete(reviewId); }
     async listMine(): Promise<MyReview[]> { return []; }
     async listPublic(): Promise<Page<PublicReview>> { return { data: [], total: 0, page: 1, pageSize: 20 }; }
+    async publicFacets(): Promise<PublicReviewFacets> {
+        const empty = { total: 0, opciones: [] };
+        return { total: 0, local: empty, cargo: empty, tipoContrato: empty, modalidad: empty, situacion: empty };
+    }
     async findPublic(): Promise<PublicReview | null> { return null; }
     // La cola y la decisión humana se prueban en moderation-queue.use-case.spec.ts.
     async listQueue(): Promise<Page<QueueVersion>> { return { data: [], total: 0, page: 1, pageSize: 20 }; }

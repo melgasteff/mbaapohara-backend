@@ -1,5 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsObject, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { OmitType } from '@nestjs/swagger';
+import { PublicReviewOrder } from '../../domain/model/review-views';
 import { PaginationQueryDTO } from 'src/shared/infrastructure/rest/pagination-query.dto';
 
 // Valores de la API: los mismos que el JSON de criterios del frontend (public/criterios-provisionales.json).
@@ -99,4 +101,13 @@ export class ReviewsQueryDTO extends PaginationQueryDTO {
 
     @IsOptional() @IsEnum(SituationValue)
     situacion?: SituationValue;
+
+    @IsOptional() @IsEnum(PublicReviewOrder)
+    orden: PublicReviewOrder = PublicReviewOrder.Recent;
+}
+
+/** Filtros de los conteos (GET /reviews/facets): los del listado, con la empresa obligatoria. */
+export class ReviewFacetsQueryDTO extends OmitType(ReviewsQueryDTO, ['page', 'pageSize', 'orden', 'empresa']) {
+    @Type(() => Number) @IsInt() @Min(1)
+    empresa: number;
 }

@@ -6,13 +6,13 @@ import { mapPage } from 'src/shared/domain/page';
 import { DeleteReviewUseCase } from '../application/use-case/delete-review.use-case';
 import { EditReviewUseCase } from '../application/use-case/edit-review.use-case';
 import { PublishReviewUseCase } from '../application/use-case/publish-review.use-case';
-import { GetPublicReviewUseCase, ListMyReviewsUseCase, ListPublicReviewsUseCase } from '../application/use-case/query-reviews.use-case';
+import { GetPublicReviewUseCase, ListMyReviewsUseCase, ListPublicReviewsUseCase, PublicReviewFacetsUseCase } from '../application/use-case/query-reviews.use-case';
 import { ReportReviewUseCase } from '../application/use-case/reports.use-case';
 import { ReportReceivedDTO, ReportReviewDTO } from './dto/report.dto';
 import { ReviewExceptionFilter } from '../infrastructure/exception-filter/review.exception-filter';
-import { MyReviewDTO, PublicReviewDTO, PublicReviewPageDTO, SubmitResultDTO } from './dto/review-response.dto';
-import { EditReviewDTO, PublishReviewDTO, ReviewsQueryDTO } from './dto/review.dto';
-import { toFilters, toMyReviewDTO, toPublicReviewDTO, toReviewInput, toSubmitResultDTO } from './review-dto.mapper';
+import { MyReviewDTO, PublicReviewDTO, PublicReviewPageDTO, ReviewFacetsDTO, SubmitResultDTO } from './dto/review-response.dto';
+import { EditReviewDTO, PublishReviewDTO, ReviewFacetsQueryDTO, ReviewsQueryDTO } from './dto/review.dto';
+import { toFacetsDTO, toFilters, toMyReviewDTO, toPublicReviewDTO, toReviewInput, toSubmitResultDTO } from './review-dto.mapper';
 
 @ApiTags('Reseñas')
 @UseFilters(ReviewExceptionFilter)
@@ -24,6 +24,7 @@ export class ReviewsController {
         private readonly deleteUC: DeleteReviewUseCase,
         private readonly listMineUC: ListMyReviewsUseCase,
         private readonly listPublicUC: ListPublicReviewsUseCase,
+        private readonly facetsUC: PublicReviewFacetsUseCase,
         private readonly getPublicUC: GetPublicReviewUseCase,
         private readonly reportUC: ReportReviewUseCase,
     ) { }
@@ -32,7 +33,14 @@ export class ReviewsController {
     @Public()
     @Get()
     async list(@Query() query: ReviewsQueryDTO): Promise<PublicReviewPageDTO> {
-        return mapPage(await this.listPublicUC.execute(toFilters(query), query), toPublicReviewDTO);
+        return mapPage(await this.listPublicUC.execute(toFilters(query), query, query.orden), toPublicReviewDTO);
+    }
+
+    /** Conteos por opción de cada filtro, para el perfil de una empresa. Va antes de `:id`. */
+    @Public()
+    @Get('facets')
+    async facets(@Query() query: ReviewFacetsQueryDTO): Promise<ReviewFacetsDTO> {
+        return toFacetsDTO(await this.facetsUC.execute(toFilters(query)));
     }
 
     /** Mis reseñas: la última versión de cada una, con su estado y el motivo de la moderación. */

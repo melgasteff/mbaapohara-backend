@@ -13,8 +13,6 @@ import { ProposalStatus } from 'src/shared/domain/proposal-status';
 
 export interface CompanyFilters {
     q?: string;
-    rubro?: number;
-    ciudad?: number;
     estado?: ProposalStatus;
 }
 
@@ -27,8 +25,7 @@ export class CompaniesService {
         private readonly offices: OfficesService,
     ) { }
 
-    // Listado de empresas. Sin `estado`, todas (solo lo usa la ruta de administración; el directorio público
-    // pasa siempre «aprobada»). La búsqueda por nombre no distingue mayúsculas ni tildes (ILIKE + unaccent,
+    // Listado de administración; el directorio público está en CompanyDirectoryService. La búsqueda por nombre no distingue mayúsculas ni tildes (ILIKE + unaccent,
     // según el recorte del plan; pg_trgm queda como mejora).
     async findPage(request: PageRequest, filters: CompanyFilters): Promise<Page<Company>> {
         const qb = this.repo.createQueryBuilder('empresa')
@@ -41,15 +38,6 @@ export class CompaniesService {
 
         if (filters.q) {
             qb.andWhere('lower(f_unaccent(empresa.nombre)) LIKE lower(f_unaccent(:q))', { q: `%${escapeLike(filters.q)}%` });
-        }
-        if (filters.rubro) {
-            qb.andWhere('empresa.idRubro = :rubro', { rubro: filters.rubro });
-        }
-        if (filters.ciudad) {
-            qb.andWhere(`EXISTS (
-                SELECT 1 FROM sucursales local
-                WHERE local.id_empresa = empresa.id AND local.id_ciudad = :ciudad AND local.estado = :aprobada)`,
-                { ciudad: filters.ciudad, aprobada: ProposalStatus.Approved });
         }
 
         const [data, total] = await qb

@@ -52,6 +52,47 @@ export class PublicReviewPageDTO {
     pageSize: number;
 }
 
+export class NamedCountDTO extends NamedRefDTO {
+    cantidad: number;
+}
+
+export class OfficeCountDTO extends NamedCountDTO {
+    ciudad: string;
+}
+
+export class SituationCountDTO {
+    valor: SituationValue;
+    cantidad: number;
+}
+
+export class NamedFacetDTO {
+    /** Reseñas sin aplicar este filtro: es el conteo de «todos». */
+    total: number;
+    opciones: NamedCountDTO[];
+}
+
+export class OfficeFacetDTO {
+    total: number;
+    opciones: OfficeCountDTO[];
+}
+
+export class SituationFacetDTO {
+    total: number;
+    opciones: SituationCountDTO[];
+}
+
+/** Conteos por opción de cada filtro del perfil. Cada uno aplica los demás filtros y no el propio. */
+export class ReviewFacetsDTO {
+    /** Reseñas con todos los filtros. */
+    total: number;
+    local: OfficeFacetDTO;
+    /** Solo cargos aprobados: puede sumar menos que el total. */
+    cargo: NamedFacetDTO;
+    tipoContrato: NamedFacetDTO;
+    modalidad: NamedFacetDTO;
+    situacion: SituationFacetDTO;
+}
+
 export class MyJobDTO {
     id: number;
     descripcion: string;

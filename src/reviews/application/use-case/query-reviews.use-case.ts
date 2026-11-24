@@ -1,5 +1,5 @@
 import { Page, PageRequest } from 'src/shared/domain/page';
-import { MyReview, PublicReview, PublicReviewFilters } from '../../domain/model/review-views';
+import { MyReview, PublicReview, PublicReviewFacets, PublicReviewFilters, PublicReviewOrder } from '../../domain/model/review-views';
 import { ReviewRepository } from '../../domain/port/review-repository.port';
 import { ReviewNotFoundException } from '../exception/review.exceptions';
 
@@ -16,8 +16,17 @@ export class ListMyReviewsUseCase {
 export class ListPublicReviewsUseCase {
     constructor(private readonly repo: ReviewRepository) { }
 
-    execute(filters: PublicReviewFilters, page: PageRequest): Promise<Page<PublicReview>> {
-        return this.repo.listPublic(filters, page);
+    execute(filters: PublicReviewFilters, page: PageRequest, order = PublicReviewOrder.Recent): Promise<Page<PublicReview>> {
+        return this.repo.listPublic(filters, page, order);
+    }
+}
+
+/** Conteos de los filtros del listado público, para el perfil de una empresa. */
+export class PublicReviewFacetsUseCase {
+    constructor(private readonly repo: ReviewRepository) { }
+
+    execute(filters: PublicReviewFilters): Promise<PublicReviewFacets> {
+        return this.repo.publicFacets(filters);
     }
 }
 
