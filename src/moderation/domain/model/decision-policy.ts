@@ -27,7 +27,7 @@ export const REJECTION_MESSAGES: Record<ModerationCategory, string> = {
     SPAM: 'Tu reseña parece publicidad o un texto repetido. Contá tu experiencia de trabajo.',
     TEMA: 'Tu reseña no habla de tu experiencia de trabajo en la empresa. Contá cómo fue trabajar ahí.',
 };
-export const REVIEW_MESSAGE = 'Tu reseña está en revisión. Te avisamos en 48 horas.';
+export const REVIEW_MESSAGE = 'Tu reseña está en revisión.';
 export const PUBLISHED_MESSAGE = 'Tu reseña ya está publicada.';
 
 export interface DecisionInput {

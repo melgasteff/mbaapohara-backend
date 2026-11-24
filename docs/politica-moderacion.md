@@ -82,8 +82,8 @@ deriva a revisión, salvo que el modelo también marque INS con 0,85 o más.
 
 ## 6. Revisión humana
 
-- La hace el **administrador** (D5: un solo rol que también modera). Objetivo: resolver en **48 horas**, que es el
-  plazo que se le anuncia a la persona.
+- La hace el **administrador** (D5: un solo rol que también modera). Objetivo: resolver en **48 horas**, que es lo
+  que informa la página «Cómo moderamos».
 - Quien modera ve el texto, las categorías con su confianza y las reglas que saltaron. **No ve quién escribió la
   reseña**: la cola de moderación no muestra el correo ni la cuenta.
 - Puede **publicarla** o **rechazarla** eligiendo una categoría y un motivo, que la persona va a leer.
@@ -94,7 +94,7 @@ deriva a revisión, salvo que el modelo también marque INS con 0,85 o más.
 | Estado | Quién la ve | Mensaje para quien escribió |
 | --- | --- | --- |
 | Publicada | Todos | «Tu reseña ya está publicada.» |
-| En revisión | Solo quien escribió | «Tu reseña está en revisión. Te avisamos en 48 horas.» |
+| En revisión | Solo quien escribió | «Tu reseña está en revisión.» |
 | Rechazada | Solo quien escribió, con el motivo | Según la categoría (abajo); puede editarla y reenviarla |
 
 Motivos de rechazo, en voseo y diciendo qué corregir:
