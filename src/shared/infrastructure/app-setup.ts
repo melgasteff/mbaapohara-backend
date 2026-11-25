@@ -7,6 +7,10 @@ import { EnvironmentVariables } from './config/env.validation';
 export function configureApp(app: INestApplication): void {
     const config = app.get(ConfigService<EnvironmentVariables, true>);
 
+    // Detrás de un proxy, la IP de la persona llega en X-Forwarded-For. Con 0 se ignora: cualquiera podría inventarla.
+    const hops = config.get('TRUST_PROXY_HOPS', { infer: true });
+    if (hops > 0) app.getHttpAdapter().getInstance().set('trust proxy', hops);
+
     // Swagger UI usa scripts y estilos en línea: la política de contenido los permite solo para eso.
     app.use(helmet({
         contentSecurityPolicy: {

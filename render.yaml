@@ -1,0 +1,42 @@
+# Blueprint de Render para la API (tarea 4.4). Pasos en docs/despliegue.md.
+# Los valores con «sync: false» se cargan en el panel de Render: nunca en este archivo.
+services:
+  - type: web
+    name: mbaapohara-api
+    runtime: docker # usa la última etapa del Dockerfile (prod)
+    plan: free
+    region: virginia # la misma zona que la base; no se puede cambiar después
+    branch: develop/steff
+    autoDeployTrigger: "off" # se despliega a mano, con el código ya revisado
+    healthCheckPath: /docs # no consulta la base, para que pueda suspenderse sin uso
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_SSL
+        value: "true"
+      - key: CORS_ORIGINS # la dirección de Vercel, sin barra final
+        sync: false
+      - key: TRUST_PROXY_HOPS # provisional: se mide en el despliegue (docs/despliegue.md, paso 5)
+        value: "0"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 2h
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: MODERATION_MODEL
+        value: claude-haiku-5-5
+      - key: MODERATION_MONTHLY_BUDGET_USD
+        value: "5"
+      - key: MODERATION_TIMEOUT_MS
+        value: "10000"

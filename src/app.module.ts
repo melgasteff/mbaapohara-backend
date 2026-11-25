@@ -25,6 +25,7 @@ import { ModerationModule } from './moderation/infrastructure/module/moderation.
         username: config.get('DB_USER', { infer: true }),
         password: config.get('DB_PASS', { infer: true }),
         database: config.get('DB_NAME', { infer: true }),
+        ssl: config.get('DB_SSL', { infer: true }) === 'true',
         synchronize: false,
         autoLoadEntities: true,
       }),

@@ -10,6 +10,7 @@ export default new DataSource({
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
+    ssl: process.env.DB_SSL === 'true',
     migrations: [__dirname + '/migrations/**/*.{ts,js}'],
     synchronize: false, // Siempre false en prod,
 });

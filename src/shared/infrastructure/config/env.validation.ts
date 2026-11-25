@@ -34,6 +34,20 @@ export class EnvironmentVariables {
     @IsNotEmpty()
     DB_NAME: string;
 
+    /** Conexión cifrada (TLS) a la base, verificando el certificado. La exigen las bases administradas, como Neon. */
+    @IsIn(['true', 'false'], { message: 'DB_SSL debe ser true o false' })
+    DB_SSL: 'true' | 'false' = 'false';
+
+    /**
+     * Cuántos proxies de confianza hay delante de la API (4.4). Con 0, la IP es la de la conexión. Un valor de más deja
+     * falsificar la IP con X-Forwarded-For; uno de menos hace que todas las personas compartan el límite de intentos.
+     */
+    @Transform(({ value }) => Number(value))
+    @IsInt()
+    @Min(0)
+    @Max(5)
+    TRUST_PROXY_HOPS: number = 0;
+
     // Lista separada por comas, por ejemplo: http://localhost:4200,https://mbaapohara.example
     @Transform(({ value }) =>
         typeof value === 'string'

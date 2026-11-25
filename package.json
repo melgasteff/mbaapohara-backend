@@ -27,6 +27,7 @@
     "migration:revert": "npm run typeorm -- migration:revert -d ./src/shared/infrastructure/database/data-source.ts",
     "migration:show": "npm run typeorm -- migration:show -d ./src/shared/infrastructure/database/data-source.ts",
     "seed": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/scripts/seed-demo.ts",
+    "seed:criteria": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/scripts/seed-criteria.ts",
     "db:setup": "npm run migration:run && npm run seed",
     "db:reset": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/scripts/reset-schema.ts && npm run db:setup",
     "admin:create": "ts-node -r tsconfig-paths/register src/auth/infrastructure/cli/create-admin.ts",

@@ -1,19 +1,10 @@
-// Datos de demostración para desarrollo y para la demo: criterios provisionales, empresas y locales.
+// Datos de demostración para desarrollo y para la demo: criterios, empresas y locales.
 //   npm run seed
 // No corre en producción. Se puede correr varias veces: no duplica lo que ya existe ni cambia los criterios cargados.
 // Los datos de referencia (departamentos, ciudades, rubros, contratos, modalidades, cargos) están en la
 // migración base, no acá.
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import dataSource from '../data-source';
-
-// Criterios PROVISIONALES de las preguntas 5 a 8 del cuestionario (docs/datos/criterios-provisionales.json, fuente
-// de la primera carga). Se cargan solo en una base sin categorías; después se administran desde la API (3.8).
-// Para volver a cargar el archivo en desarrollo: `npm run db:reset`.
-interface CriteriaFile {
-    categorias: { codigo: string; nombre: string; orden: number; items: { codigo: string; orden: number; texto: string }[] }[];
-}
-const CRITERIA: CriteriaFile = JSON.parse(readFileSync(join(process.cwd(), 'docs/datos/criterios-provisionales.json'), 'utf8'));
+import { loadCriteria } from './seed-criteria';
 
 // Empresas de demostración (aprobadas), con la sección CIIU de su rubro.
 const EMPRESAS: [nombre: string, ciiu: string][] = [
@@ -41,26 +32,7 @@ async function main() {
     await dataSource.initialize();
     try {
         await dataSource.transaction(async manager => {
-            let nuevas = 0;
-            // Desde la 3.8 los criterios se administran en /admin/criterios y la base es la fuente de verdad: el archivo
-            // se carga solo si todavía no hay ninguna categoría, para no pisar lo que editó el administrador.
-            const [{ hay }] = await manager.query('SELECT EXISTS (SELECT 1 FROM categorias) AS hay');
-            if (hay) {
-                console.log('Criterios: ya hay categorías cargadas; no se tocan (se editan en /admin/criterios)');
-            } else {
-                for (const category of CRITERIA.categorias) {
-                    const [{ id: idCategoria }] = await manager.query(
-                        'INSERT INTO categorias (codigo, descripcion, orden) VALUES ($1, $2, $3) RETURNING id',
-                        [category.codigo, category.nombre, category.orden]);
-                    nuevas++;
-                    for (const item of category.items) {
-                        await manager.query(
-                            'INSERT INTO items (codigo, descripcion, id_categoria, orden) VALUES ($1, $2, $3, $4)',
-                            [item.codigo, item.texto, idCategoria, item.orden]);
-                        nuevas++;
-                    }
-                }
-            }
+            let nuevas = await loadCriteria(manager);
             for (const [nombre, ciiu] of EMPRESAS) {
                 const inserted: unknown[] = await manager.query(
                     `INSERT INTO empresas (nombre, id_rubro, estado)

@@ -32,6 +32,8 @@ al arrancar y no inicia si falta alguna o es inválida.
 | --- | --- | --- |
 | `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME` | Sí | Conexión a PostgreSQL |
 | `CORS_ORIGINS` | Sí | Orígenes permitidos, separados por comas (por ejemplo `http://localhost:4200`) |
+| `DB_SSL` | No | `true` para cifrar la conexión a la base, verificando el certificado (por defecto `false`) |
+| `TRUST_PROXY_HOPS` | No | Proxies de confianza delante de la API, para el límite de intentos por IP (por defecto `0`) |
 | `JWT_SECRET` | Sí | Secreto para firmar los tokens, al menos 32 caracteres |
 | `JWT_EXPIRES_IN` | No | Vigencia del token de acceso (por defecto `2h`) |
 | `ANTHROPIC_API_KEY` | No | Clave de la API de Claude para el clasificador de moderación. Sin ella, toda reseña va a revisión humana |
@@ -78,6 +80,7 @@ Pide la contraseña por la terminal, sin mostrarla. Si la cuenta existe, la prom
 | `npm run build` / `npm run start:prod` | Compila a `dist/` / arranca la versión compilada |
 | `npm run db:setup` | Migraciones + datos de demostración |
 | `npm run db:reset` | **Solo desarrollo:** borra el esquema y corre `db:setup` |
+| `npm run seed:criteria` | Carga solo los criterios, si no hay ninguno (corre también en producción) |
 | `npm run seed` | Datos de demostración (idempotente; no corre en producción) |
 | `npm run migration:run` / `migration:show` / `migration:revert` | Migraciones con TypeORM |
 | `npm run migration:create --name=nombre` | Crea una migración vacía |
@@ -142,8 +145,8 @@ administración de criterios (alta, edición, desactivación y duplicados).
 - **De referencia** (en la migración base): los 18 departamentos y 263 distritos del INE (Códigos geográficos
   2022, ver [docs/datos/catalogo-ine-2022.csv](docs/datos/catalogo-ine-2022.csv)), las 21 secciones de la
   CIIU Rev. 4 como rubros, tipos de contrato, modalidades y cargos iniciales.
-- **De demostración** (`npm run seed`): criterios provisionales, empresas y locales de ejemplo. No se cargan en
-  producción. Los criterios se cargan solo si no hay ninguna categoría; después se administran desde la API (3.8).
+- **De demostración** (`npm run seed`): criterios, empresas y locales de ejemplo. No se cargan en producción, salvo los
+  criterios (`npm run seed:criteria`). Los criterios se cargan solo si no hay ninguna categoría; después se administran desde la API (3.8).
 
 ## Estructura
 
@@ -173,4 +176,4 @@ corre sin el código fuente ni los datos de demostración:
 docker build --target prod -t mbaapohara-api .
 ```
 
-Las variables de entorno las define la plataforma de despliegue (tarea 4.4).
+Las variables de entorno las define la plataforma. Pasos con Neon, Render y Vercel: [docs/despliegue.md](docs/despliegue.md).
