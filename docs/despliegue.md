@@ -19,12 +19,15 @@ DB_NAME='…'
 DB_SSL='true'
 ```
 
+   **Sin espacios alrededor del `=`**: con espacios, la terminal no carga la variable y el comando usa la de `.env` (la base
+   local). Con `set -e` el comando se detiene si el archivo tiene un error.
+
 4. Preparar la base. Los paréntesis hacen que las variables no queden en la terminal:
 
 ```bash
 chmod 600 .env.production.local
-( set -a; . ./.env.production.local; set +a; npm run migration:run && npm run seed:criteria )
-( set -a; . ./.env.production.local; set +a; npm run admin:create -- correo@ejemplo.com )
+( set -ea; . ./.env.production.local; set +a; npm run migration:run && npm run seed:criteria )
+( set -ea; . ./.env.production.local; set +a; npm run admin:create -- correo@ejemplo.com )
 ```
 
 `seed:criteria` muestra la base y el servidor antes de escribir, y no toca criterios ya cargados. **Nunca** correr
