@@ -1,6 +1,6 @@
 {
-  "version": "provisional-2026-11-19b",
-  "nota": "Criterios PROVISIONALES tomados de las preguntas 5 a 8 del cuestionario de la encuesta. Se reemplazan el 26/11 con los resultados. Cargarlos siempre como datos, nunca escritos en el código.",
+  "version": "2026-11-25",
+  "nota": "Criterios tomados de las preguntas 5 a 8 del cuestionario de la encuesta y confirmados con sus resultados (R1, 25/11): quedan los 23, con CP09 y ST05 en positivo. Cargarlos siempre como datos, nunca escritos en el código.",
   "opcionesRespuesta": [
     {
       "valor": "SI",
@@ -143,7 +143,7 @@
         {
           "codigo": "CP09",
           "orden": 9,
-          "texto": "No me hicieron descuentos que la ley no permite."
+          "texto": "Los descuentos de mi salario fueron solo los que permite la ley."
         }
       ]
     },
@@ -217,7 +217,7 @@
         {
           "codigo": "ST05",
           "orden": 5,
-          "texto": "No presencié ni sufrí discriminación por sexo, edad, origen, religión u opinión."
+          "texto": "Hubo trato igualitario, sin discriminación por sexo, edad, origen, religión u opinión."
         },
         {
           "codigo": "ST06",
