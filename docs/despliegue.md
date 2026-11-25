@@ -55,18 +55,29 @@ Render y Vercel leen los repositorios públicos: las ramas con esta tarea tienen
 
 ## 5. Medir los proxies de confianza
 
-Con `TRUST_PROXY_HOPS=0` todas las personas comparten el límite de intentos. Probar 1, después 2 y así, con este pedido:
+Con un valor bajo, la IP que se cuenta es la de un proxy: si hay varios, los intentos se reparten entre ellos y todas las
+personas los comparten. Con un valor alto, la IP se puede inventar. Se comparan tres series, con un minuto entre una y otra:
 
 ```bash
 API=https://<servicio>.onrender.com
-for i in 1 2 3 4 5 6; do curl -s -o /dev/null -w '%{http_code} ' -X POST "$API/auth/login" \
-  -H "X-Forwarded-For: 203.0.113.$i" -H 'content-type: application/json' \
-  -d '{"email":"nadie@ejemplo.com","password":"x"}'; done; echo
+serie() { for i in 1 2 3 4 5 6; do curl -s -o /dev/null -w '%{http_code} ' -X POST "$API/auth/login" \
+  -H "X-Forwarded-For: ${1:+$1.$i}" -H 'content-type: application/json' \
+  -d '{"email":"nadie@ejemplo.com","password":"x"}'; done; echo; }
+serie; sleep 62; serie 203.0.113
 ```
 
-- El sexto tiene que dar **429**. Si da 401, el valor es demasiado alto: se puede falsificar la IP.
-- Enseguida, repetirlo desde otra red (datos del celular): el primero tiene que dar **401**. Si da 429, el valor es bajo.
-- Queda el valor que cumple las dos cosas. Esperar un minuto entre pruebas.
+| Sin dirección inventada | Con direcciones inventadas | Lectura |
+| --- | --- | --- |
+| El sexto no da 429 | El sexto no da 429 | Valor bajo: cuenta varios proxies |
+| El sexto da 429 | El sexto no da 429 | Valor alto: la IP se puede inventar |
+| El sexto da 429 | El sexto da 429 | Falta confirmar con otra red (abajo) |
+
+Con las dos series en 429, repetir enseguida la primera desde otra red (datos del celular): el primer intento tiene que
+dar **401**. Si da 429, el valor es bajo, porque las dos redes se cuentan como una.
+
+Medido el 25/11/2026 en Render: con 1, ninguna serie llegó a 429; con 3, las dos dieron 429 en el sexto intento, también
+con varias direcciones inventadas en el mismo encabezado. **Sin confirmar con otra red:** la prueba desde el celular
+dio «muchos intentos», pero salía con la misma IP pública que la PC, así que no distingue nada. Si Render cambia sus proxies, hay que volver a medirlo.
 
 ## 6. Verificación
 

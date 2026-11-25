@@ -26,8 +26,8 @@ services:
         value: "true"
       - key: CORS_ORIGINS # la dirección de Vercel, sin barra final
         sync: false
-      - key: TRUST_PROXY_HOPS # provisional: se mide en el despliegue (docs/despliegue.md, paso 5)
-        value: "0"
+      - key: TRUST_PROXY_HOPS # provisional: falta confirmarlo desde otra red (docs/despliegue.md, paso 5)
+        value: "3"
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRES_IN
