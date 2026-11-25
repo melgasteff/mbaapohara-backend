@@ -59,7 +59,7 @@ src/companies/
 | `criteria` | Liviano | `categories` + `items` (los motivos se eliminaron en la 1.1, R4) | 3.8 (hecha) |
 | `reviews` | Completo | `evaluations` (eliminado en la 3.2; tablas nuevas) | 3.2 (esquema) y 3.3 (módulo), hechas |
 | `moderation` | Completo | Nuevo | 2.3 (clasificador, hecha); cola, reportes y solicitudes: 3.9 |
-| `insights` | Liviano | Nuevo | Fase 3 |
+| `insights` | Liviano | Nuevo | 3.6 (hecha) |
 
 `categories` e `items` funcionan y no cambian por ahora: se mueven a su módulo final solo cuando
 una tarea los modifique.
@@ -73,7 +73,7 @@ una tarea los modifique.
    declarar un `@ManyToOne` de solo lectura hacia una entidad de `catalogs` para mostrarla en un listado
    (por ejemplo, el rubro de una empresa); validar que el id existe se hace siempre con el servicio dueño.
    Segunda excepción, de solo lectura: `companies` (resumen y facetas del directorio) lee la vista `resenas_publicas` y
-   `respuestas_criterio`, y `criteria` cuenta respuestas. Importar `reviews` crearía un ciclo, porque `reviews` ya usa a
+   `respuestas_criterio`, `criteria` cuenta respuestas e `insights` (panel) lee las dos y los criterios activos. Importar `reviews` crearía un ciclo, porque `reviews` ya usa a
    los dos. Qué reseña es pública se define solo en esa vista.
 3. **Los módulos completos no dependen de los livianos directamente.** Por ejemplo, `reviews` define un
    puerto (`OfficeLookupPort`) y el adaptador llama al servicio de `companies`. Así el dominio de la reseña

@@ -125,6 +125,12 @@ con la huella del texto, nunca el texto; el gasto del mes se lleva en `gasto_mod
 - `GET /reviews`: filtros de RF5 y `orden` (`recientes`, `mejor` o `peor`). `GET /reviews/facets?empresa=`: conteos por
   opción de cada filtro.
 
+### Panel de indicadores (3.6)
+
+- `GET /insights` (público): `rubro`, `grupo`, `departamento` y `ciudad` (del local reseñado). Devuelve reseñas
+  publicadas, empresas con reseñas, promedio y, por categoría y por criterio activo, Sí, En parte, No y No sé, con el %
+  de «Sí» sin contar «No sé». Un valor aparece con 3 reseñas o más (`minimo`); por debajo, `indicador` es `null`.
+
 ## Pruebas
 
 Las pruebas de punta a punta (`test/*.e2e-spec.ts`) levantan la API completa y la prueban por HTTP contra una
@@ -160,6 +166,7 @@ src/
   company-requests/  solicitudes de empresas: formulario público y bandeja (liviano)
   reviews/      reseñas: publicar, editar, borrar y consultar con filtros, con la moderación integrada (completo)
   criteria/     criterios de la reseña: categorías e ítems, con alta, edición y desactivación (liviano)
+  insights/     panel de indicadores agregados, solo lectura (liviano)
   shared/       configuración, base de datos, paginación y filtro de errores
 docs/           arquitectura, datos de referencia y diagramas (docs/diagramas/)
 ```
